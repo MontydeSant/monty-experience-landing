@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="facebook-domain-verification" content="8c704vhsa0ez6m34zzukuwa9ef00t4" />
-<!-- VERIFICACIÓN GOOGLE: pendiente — pegar aquí <meta name="google-site-verification" content="..."> -->
+<meta name="google-site-verification" content="6Z_3CTXprZXtzKXZLwDAcDyNr-fc7J3Ux_w1hHUVLLc" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Monty Experience — Fotografía y Personal Branding para Actores | CDMX</title>
 <meta name="description" content="Sesión fotográfica y asesoría estratégica METASTAR para actores con experiencia que buscan una imagen que por fin cuente su historia real.">
@@ -343,7 +343,8 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   @media(min-width:600px){ .port-carousel figure{ width:360px; } }
   @media(min-width:900px){ .port-carousel figure{ width:440px; } }
   .port-carousel.is-visible figure{ transform:scale(1); }
-  .port-carousel img{ width:100%; height:100%; object-fit:cover; pointer-events:none; transition:transform .5s var(--ease); }
+  /* object-position top: al escalar la foto no se recorta la cabeza — el recorte se come el margen de abajo, no la cara */
+  .port-carousel img{ width:100%; height:100%; object-fit:cover; object-position:center top; pointer-events:none; transition:transform .5s var(--ease); }
   .port-carousel figure:hover img{ transform:scale(1.06); }
 
   /* Indicador de progreso: cuántas fotos quedan por ver, tipo puntos de carrusel */
@@ -398,7 +399,6 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   /* El botón claro se pierde sobre el fondo morado del grain-bg: aquí va oscuro con borde/texto lavanda, como el acento de las tarjetas */
   .cta-final .btn{
     background:var(--bg-dark); color:var(--lavender); border:1.5px solid var(--lavender);
-    animation:none;
   }
   .cta-final .btn:hover{ background:#1d1626; box-shadow:0 12px 28px rgba(13,11,18,.45); }
 
@@ -423,11 +423,10 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   <img src="images/logo.png" alt="Monty Experience" class="logo-mark">
   <div class="hero-grid">
     <div class="hero-text">
-      <h1 class="reveal">¿Por qué sigues posando como modelo de champú si quieres ser protagonista de serie?</h1>
-      <p class="sub reveal">Los directores de casting ya no buscan perfección. Buscan verdad.</p>
-      <!-- CIFRA PENDIENTE DE CONFIRMAR: "120" es un dato de ejemplo, avísame la cifra real y la actualizo -->
-      <p class="prueba reveal"><span class="prueba-num">+120</span> actores retratados</p>
-      <button type="button" class="btn reveal" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}' onclick="if(typeof fbq!=='undefined'){fbq('track','InitiateCheckout');}">JALO A TOMARME MI CAFECITO CONTIGO</button>
+      <h1 class="reveal">¿Por qué sigues posando como modelo de champú si quieres ser <strong style="color:#a78bfa;">protagonista de serie</strong>?</h1>
+      <p class="sub reveal">Los directores de casting ya no buscan perfección. Buscan <strong style="color:#a78bfa;">verdad</strong>.</p>
+      <p class="prueba reveal"><span class="prueba-num">+80</span> actores retratados</p>
+      <button type="button" class="btn reveal" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}' onclick="if(typeof fbq!=='undefined'){fbq('track','InitiateCheckout');}">AGENDAR MI CAFECITO CON MONTY</button>
     </div>
     <div class="hero-figure" id="heroCarousel">
       <div class="hero-track">
@@ -455,13 +454,13 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 <section class="section cifra reveal" id="cifra">
   <div class="wrap">
     <span class="numero">80%</span>
-    <p>de actores en México no actualiza su book en más de 2 años.</p>
+    <p>Se estima que el 80% de actores en México no actualiza su book en más de 2 años.</p>
   </div>
 </section>
 
 <section class="section problema wrap" id="problema">
   <span class="eyebrow reveal">El problema real</span>
-  <h2 class="reveal">Dos puntos de partida. Un mismo lugar: atorado.</h2>
+  <h2 class="reveal">Dos puntos de partida. Un mismo lugar: <strong style="color:#8b5cf6;">atorado</strong>.</h2>
   <p class="problema-intro reveal">No importa si ya tienes book o nunca te has tomado uno — el estancamiento se siente igual. Pasa el cursor (o toca en tu celular) para ver cuál es tu punto de partida.</p>
 
   <div class="tracks stagger">
@@ -471,23 +470,23 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         <span class="track-num">01</span>
         <div>
           <span class="track-tag">Book desactualizado</span>
-          <h3>Tu book ya existe. El problema es que ya no existes en él.</h3>
+          <h3>Tu book ya existe. El problema es que <strong style="color:#a78bfa;">ya no existes en él</strong>.</h3>
         </div>
         <span class="track-toggle" aria-hidden="true">+</span>
       </div>
       <div class="track-sub-wrap">
         <div class="track-sub">
           <div class="sub-card">
-            <h4>Tu book quedó congelado en una versión tuya que ya no existe.</h4>
-            <p>Sigues usando fotos de hace años porque "total, ya tengo mi book". El problema es que esas fotos hablan de un actor que ya dejaste atrás — y los directores de casting lo notan antes que tú.</p>
+            <h4>Te sigues mostrando como <strong style="color:#a78bfa;">alguien que ya no eres</strong>.</h4>
+            <p>Cada casting al que mandas esas fotos, mandas también la versión de ti que ya dejaste atrás. Y eso, aunque no lo digas, <strong style="color:#a78bfa;">se nota antes que tu talento</strong>.</p>
           </div>
           <div class="sub-card">
-            <h4>Sigues posando como catálogo, no como personaje.</h4>
-            <p>Una sonrisa correcta y una pose neutra no cuentan nada. Lo que un casting busca es evidencia de quién puedes ser en pantalla — no una ficha técnica de tu rostro.</p>
+            <h4>Sigues posando como catálogo, <strong style="color:#a78bfa;">no como personaje</strong>.</h4>
+            <p>Una sonrisa correcta y una pose neutra no cuentan nada. Lo que un casting busca es <strong style="color:#a78bfa;">evidencia de quién puedes ser en pantalla</strong> — no una ficha técnica de tu rostro.</p>
           </div>
           <div class="sub-card">
             <h4>No sabes ni por dónde empezar a actualizarlo.</h4>
-            <p>Y esa parálisis te cuesta más que cualquier sesión: cada mes que lo pospones es un casting que ya pasó de largo.</p>
+            <p>Y esa parálisis te cuesta más que cualquier sesión: <strong style="color:#a78bfa;">cada mes que lo pospones es un casting que ya pasó de largo</strong>.</p>
           </div>
         </div>
       </div>
@@ -498,7 +497,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         <span class="track-num">02</span>
         <div>
           <span class="track-tag">Nunca ha tenido un book</span>
-          <h3>Llevas años actuando y nunca te has tomado un book profesional.</h3>
+          <h3>Llevas años actuando y <strong style="color:#a78bfa;">nunca te has tomado un book profesional</strong>.</h3>
         </div>
         <span class="track-toggle" aria-hidden="true">+</span>
       </div>
@@ -506,15 +505,15 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         <div class="track-sub">
           <div class="sub-card">
             <h4>Sientes que ya se te pasó el momento.</h4>
-            <p>Llevas años actuando sin book profesional, y esa vergüenza te frena más que la falta de tiempo o de dinero.</p>
+            <p>No es falta de tiempo ni de dinero — es <strong style="color:#a78bfa;">la vergüenza de admitir</strong> que, con toda tu experiencia, sigues sin una imagen que la respalde.</p>
           </div>
           <div class="sub-card">
             <h4>No sabes ni qué mostrar.</h4>
-            <p>¿Tu esencia, tus personajes, tu rango? Sin dirección clara, terminas posponiéndolo indefinidamente.</p>
+            <p>¿Tu esencia, tus personajes, tu rango? Sin dirección clara, <strong style="color:#a78bfa;">terminas posponiéndolo indefinidamente</strong>.</p>
           </div>
           <div class="sub-card">
             <h4>Sigues llegando a los castings con fotos de celular — o con nada.</h4>
-            <p>Y cada vez que lo haces, sabes que no compites al nivel que ya tienes como actor.</p>
+            <p>Y cada vez que lo haces, sabes que <strong style="color:#a78bfa;">no compites al nivel que ya tienes como actor</strong>.</p>
           </div>
         </div>
       </div>
@@ -526,17 +525,17 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 <section class="section duo" id="referencia">
   <div class="wrap">
     <span class="eyebrow reveal">Lo que se entrega</span>
-    <h2 class="reveal">No es una sesión, es una <span style="color:var(--mauve);">Monty Experience</span></h2>
+    <h2 class="reveal">No es una sesión, es una <span style="color:#8b5cf6;">Monty Experience</span></h2>
     <div class="duo-grid stagger">
       <div class="duo-card foto-vertical">
         <figure><img src="images/duo-sesion.jpg" alt="Equipo de Monty Experience detrás de cámaras durante una sesión"></figure>
         <h3>No estás solo en cuadro.</h3>
-        <p>Detrás de cada sesión hay un equipo completo enfocado en una sola cosa: que tú te veas y te sientas como el protagonista que ya eres.</p>
+        <p>Detrás de cada sesión hay un equipo completo enfocado en una sola cosa: que tú te veas y te sientas como <strong style="color:#8b5cf6;">el protagonista que ya eres</strong>.</p>
       </div>
       <div class="duo-card foto-vertical">
         <figure><img src="images/duo-entrega-2.jpg" alt="Mosaico de retratos de actores con grano morado — galería curada Monty Experience"></figure>
         <h3>Un mapa de posibilidades, no un catálogo.</h3>
-        <p>Cada actor sale con un resultado hecho a su medida, no una fórmula clonada de estudio en estudio.</p>
+        <p>Cada actor sale con un resultado <strong style="color:#8b5cf6;">hecho a su medida</strong>, no una fórmula clonada de estudio en estudio.</p>
       </div>
     </div>
   </div>
@@ -552,7 +551,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     </div>
     <div class="paso">
       <span class="n">02</span>
-      <div><h3>Sesión</h3><p>Dirección técnica y conceptual el día del shooting.</p></div>
+      <div><h3>Sesión</h3><p>Dirección técnica y conceptual el día de la sesión.</p></div>
     </div>
     <div class="paso">
       <span class="n">03</span>
@@ -564,7 +563,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     </div>
     <div class="paso">
       <span class="n">05</span>
-      <div><h3>Acompañamiento post-sesión</h3><p>Asesoría METASTAR — hacia dónde apuntar tu carrera.</p></div>
+      <div><h3>Acompañamiento post-sesión</h3><p>con Asesoría METASTAR: hacia dónde apuntar tu carrera.</p></div>
     </div>
   </div>
 </section>
@@ -579,7 +578,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   <div class="wrap">
     <span class="eyebrow reveal" style="color:#c9c2d4;">Tu experiencia</span>
     <h2 class="reveal" style="margin-bottom:20px; color:#fff;">Ninguna talla única</h2>
-    <p class="intro reveal">Aquí nada es de aparador. Cada experiencia se ajusta a dónde estás parado hoy en tu carrera — <strong style="color:var(--lavender);">como un traje a medida</strong>. Rangos de $6,600 a $16,000 MXN. Antes de decirte cuál es la tuya, un café para entenderte.</p>
+    <p class="intro reveal">Aquí nada es de aparador. Cada experiencia se ajusta a dónde estás parado hoy en tu carrera — <strong style="color:#a78bfa;">como un traje a medida</strong>. Rangos de <strong style="color:#a78bfa;">$6,600 a $16,000 MXN</strong>.<br><br>Y antes de decidir cuál es la tuya, nos tomamos un cafecito virtual para afinarla a tu medida.</p>
     <div class="tier-cards stagger" id="tierCards"></div>
     <p class="cierre reveal">Los paquetes son personalizados — estos son los rangos de precio, no tarifas fijas.</p>
   </div>
@@ -593,17 +592,22 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   <div class="wrap port-carousel-wrap">
     <div class="port-carousel stagger" id="portCarousel">
       <figure><img src="images/portafolio-1.jpg" alt="Retrato casual y espontáneo de actriz para book actoral, fondo claro de estudio" loading="lazy"></figure>
+      <figure><img src="images/portafolio-10.jpg" alt="Retrato editorial de actriz para book actoral, fondo naranja de estudio" loading="lazy"></figure>
       <figure><img src="images/portafolio-2.jpg" alt="Retrato sobrio y directo de actor para casting corporativo" loading="lazy"></figure>
+      <figure><img src="images/portafolio-11.jpg" alt="Retrato editorial de actriz para personal branding, fondo turquesa de estudio" loading="lazy"></figure>
       <figure><img src="images/portafolio-3.jpg" alt="Retrato editorial dramático de actriz para personal branding, perfil con tatuaje" loading="lazy"></figure>
+      <figure><img src="images/portafolio-12.jpg" alt="Retrato de actriz para book actoral, fondo rosa de estudio" loading="lazy"></figure>
       <figure><img src="images/portafolio-4.jpg" alt="Retrato sensual y dramático de actriz para book fotográfico, encaje rojo" loading="lazy"></figure>
+      <figure><img src="images/portafolio-13.jpg" alt="Retrato editorial de actriz para personal branding, fondo verde oliva de estudio" loading="lazy"></figure>
       <figure><img src="images/portafolio-5.jpg" alt="Retrato de personaje y comedia para actor de reparto, look excéntrico" loading="lazy"></figure>
-      <figure><img src="images/hero-1.jpg" alt="Retrato editorial de actor, sesión Monty Experience 1" loading="lazy"></figure>
-      <figure><img src="images/hero-2.jpg" alt="Retrato editorial de actor, sesión Monty Experience 2" loading="lazy"></figure>
-      <figure><img src="images/hero-3.jpg" alt="Retrato editorial de actor, sesión Monty Experience 3" loading="lazy"></figure>
-      <figure><img src="images/hero-4.jpg" alt="Retrato editorial de actor, sesión Monty Experience 4" loading="lazy"></figure>
-      <figure><img src="images/hero-5.jpg" alt="Retrato editorial de actor, sesión Monty Experience 5" loading="lazy"></figure>
-      <figure><img src="images/hero-6.jpg" alt="Retrato editorial de actor, sesión Monty Experience 6" loading="lazy"></figure>
-      <figure><img src="images/hero-7.jpg" alt="Retrato editorial de actor, sesión Monty Experience 7" loading="lazy"></figure>
+      <figure><img src="images/portafolio-14.jpg" alt="Retrato editorial de actriz para book actoral, fondo magenta de estudio" loading="lazy"></figure>
+      <figure><img src="images/portafolio-6.jpg" alt="Retrato sonriente de actriz para book actoral, fondo claro de estudio" loading="lazy"></figure>
+      <figure><img src="images/portafolio-15.jpg" alt="Retrato editorial de actriz para personal branding, fondo azul de estudio" loading="lazy"></figure>
+      <figure><img src="images/portafolio-7.jpg" alt="Retrato sobrio de actriz para casting, fondo claro de estudio" loading="lazy"></figure>
+      <figure><img src="images/portafolio-16.jpg" alt="Retrato de actriz para book actoral, fondo rosa de estudio" loading="lazy"></figure>
+      <figure><img src="images/portafolio-8.jpg" alt="Retrato sonriente de actriz para book actoral, collar dorado" loading="lazy"></figure>
+      <figure><img src="images/portafolio-17.jpg" alt="Retrato sonriente de actor para casting, fondo naranja de estudio" loading="lazy"></figure>
+      <figure><img src="images/portafolio-9.jpg" alt="Retrato editorial de actriz para personal branding, fondo claro de estudio" loading="lazy"></figure>
     </div>
     <div class="port-dots" id="portDots"></div>
   </div>
@@ -614,8 +618,8 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     <figure><img src="images/perfil.jpg" alt="Monty, fotógrafo y director creativo de Monty Experience" loading="lazy"></figure>
     <div>
       <span class="eyebrow">Sobre mí</span>
-      <h3>Monty — Fotógrafo, videógrafo y director creativo</h3>
-      <p>Conozco el lenguaje de los actores. He acompañado a decenas de artistas a recuperar su dirección profesional. Sé lo que se siente mirar tus fotos y no reconocerte — por eso construí un proceso completo, no solo una sesión.</p>
+      <h3><span style="color:#8b5cf6;">Monty de Sant</span> — Fotógrafo de Actores y Director Creativo</h3>
+      <p>Conozco el lenguaje de los actores. He acompañado a decenas de artistas a recuperar su dirección profesional. Sé lo que se siente mirar tus fotos y no reconocerte — por eso construí <strong style="color:#8b5cf6;">un proceso completo, no solo una sesión</strong>.</p>
     </div>
   </div>
 </section>
@@ -632,23 +636,23 @@ Testimonios en pausa por decisión de Monty. No se publica con datos inventados.
   <div class="faq-list stagger">
     <div class="faq-item">
       <button type="button" class="faq-trigger">¿Cuánto dura la sesión? <span class="faq-toggle">+</span></button>
-      <div class="faq-panel"><div class="faq-panel-inner"><p>Entre 2 y 5 horas, según el paquete. Pero el tiempo real es el que tardas en dejar de posar y empezar a habitar la foto — eso no lo mide el reloj.</p></div></div>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>Entre 2 y 5 horas, según el paquete. Pero el tiempo real es el que tardas en <strong style="color:#a78bfa;">dejar de posar y empezar a habitar la foto</strong> — eso no lo mide el reloj.</p></div></div>
     </div>
     <div class="faq-item">
       <button type="button" class="faq-trigger">¿Puedo llevar varios looks/outfits? <span class="faq-toggle">+</span></button>
-      <div class="faq-panel"><div class="faq-panel-inner"><p>Sí, de 3 a 6 cambios según tu paquete. No eres una sola nota. Tu book tampoco debería serlo.</p></div></div>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>Sí, de 3 a 6 cambios según tu paquete. No eres una sola nota. <strong style="color:#a78bfa;">Tu book tampoco debería serlo</strong>.</p></div></div>
     </div>
     <div class="faq-item">
       <button type="button" class="faq-trigger">¿Qué pasa si no me gustan las fotos? <span class="faq-toggle">+</span></button>
-      <div class="faq-panel"><div class="faq-panel-inner"><p>No llegas a ese susto: te ves en pantalla mientras disparamos. Si algo no es tuyo, lo cambiamos ahí, en caliente. A la selección llegas ya sabiendo que sí eres tú.</p></div></div>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>No llegas a ese susto: te ves en pantalla mientras disparamos. Si algo no es tuyo, lo cambiamos ahí, en caliente. A la selección llegas ya sabiendo que <strong style="color:#a78bfa;">sí eres tú</strong>.</p></div></div>
     </div>
     <div class="faq-item">
       <button type="button" class="faq-trigger">¿La asesoría METASTAR va incluida o es aparte? <span class="faq-toggle">+</span></button>
-      <div class="faq-panel"><div class="faq-panel-inner"><p>Incluida, siempre. Sin ella solo te llevas fotos bonitas y la misma pregunta de antes: "ya tengo mi book… ¿y ahora qué?". METASTAR es la respuesta.</p></div></div>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>Incluida, siempre. Sin ella solo te llevas fotos bonitas y la misma pregunta de antes: "ya tengo mi book… ¿y ahora qué?". <strong style="color:#a78bfa;">METASTAR es la respuesta</strong>.</p></div></div>
     </div>
     <div class="faq-item">
       <button type="button" class="faq-trigger">¿Cuánto tarda la entrega? <span class="faq-toggle">+</span></button>
-      <div class="faq-panel"><div class="faq-panel-inner"><p>De 5 a 15 días hábiles, según el paquete. ¿Traes prisa? Hay entrega al día siguiente con costo extra — para cuando el casting no puede esperar.</p></div></div>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>De 5 a 15 días hábiles, según el paquete. ¿Traes prisa? Hay entrega al día siguiente con costo extra — <strong style="color:#a78bfa;">para cuando el casting no puede esperar</strong>.</p></div></div>
     </div>
   </div>
   </div>
@@ -656,9 +660,9 @@ Testimonios en pausa por decisión de Monty. No se publica con datos inventados.
 
 <section class="section cta-final grain-bg" id="agenda">
   <div class="wrap">
-    <p class="mantra reveal">"No hay nada más caro que seguir mostrándote como alguien que no eres."</p>
+    <p class="mantra reveal">"No hay nada más caro que seguir mostrándote como alguien que ya no eres."</p>
     <div class="btns">
-      <button type="button" class="btn reveal" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}' onclick="if(typeof fbq!=='undefined'){fbq('track','InitiateCheckout');}">JALO A TOMARME MI CAFECITO CONTIGO</button>
+      <button type="button" class="btn reveal" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}' onclick="if(typeof fbq!=='undefined'){fbq('track','InitiateCheckout');}">AGENDAR MI CAFECITO CON MONTY</button>
     </div>
     <p class="microcopy on-dark reveal">Así de simple. Lo demás lo hacemos juntos.</p>
     <p class="cupos reveal">Cupos limitados este mes: 2 disponibles.</p>
@@ -669,7 +673,7 @@ Testimonios en pausa por decisión de Monty. No se publica con datos inventados.
   <div class="wrap">
     <h3>¿Dudas, preguntas, chismes, noticias, amenazas?</h3>
     <p>Mándame mensajito por WhatsApp.</p>
-    <a href="https://api.whatsapp.com/send?phone=+5255705342&text=Hola%20Monty%2C%20vi%20tu%20landing%20y%20quiero%20saber%20m%C3%A1s%20sobre%20Monty%20Experience" target="_blank" rel="noopener" class="btn secundario" onclick="if(typeof fbq!=='undefined'){fbq('track','Contact');}">Escríbeme por WhatsApp →</a>
+    <a href="https://api.whatsapp.com/send?phone=+5255705342&text=Hola%20Monty%2C%20vengo%20con%20dudas%2C%20preguntas%20o%20hasta%20chismes%20%F0%9F%91%80%20Cu%C3%A9ntame%20qu%C3%A9%20se%20te%20ofrece" target="_blank" rel="noopener" class="btn secundario" onclick="if(typeof fbq!=='undefined'){fbq('track','Contact');}">Escríbeme por WhatsApp →</a>
   </div>
 </section>
 
@@ -713,7 +717,7 @@ Testimonios en pausa por decisión de Monty. No se publica con datos inventados.
 
   const tiers = [
     {
-      name:'Classic', text:'Nunca has tenido un book profesional, o el que tienes quedó congelado en una versión tuya que ya no existe. No sabes ni por dónde empezar.',
+      name:'Classic', text:'Nunca has tenido un book profesional, o el que tienes <strong style="color:#a78bfa;">ya no habla de ti</strong>. No sabes ni por dónde empezar.',
       precio:6600, horas:'2 hrs', fotos:18, cambios:3, foto:'images/exp-classic.jpg',
       benefits:[
         'Servicio de 2 horas de sesión',
@@ -725,7 +729,7 @@ Testimonios en pausa por decisión de Monty. No se publica con datos inventados.
       ]
     },
     {
-      name:'Elite', text:'Sabes exactamente qué necesitas — pero tu imagen actual no está gritando ese mensaje lo suficientemente fuerte. Aquí reforzamos la narrativa con más peso de marca.',
+      name:'Elite', text:'Sabes exactamente qué necesitas — pero tu imagen actual <strong style="color:#a78bfa;">no lo está diciendo con la fuerza que mereces</strong>. Aquí le metemos peso de marca a esa narrativa.',
       precio:10000, horas:'3 hrs', fotos:24, cambios:3, foto:'images/exp-elite.jpg',
       benefits:[
         'Servicio de 3 horas de sesión',
@@ -739,11 +743,11 @@ Testimonios en pausa por decisión de Monty. No se publica con datos inventados.
       ]
     },
     {
-      name:'Fénix', text:'Llevas tiempo fuera del radar. No necesitas un retoque — necesitas relanzarte de pies a cabeza.',
-      precio:16000, horas:'5 hrs', fotos:32, cambios:4, foto:'images/exp-fenix.jpg',
+      name:'Fénix', text:'Llevas tiempo fuera del radar. No necesitas un retoque — necesitas <strong style="color:#a78bfa;">relanzarte de pies a cabeza</strong>.',
+      precio:16000, horas:'5 hrs', fotos:32, cambios:'4 a 6', foto:'images/exp-fenix.jpg',
       benefits:[
         'Servicio de 5 horas de sesión',
-        '4 cambios de ropa',
+        '4 a 6 cambios de ropa',
         'Asesoría de imagen',
         'Maquillaje profesional (2 estilos)',
         'Stylist profesional y peinado',
@@ -855,6 +859,11 @@ Testimonios en pausa por decisión de Monty. No se publica con datos inventados.
     const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
 
     function nearestIndex(){
+      // Al final del scroll, el offsetLeft de las últimas fotos puede quedar fuera del rango
+      // alcanzable (scrollWidth - clientWidth) y sus puntos nunca se activarían — por eso,
+      // si ya llegamos al fondo del carrusel, forzamos el último punto activo.
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      if(carousel.scrollLeft >= maxScroll - 2){ return figures.length - 1; }
       let closest = 0, closestDist = Infinity;
       figures.forEach((fig, i) => {
         const dist = Math.abs(fig.offsetLeft - carousel.scrollLeft);
