@@ -26,12 +26,21 @@ const TRACKED_SLUGS = [
 ];
 
 // Cal.com dispara BOOKING_CREATED cuando el evento NO requiere confirmacion
-// manual, y BOOKING_REQUESTED cuando si la requiere (el organizador debe
-// aprobar por correo antes de que quede agendada). Tratamos ambas como el
-// mismo momento de intencion: alguien reservo una llamada.
+// manual, BOOKING_REQUESTED cuando si la requiere, y en algunos flujos
+// tambien BOOKING_CREATED de nuevo al confirmarse. Tratamos todo esto como
+// el mismo momento de intencion: alguien reservo/confirmo una llamada.
 const TRACKED_TRIGGERS = ['BOOKING_CREATED', 'BOOKING_REQUESTED'];
 
 const AUDIENCE_NAME = 'Agendaron llamada - Monty Experience';
+
+// El campo responses.location de Cal.com puede venir como string u objeto
+// segun el tipo de ubicacion (video, telefono, en persona, etc.). Meta exige
+// que event_source_url sea siempre un string.
+function resolveEventSourceUrl(booking) {
+  const loc = booking.responses?.location?.value;
+  if (typeof loc === 'string' && loc.startsWith('http')) return loc;
+  return 'https://montyexperience.com';
+}
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -54,7 +63,6 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: 'Invalid JSON' };
   }
 
-  // LOG DE DIAGNOSTICO TEMPORAL: para ver exactamente que manda Cal.com.
   const diagSlug = payload.payload?.eventType?.slug || payload.payload?.type || '(sin slug)';
   console.log(`[DIAG] triggerEvent=${payload.triggerEvent} slug=${diagSlug}`);
 
@@ -66,8 +74,6 @@ exports.handler = async (event) => {
   const slug = booking.eventType?.slug || booking.type || '';
 
   if (!TRACKED_SLUGS.includes(slug)) {
-    // Bug conocido de la skill: sin este filtro cualquier otro evento de
-    // Cal.com contamina la audiencia. Se ignora silenciosamente.
     console.log(`[DIAG] Slug no coincide con TRACKED_SLUGS: "${slug}"`);
     return { statusCode: 200, body: `Ignored (slug not tracked: ${slug})` };
   }
@@ -96,7 +102,7 @@ exports.handler = async (event) => {
     accessToken,
     eventName: 'Schedule',
     eventId: bookingUid,
-    eventSourceUrl: booking.responses?.location?.value || 'https://montyexperience.com',
+    eventSourceUrl: resolveEventSourceUrl(booking),
     userData: {
       em: hashedEmail ? [hashedEmail] : undefined,
       ph: hashedPhone ? [hashedPhone] : undefined,
