@@ -54,6 +54,10 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: 'Invalid JSON' };
   }
 
+  // LOG DE DIAGNOSTICO TEMPORAL: para ver exactamente que manda Cal.com.
+  const diagSlug = payload.payload?.eventType?.slug || payload.payload?.type || '(sin slug)';
+  console.log(`[DIAG] triggerEvent=${payload.triggerEvent} slug=${diagSlug}`);
+
   if (!TRACKED_TRIGGERS.includes(payload.triggerEvent)) {
     return { statusCode: 200, body: `Ignored (trigger: ${payload.triggerEvent})` };
   }
@@ -64,6 +68,7 @@ exports.handler = async (event) => {
   if (!TRACKED_SLUGS.includes(slug)) {
     // Bug conocido de la skill: sin este filtro cualquier otro evento de
     // Cal.com contamina la audiencia. Se ignora silenciosamente.
+    console.log(`[DIAG] Slug no coincide con TRACKED_SLUGS: "${slug}"`);
     return { statusCode: 200, body: `Ignored (slug not tracked: ${slug})` };
   }
 
@@ -81,16 +86,12 @@ exports.handler = async (event) => {
 
   if (!pixelId || !adAccountId || !accessToken) {
     console.error('Faltan variables de entorno META_PIXEL_ID / META_AD_ACCOUNT_ID / META_ACCESS_TOKEN.');
-    // Respondemos 200 para que Cal.com no reintente infinito por un error
-    // de configuracion nuestro; el log queda para diagnosticar.
     return { statusCode: 200, body: 'Missing Meta env vars, logged' };
   }
 
-  // 1) Evento CAPI con deduplicacion (event_id = uid de la reserva).
-  // Nota: si BOOKING_REQUESTED y luego BOOKING_CONFIRMED llegaran ambos con
-  // el mismo uid, Meta los deduplica por event_id; aqui solo escuchamos el
-  // primer momento de intencion, asi que no debería duplicarse.
-  await sendCapiEvent({
+  console.log(`[DIAG] Enviando evento Schedule a Meta. event_id=${bookingUid}`);
+
+  const capiResult = await sendCapiEvent({
     pixelId,
     accessToken,
     eventName: 'Schedule',
@@ -105,20 +106,24 @@ exports.handler = async (event) => {
     },
   });
 
-  // 2) Find-or-create de la audiencia + agregar al agendado
+  console.log(`[DIAG] Resultado CAPI: ${JSON.stringify(capiResult)}`);
+
   const audienceId = await findOrCreateAudience({
     adAccountId,
     accessToken,
     name: AUDIENCE_NAME,
   });
 
+  console.log(`[DIAG] audienceId: ${audienceId}`);
+
   if (audienceId) {
-    await addUserToAudience({
+    const addResult = await addUserToAudience({
       audienceId,
       accessToken,
       hashedEmail,
       hashedPhone,
     });
+    console.log(`[DIAG] Resultado add-user: ${JSON.stringify(addResult)}`);
   }
 
   return { statusCode: 200, body: 'OK' };
