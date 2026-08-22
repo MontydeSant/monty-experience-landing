@@ -1,5 +1,5 @@
 // netlify/functions/cal-webhook.js
-// Recibe el webhook "Booking created" de Cal.com y avisa a Meta:
+// Recibe el webhook de Cal.com y avisa a Meta:
 // (1) evento CAPI (Schedule) con deduplicacion por event_id
 // (2) agrega al agendado a la audiencia "Agendaron llamada - Monty Experience"
 //
@@ -25,6 +25,12 @@ const TRACKED_SLUGS = [
   'asesorias-metastar-artistas',
 ];
 
+// Cal.com dispara BOOKING_CREATED cuando el evento NO requiere confirmacion
+// manual, y BOOKING_REQUESTED cuando si la requiere (el organizador debe
+// aprobar por correo antes de que quede agendada). Tratamos ambas como el
+// mismo momento de intencion: alguien reservo una llamada.
+const TRACKED_TRIGGERS = ['BOOKING_CREATED', 'BOOKING_REQUESTED'];
+
 const AUDIENCE_NAME = 'Agendaron llamada - Monty Experience';
 
 exports.handler = async (event) => {
@@ -48,9 +54,8 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: 'Invalid JSON' };
   }
 
-  // Solo nos interesa la creacion de reservas.
-  if (payload.triggerEvent !== 'BOOKING_CREATED') {
-    return { statusCode: 200, body: 'Ignored (not BOOKING_CREATED)' };
+  if (!TRACKED_TRIGGERS.includes(payload.triggerEvent)) {
+    return { statusCode: 200, body: `Ignored (trigger: ${payload.triggerEvent})` };
   }
 
   const booking = payload.payload || {};
@@ -81,7 +86,10 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: 'Missing Meta env vars, logged' };
   }
 
-  // 1) Evento CAPI con deduplicacion (event_id = uid de la reserva)
+  // 1) Evento CAPI con deduplicacion (event_id = uid de la reserva).
+  // Nota: si BOOKING_REQUESTED y luego BOOKING_CONFIRMED llegaran ambos con
+  // el mismo uid, Meta los deduplica por event_id; aqui solo escuchamos el
+  // primer momento de intencion, asi que no debería duplicarse.
   await sendCapiEvent({
     pixelId,
     accessToken,
