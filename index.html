@@ -415,6 +415,27 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   footer .links a:first-child{ margin-left:0; }
 
   .pendiente-nota{ background:#fff4e5; color:#7a5100; font-size:.78rem; padding:6px 10px; border-radius:3px; display:inline-block; margin-top:10px; }
+    /* TESTIMONIOS */
+    .testimonios{ background:var(--bg-dark); color:var(--text-light); text-align:center; overflow:hidden; }
+    .testimonios .eyebrow{ color:#c9c2d4; }
+    .testi-intro{ max-width:520px; margin:16px auto 0; color:#c9c2d4; font-size:1.05rem; font-weight:300; }
+    .testi-carousel-wrap{ margin-top:40px; }
+    .testi-carousel{ display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; padding:14px 24px 22px; cursor:grab; user-select:none; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+    .testi-carousel::-webkit-scrollbar{ display:none; }
+    .testi-carousel.dragging{ cursor:grabbing; scroll-snap-type:none; }
+    .phone-mock{ position:relative; flex:0 0 auto; width:230px; aspect-ratio:9/19.5; scroll-snap-align:center; background:#000; border-radius:34px; border:8px solid #17131f; box-shadow:0 20px 50px rgba(0,0,0,.5), 0 0 0 1.5px rgba(210,186,255,.25); overflow:hidden; transform:scale(.94); transition:transform .5s var(--ease); }
+    @media(min-width:600px){ .phone-mock{ width:260px; } }
+    .testi-carousel.is-visible .phone-mock{ transform:scale(1); }
+    .phone-mock::before{ content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:38%; height:18px; background:#17131f; border-radius:0 0 12px 12px; z-index:3; }
+    .phone-mock video{ width:100%; height:100%; object-fit:cover; display:block; background:#000; }
+    .phone-play{ position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center; background:rgba(13,11,18,.28); border:none; cursor:pointer; padding:0; transition:opacity .3s var(--ease); }
+    .phone-play .ico{ width:56px; height:56px; border-radius:50%; background:rgba(13,11,18,.55); border:1.5px solid var(--lavender); color:var(--lavender); display:flex; align-items:center; justify-content:center; font-size:1.4rem; }
+    .phone-mock.playing .phone-play{ opacity:0; pointer-events:none; }
+    .phone-name{ position:absolute; left:14px; bottom:14px; z-index:2; font-family:'Fraunces',serif; font-weight:600; font-size:1rem; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.6); pointer-events:none; transition:opacity .3s var(--ease); }
+    .phone-mock.playing .phone-name{ opacity:0; }
+    .testi-dots{ display:flex; justify-content:center; align-items:center; gap:7px; margin-top:6px; }
+    .testi-dots .dot{ width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.3); cursor:pointer; transition:background .3s var(--ease), width .3s var(--ease); }
+    .testi-dots .dot.active{ background:var(--lavender); width:18px; border-radius:3px; }
 </style>
 </head>
 <body>
@@ -624,11 +645,38 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   </div>
 </section>
 
-<!--
-SECCIÓN DE PRUEBA SOCIAL — PENDIENTE
-Testimonios en pausa por decisión de Monty. No se publica con datos inventados.
--->
-
+<section class="section testimonios" id="testimonios">
+    <div class="wrap">
+          <span class="eyebrow reveal">Testimonios</span>
+          <h2 class="reveal">Pregúntales a ellos, no a mí.</h2>
+          <p class="testi-intro reveal">Dale play. Súbele al volumen. Esto no lo actué yo.</p>
+    </div>
+    <div class="wrap testi-carousel-wrap">
+          <div class="testi-carousel stagger" id="testiCarousel">
+                  <div class="phone-mock" data-name="Bri">
+                            <video playsinline preload="none" poster="videos/portada_bri.png" src="videos/tes_bri_1626229384.mp4"></video>
+                            <button type="button" class="phone-play" aria-label="Reproducir testimonio de Bri"><span class="ico">▶</span></button>
+                            <span class="phone-name">Bri</span>
+                  </div>
+                  <div class="phone-mock" data-name="Leo">
+                            <video playsinline preload="none" poster="videos/portada_leo.png" src="videos/tes_leo_1687867871.mp4"></video>
+                            <button type="button" class="phone-play" aria-label="Reproducir testimonio de Leo"><span class="ico">▶</span></button>
+                            <span class="phone-name">Leo</span>
+                  </div>
+                  <div class="phone-mock" data-name="Lupita">
+                            <video playsinline preload="none" poster="videos/portada_lupita.png" src="videos/tes_lupita_1790176296.mp4"></video>
+                            <button type="button" class="phone-play" aria-label="Reproducir testimonio de Lupita"><span class="ico">▶</span></button>
+                            <span class="phone-name">Lupita</span>
+                  </div>
+                  <div class="phone-mock" data-name="Paty">
+                            <video playsinline preload="none" poster="videos/Portada_paty.png" src="videos/tes_paty_992485667.mp4"></video>
+                            <button type="button" class="phone-play" aria-label="Reproducir testimonio de Paty"><span class="ico">▶</span></button>
+                            <span class="phone-name">Paty</span>
+                  </div>
+          </div>
+          <div class="testi-dots" id="testiDots"></div>
+    </div>
+</section>
 <section class="section faq" id="faq">
   <div class="wrap">
   <span class="eyebrow reveal" style="color:#c9c2d4;">Preguntas frecuentes</span>
@@ -927,6 +975,91 @@ Testimonios en pausa por decisión de Monty. No se publica con datos inventados.
     }, { threshold: 0.3 });
     ioPricing.observe(pricingSection);
   }
+
+    // Testimonios: carrusel de video en mockup de teléfono
+    (function(){
+          const carousel = document.getElementById('testiCarousel');
+          const dotsWrap = document.getElementById('testiDots');
+          if(!carousel) return;
+          const phones = Array.from(carousel.children);
+
+          if(dotsWrap){
+                  dotsWrap.innerHTML = phones.map((_, i) => '<span class="dot' + (i===0?' active':'') + '" data-i="' + i + '"></span>').join('');
+          }
+          const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
+
+          function nearestIndex(){
+                  const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+                  if(carousel.scrollLeft >= maxScroll - 2){ return phones.length - 1; }
+                  let closest = 0, closestDist = Infinity;
+                  phones.forEach((el, i) => {
+                            const dist = Math.abs(el.offsetLeft - carousel.scrollLeft);
+                            if(dist < closestDist){ closestDist = dist; closest = i; }
+                  });
+                  return closest;
+          }
+          function syncDots(){
+                  const idx = nearestIndex();
+                  dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+          }
+          let scrollTicking = false;
+          carousel.addEventListener('scroll', () => {
+                  if(scrollTicking) return;
+                  scrollTicking = true;
+                  requestAnimationFrame(() => { syncDots(); scrollTicking = false; });
+          });
+          dots.forEach(d => d.addEventListener('click', () => {
+                  const i = parseInt(d.dataset.i);
+                  carousel.scrollTo({ left: phones[i].offsetLeft, behavior: 'smooth' });
+          }));
+
+          function pauseAll(except){
+                  phones.forEach(p => {
+                            if(p === except) return;
+                            const v = p.querySelector('video');
+                            v.pause();
+                            p.classList.remove('playing');
+                  });
+          }
+          phones.forEach(phone => {
+                  const video = phone.querySelector('video');
+                  const playBtn = phone.querySelector('.phone-play');
+                  function togglePlay(){
+                            if(video.paused){
+                                        pauseAll(phone);
+                                        video.muted = false;
+                                        video.play();
+                                        phone.classList.add('playing');
+                            } else {
+                                        video.pause();
+                                        phone.classList.remove('playing');
+                            }
+                  }
+                  playBtn.addEventListener('click', (e) => { e.stopPropagation(); togglePlay(); });
+                  video.addEventListener('click', togglePlay);
+                  video.addEventListener('ended', () => { phone.classList.remove('playing'); });
+          });
+
+          let isDown = false, startX = 0, startScroll = 0, moved = false;
+          carousel.addEventListener('pointerdown', (e)=>{
+                  isDown = true; moved = false;
+                  startX = e.clientX; startScroll = carousel.scrollLeft;
+                  carousel.classList.add('dragging');
+          });
+          window.addEventListener('pointermove', (e)=>{
+                  if(!isDown) return;
+                  const dx = e.clientX - startX;
+                  if(Math.abs(dx) > 4) moved = true;
+                  carousel.scrollLeft = startScroll - dx;
+          });
+          function endDrag(){
+                  isDown = false;
+                  carousel.classList.remove('dragging');
+          }
+          window.addEventListener('pointerup', endDrag);
+          window.addEventListener('pointercancel', endDrag);
+          carousel.addEventListener('click', (e)=>{ if(moved){ e.preventDefault(); e.stopPropagation(); } }, true);
+    })();
 </script>
 
 </body>
