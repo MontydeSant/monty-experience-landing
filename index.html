@@ -69,17 +69,19 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 
 <style>
   :root{
-    --bg-dark:#0d0b12;
-    --bg-dark-2:#1d1626;
+    --bg-dark:#08030d;
+    --bg-dark-2:#120722;
     --mauve:#6f5d86;
-    --lavender:#d2baff;
-    --bg-light:#faf9f7;
+    --lavender:#c084fc;
+    --accent:#d946ef;
+    --accent3:#a855f7;
+    --bg-light:#0d0617;
     --text-light:#f5f3f0;
-    --text-dark:#141214;
-    --text-muted:#6b6b6b;
-    --grad: linear-gradient(135deg, #d2baff 0%, #8b6fac 45%, #1d1626 100%);
-    --grad-cta: linear-gradient(135deg, #d2baff 0%, #9a7ec2 100%);
-    --grad-soft: linear-gradient(135deg, rgba(210,186,255,.18) 0%, rgba(111,93,134,.18) 100%);
+    --text-dark:#cbd5e1;
+    --text-muted:#a89bbd;
+    --grad: linear-gradient(135deg, #c084fc 0%, #8b6fac 45%, #1d1626 100%);
+    --grad-cta: linear-gradient(135deg, var(--accent3) 0%, var(--accent) 100%);
+    --grad-soft: linear-gradient(135deg, rgba(217,70,239,.18) 0%, rgba(111,93,134,.18) 100%);
     --radius: 4px;
     --maxw: 1180px;
     --ease: cubic-bezier(.22,.61,.36,1);
@@ -87,14 +89,14 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
   body{ font-family:'Noto Sans', sans-serif; background:var(--bg-light); color:var(--text-dark); line-height:1.55; -webkit-font-smoothing:antialiased; }
-  h1,h2,h3{font-family:'Fraunces', serif; font-weight:600; line-height:1.14;}
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:600; line-height:1.14; color:var(--text-light);}
   img{max-width:100%; display:block;}
   .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
   .section{padding:48px 0;}
   @media(min-width:768px){ .section{padding:88px 0;} }
   .eyebrow{ text-transform:uppercase; letter-spacing:.14em; font-size:.75rem; font-weight:600; color:var(--text-muted); margin-bottom:12px; }
-  .btn{ display:inline-block; border:none; cursor:pointer; font-family:'Noto Sans',sans-serif; font-weight:700; font-size:1rem; letter-spacing:.02em; padding:16px 32px; border-radius:var(--radius); background:var(--grad-cta); color:#191220; text-decoration:none; transition:transform .22s var(--ease), box-shadow .22s var(--ease); animation: pulse 3.2s ease-in-out infinite; }
-  .btn:hover{ transform:translateY(-2px) scale(1.03); box-shadow:0 12px 28px rgba(122,86,160,.4); }
+  .btn{ display:inline-block; border:none; cursor:pointer; font-family:'Noto Sans',sans-serif; font-weight:700; font-size:1rem; letter-spacing:.02em; padding:16px 32px; border-radius:var(--radius); background:var(--grad-cta); color:#fff; text-decoration:none; box-shadow:0 8px 24px rgba(217,70,239,.35); transition:transform .22s var(--ease), box-shadow .22s var(--ease); animation: pulse 3.2s ease-in-out infinite; }
+  .btn:hover{ transform:translateY(-2px) scale(1.03); box-shadow:0 14px 34px rgba(217,70,239,.5); }
   .btn.secundario{ background:transparent; border:1.5px solid var(--lavender); color:var(--lavender); animation:none; }
   .btn.secundario:hover{ background:rgba(210,186,255,.1); box-shadow:none; }
   @keyframes pulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.02); } }
@@ -153,15 +155,15 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 
   /* CIFRA — bloque 2 */
   .cifra{ background:var(--bg-dark-2); color:var(--text-light); text-align:center; }
-  .cifra .numero{ font-family:'Fraunces',serif; font-weight:700; font-size:4.5rem; color:var(--lavender); line-height:1; }
+  .cifra .numero{ font-family:'Fraunces',serif; font-weight:700; font-size:4.5rem; color:var(--accent); line-height:1; text-shadow:0 0 28px rgba(217,70,239,.5); }
   @media(min-width:768px){ .cifra .numero{ font-size:6.5rem; } }
   .cifra p{ max-width:520px; margin:16px auto 0; font-size:1.05rem; color:#d8cfe6; font-weight:300; }
 
-  .problema{ background:var(--bg-light); }
-  .problema-intro{ max-width:640px; margin-top:16px; color:var(--text-muted); font-size:1rem; }
+  .problema{ background:var(--bg-light); text-align:center; }
+  .problema-intro{ max-width:640px; margin:28px auto 0; color:var(--text-muted); font-size:1rem; }
 
   /* Uno arriba, uno abajo — así el despliegue de una tarjeta no empuja/desalinea a la otra */
-  .tracks{ display:grid; gap:20px; margin-top:36px; grid-template-columns:1fr; }
+  .tracks{ display:grid; gap:20px; margin-top:36px; grid-template-columns:1fr; text-align:left; }
 
   .track-card{
     background:var(--bg-dark); border-radius:var(--radius); overflow:hidden;
@@ -176,7 +178,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     font-weight:700; color:var(--bg-dark); background:var(--lavender); padding:3px 9px;
     border-radius:2px; margin-bottom:10px;
   }
-  .track-head h3{ color:#fff; font-size:1.15rem; font-weight:500; line-height:1.35; }
+  .track-head h3{ color:#fff; font-size:1.15rem; font-weight:500; line-height:1.35; min-height:2.7em; }
   .track-toggle{
     margin-left:auto; flex-shrink:0; width:30px; height:30px; border-radius:50%;
     border:1.5px solid var(--mauve); color:var(--lavender); display:flex; align-items:center;
@@ -202,7 +204,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   .sub-card h4{ font-family:'Fraunces',serif; font-weight:600; font-size:.98rem; color:#fff; margin-bottom:6px; }
   .sub-card p{ font-size:.9rem; color:#c9c2d4; line-height:1.5; }
 
-  .duo{ background:#fff; }
+  .duo{ background:var(--bg-dark-2); }
   .duo-grid{ display:grid; gap:24px; margin-top:32px; }
   @media(min-width:768px){ .duo-grid{ grid-template-columns:1fr 1fr; gap:32px; } }
   .duo-card figure{ aspect-ratio:4/3; overflow:hidden; border-radius:var(--radius); margin-bottom:16px; }
@@ -224,7 +226,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   .incluye h2{ max-width:600px; margin:0 auto; }
   .incluye-list{ margin-top:32px; display:grid; gap:20px; text-align:left; }
   .incluye-list .paso{
-    display:flex; gap:18px; align-items:flex-start; background:#fff; padding:20px 22px;
+    display:flex; gap:18px; align-items:flex-start; background:var(--bg-dark-2); padding:20px 22px;
     border-radius:var(--radius); border-left:3px solid; border-image:var(--grad) 1;
     transition:background .3s var(--ease), transform .3s var(--ease);
     cursor:default;
@@ -234,8 +236,8 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   .incluye-list .paso p{ font-size:.95rem; color:var(--text-muted); transition:color .3s var(--ease); }
   /* Hover: mismos tonos oscuro/lavanda que las tarjetas de "el problema" — no morado sólido */
   .incluye-list .paso:hover{
-    background:var(--bg-dark); border-image:none; border-left:3px solid var(--lavender);
-    transform:translateY(-2px);
+    background:var(--bg-dark); border-image:none; border-left:3px solid var(--accent);
+    transform:translateY(-2px); box-shadow:0 10px 28px rgba(217,70,239,.18);
   }
   .incluye-list .paso:hover .n{ color:var(--lavender); }
   .incluye-list .paso:hover h3{ color:#fff; }
@@ -244,6 +246,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   .actitud{ position:relative; color:var(--text-light); text-align:center; }
   .actitud .wrap{ position:relative; z-index:2; }
   .actitud h2{ font-size:1.6rem; max-width:640px; margin:0 auto; font-style:italic; font-weight:500; }
+  .actitud h2 strong{ font-weight:700; }
   @media(min-width:768px){ .actitud h2{ font-size:2.3rem; } }
 
   .rango{ position:relative; color:var(--text-light); background:var(--bg-dark); text-align:center; }
@@ -259,7 +262,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   /* La tarjeta es un recuadro fijo: la foto vive detrás, la info se disuelve encima al dar clic */
   .tier-card{
     position:relative; background:var(--bg-dark-2); border-radius:var(--radius);
-    overflow:hidden; aspect-ratio:2/3; cursor:pointer;
+    overflow:hidden; aspect-ratio:4/5; cursor:pointer;
   }
   @media(min-width:768px){ .tier-card{ aspect-ratio:3/4.4; } }
 
@@ -326,7 +329,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   }
 
 
-  .portafolio{ background:#fff; }
+  .portafolio{ background:var(--bg-dark-2); }
 
   /* Carrusel de portafolio: deslizable con inercia (swipe/drag), tipo carrusel de Pinterest */
   .port-carousel-wrap{ margin-top:32px; }
@@ -359,10 +362,12 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   .sobre-mi{ background:var(--bg-light); }
   .sobre-mi .grid{ display:grid; gap:32px; align-items:center; }
   @media(min-width:768px){ .sobre-mi .grid{ grid-template-columns:280px 1fr; gap:56px; } }
-  .sobre-mi figure{ aspect-ratio:4/5; overflow:hidden; border-radius:var(--radius); max-width:280px; }
+  .sobre-mi figure{ aspect-ratio:4/5; overflow:hidden; border-radius:var(--radius); width:100%; max-width:340px; margin:0 auto 24px; }
+  @media(min-width:768px){ .sobre-mi figure{ max-width:280px; margin:0; } }
   .sobre-mi img{ width:100%; height:100%; object-fit:cover; }
   .sobre-mi h3{ margin-bottom:14px; font-size:1.15rem; }
   .sobre-mi p{ font-size:1.1rem; font-weight:300; }
+  .sobre-mi p + p{ margin-top:18px; }
   @media(max-width:767px){
     .sobre-mi .grid{ justify-items:center; text-align:center; }
     .sobre-mi figure{ margin:0 auto; }
@@ -478,7 +483,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   <img src="images/logo.png" alt="Monty Experience" class="logo-mark">
   <div class="hero-grid">
     <div class="hero-text">
-      <h1 class="reveal">¿Por qué sigues posando como modelo de champú si quieres ser <strong style="color:#a78bfa;">protagonista de serie</strong>?</h1>
+      <h1 class="reveal">¿Hasta cuándo va a seguir hablando por ti una foto que ya no dice quién eres?</h1>
       <p class="sub reveal">Los directores de casting ya no buscan perfección. Buscan <strong style="color:#a78bfa;">verdad</strong>.</p>
       <p class="prueba reveal"><span class="prueba-num">+80</span> actores retratados</p>
       <button type="button" class="btn reveal" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}' onclick="if(typeof fbq!=='undefined'){fbq('track','InitiateCheckout');}">AGENDAR MI CAFECITO CON MONTY</button>
@@ -527,7 +532,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         <span class="track-num">01</span>
         <div>
           <span class="track-tag">Book desactualizado</span>
-          <h3>Tu book ya existe. El problema es que <strong style="color:#a78bfa;">ya no existes en él</strong>.</h3>
+          <h3>Tu book se quedó donde tú ya no estás.</h3>
         </div>
         <span class="track-toggle" aria-hidden="true">+</span>
       </div>
@@ -538,8 +543,8 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
             <p>Cada casting al que mandas esas fotos, mandas también la versión de ti que ya dejaste atrás. Y eso, aunque no lo digas, <strong style="color:#a78bfa;">se nota antes que tu talento</strong>.</p>
           </div>
           <div class="sub-card">
-            <h4>Sigues posando como catálogo, <strong style="color:#a78bfa;">no como personaje</strong>.</h4>
-            <p>Una sonrisa correcta y una pose neutra no cuentan nada. Lo que un casting busca es <strong style="color:#a78bfa;">evidencia de quién puedes ser en pantalla</strong> — no una ficha técnica de tu rostro.</p>
+            <h4>Sigues actuando de maniquí en tus propias fotos.</h4>
+            <p>Una sonrisa correcta y una pose neutra no cuentan nada. Un casting busca <strong style="color:#a78bfa;">evidencia de quién puedes ser en pantalla</strong>.</p>
           </div>
           <div class="sub-card">
             <h4>No sabes ni por dónde empezar a actualizarlo.</h4>
@@ -562,7 +567,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         <div class="track-sub">
           <div class="sub-card">
             <h4>Sientes que ya se te pasó el momento.</h4>
-            <p>No es falta de tiempo ni de dinero — es <strong style="color:#a78bfa;">la vergüenza de admitir</strong> que, con toda tu experiencia, sigues sin una imagen que la respalde.</p>
+            <p>Cargas años de experiencia sin una imagen que los sostenga — y <strong style="color:#a78bfa;">esa vergüenza pesa más</strong> que cualquier falta de tiempo o dinero.</p>
           </div>
           <div class="sub-card">
             <h4>No sabes ni qué mostrar.</h4>
@@ -591,8 +596,8 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       </div>
       <div class="duo-card foto-vertical">
         <figure><img src="images/duo-entrega-2.jpg" alt="Mosaico de retratos de actores con grano morado — galería curada Monty Experience"></figure>
-        <h3>Un mapa de posibilidades, no un catálogo.</h3>
-        <p>Cada actor sale con un resultado <strong style="color:#8b5cf6;">hecho a su medida</strong>, no una fórmula clonada de estudio en estudio.</p>
+        <h3>Un mapa de posibilidades, dibujado solo para ti.</h3>
+        <p>Cada actor sale con un resultado pensado desde su propia historia, <strong style="color:#8b5cf6;">hecho a su medida</strong>.</p>
       </div>
     </div>
   </div>
@@ -604,30 +609,34 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   <div class="incluye-list stagger">
     <div class="paso">
       <span class="n">01</span>
-      <div><h3>Junta de pre-sesión</h3><p>El café previo donde afinamos tu experiencia a tu medida.</p></div>
+      <div><h3>Cafecito y decisiones</h3><p>Nos conocemos, platicamos tu momento actual como actor, y decidimos juntos cuál es la experiencia que mejor se ajusta a ti.</p></div>
     </div>
     <div class="paso">
       <span class="n">02</span>
-      <div><h3>Sesión</h3><p>Dirección técnica y conceptual el día de la sesión.</p></div>
+      <div><h3>Junta de pre-sesión</h3><p>Antes de la sesión, hablamos de tu historia, tu tipo actoral y hacia dónde quieres apuntar — y armamos el moodboard que va a guiar toda la experiencia.</p></div>
     </div>
     <div class="paso">
       <span class="n">03</span>
-      <div><h3>Selección curada</h3><p>De cientos de tomas, curamos las mejores para ayudarte a elegir; tú decides las definitivas.</p></div>
+      <div><h3>Sesión</h3><p>Dirección técnica y conceptual el día de la sesión, con looks y escenas pensadas para mostrar tu rango real.</p></div>
     </div>
     <div class="paso">
       <span class="n">04</span>
-      <div><h3>Entrega en galería privada</h3><p>Optimizada para redes sociales y plataformas de casting.</p></div>
+      <div><h3>Selección curada</h3><p>De cientos de tomas, curamos las mejores para ayudarte a elegir; tú decides las definitivas, viéndote en pantalla grande.</p></div>
     </div>
     <div class="paso">
       <span class="n">05</span>
-      <div><h3>Acompañamiento post-sesión</h3><p>con Asesoría METASTAR: hacia dónde apuntar tu carrera.</p></div>
+      <div><h3>Entrega en galería privada</h3><p>Tus fotos llegan optimizadas para cada plataforma — listas para subir a redes o mandar a un casting sin que pierdan calidad.</p></div>
+    </div>
+    <div class="paso">
+      <span class="n">06</span>
+      <div><h3>Acompañamiento post-sesión</h3><p>Con Asesoría METASTAR, hecha a la medida de tu momento: la respuesta a "ya tengo mi book… ¿ahora qué chingados hago?"</p></div>
     </div>
   </div>
 </section>
 
 <section class="section actitud grain-bg" id="actitud">
   <div class="wrap">
-    <h2 class="reveal">¿Cuánto tiempo más vas a dejar que un book viejo decida por ti quién eres?</h2>
+    <h2 class="reveal">Un mes se convierte en seis.<br>Seis se convierten en dos años.<br><strong>¿Qué va a pasar cuando lleguen los tres?</strong></h2>
   </div>
 </section>
 
@@ -650,8 +659,6 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   </div>
   <div class="wrap port-carousel-wrap">
     <div class="port-carousel stagger" id="portCarousel">
-      <figure><img src="images/portafolio-1.jpg" alt="Retrato casual y espontáneo de actriz para book actoral, fondo claro de estudio" loading="lazy"></figure>
-      <figure><img src="images/portafolio-10.jpg" alt="Retrato editorial de actriz para book actoral, fondo naranja de estudio" loading="lazy"></figure>
       <figure><img src="images/portafolio-2.jpg" alt="Retrato sobrio y directo de actor para casting corporativo" loading="lazy"></figure>
       <figure><img src="images/portafolio-11.jpg" alt="Retrato editorial de actriz para personal branding, fondo turquesa de estudio" loading="lazy"></figure>
       <figure><img src="images/portafolio-3.jpg" alt="Retrato editorial dramático de actriz para personal branding, perfil con tatuaje" loading="lazy"></figure>
@@ -678,7 +685,9 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     <div>
       <span class="eyebrow">Sobre mí</span>
       <h3><span style="color:#8b5cf6;">Monty de Sant</span> — Fotógrafo de Actores y Director Creativo</h3>
-      <p>Conozco el lenguaje de los actores. He acompañado a decenas de artistas a recuperar su dirección profesional. <strong style="color:#8b5cf6;">Sé lo que se siente mirar tus fotos y no reconocerte</strong> — por eso construí <strong style="color:#8b5cf6;">un proceso completo, no solo una sesión</strong>.</p>
+      <p>Dirigiendo actores en cine, noté que a muchos les faltaba algo que ningún director les enseña: <strong style="color:#8b5cf6;">cómo mostrarse con claridad, más allá del personaje</strong>. De esa observación nació <span style="color:#8b5cf6;">Monty Experience</span>, y desde entonces he acompañado a decenas de artistas a recuperar su dirección profesional.</p>
+      <p><strong style="color:#8b5cf6;">Sé lo que se siente mirar tus fotos y no reconocerte.</strong></p>
+      <p>Por eso construí <strong style="color:#8b5cf6;">un proceso completo</strong>: desde la primera conversación hasta la estrategia para saber qué hacer con lo que creamos juntos.</p>
     </div>
   </div>
 </section>
@@ -740,7 +749,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   <div class="faq-list stagger">
     <div class="faq-item">
       <button type="button" class="faq-trigger">¿Cuánto dura la sesión? <span class="faq-toggle">+</span></button>
-      <div class="faq-panel"><div class="faq-panel-inner"><p>Entre 2 y 5 horas, según el paquete. Pero el tiempo real es el que tardas en <strong style="color:#a78bfa;">dejar de posar y empezar a habitar la foto</strong> — eso no lo mide el reloj.</p></div></div>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>Entre 2 y 5 horas, según el paquete. La mayoría se relaja a la primera hora, y ahí es cuando empieza lo bueno.</p></div></div>
     </div>
     <div class="faq-item">
       <button type="button" class="faq-trigger">¿Puedo llevar varios looks/outfits? <span class="faq-toggle">+</span></button>
@@ -748,7 +757,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     </div>
     <div class="faq-item">
       <button type="button" class="faq-trigger">¿Qué pasa si no me gustan las fotos? <span class="faq-toggle">+</span></button>
-      <div class="faq-panel"><div class="faq-panel-inner"><p>No llegas a ese susto: te ves en pantalla mientras disparamos. Si algo no es tuyo, lo cambiamos ahí, en caliente. A la selección llegas ya sabiendo que <strong style="color:#a78bfa;">sí eres tú</strong>.</p></div></div>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>No llegas a ese susto: te ves en pantalla mientras tomamos las fotos. Si algo no es tuyo, lo cambiamos ahí, en caliente. A la selección llegas ya sabiendo que <strong style="color:#a78bfa;">sí eres tú</strong>.</p></div></div>
     </div>
     <div class="faq-item">
       <button type="button" class="faq-trigger">¿La asesoría METASTAR va incluida o es aparte? <span class="faq-toggle">+</span></button>
