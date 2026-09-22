@@ -26,7 +26,6 @@ const crypto = require('crypto');
 const RESEND_FROM = 'Monty Experience <equipo@montyexperience.com>';
 const MONTY_CC = 'lm.productionsfm@gmail.com';
 const SHEET_TAB = 'Actores';
-const SHEET_RANGE = `${SHEET_TAB}!B:AV`;
 
 exports.handler = async (event) => {
   let data = {};
@@ -169,6 +168,15 @@ async function appendToSheet(data) {
   const creds = JSON.parse(credsRaw);
   const accessToken = await getGoogleAccessToken(creds);
 
+  // La API de Sheets, al usar :append con un rango abierto como "B:AV", en la
+  // práctica sigue escribiendo desde la columna A (ignora dónde empieza el
+  // rango para decidir la columna de escritura, aunque sí lo usa para detectar
+  // la tabla) — confirmado en vivo, causó que los datos cayeran una columna
+  // corridos. Para no depender de ese comportamiento, aquí se pregunta primero
+  // cuántas filas ya tienen algo en la columna B (Nombre completo) y se escribe
+  // directo en la siguiente fila libre, con un rango explícito (B{fila}:AV{fila}).
+  const targetRow = await findNextEmptyRow(sheetId, accessToken);
+
   const contactoActor = [data.contacto_actor, data.email].filter(Boolean).join(' / ');
 
   // Orden exacto de columnas del Google Sheet "actores_monty_experience", pestaña
@@ -226,23 +234,14 @@ async function appendToSheet(data) {
     '', // AV  Notas internas (interno)
   ];
 
-  // Por qué el rango empieza en B y no en A, y por qué OVERWRITE y no INSERT_ROWS:
-  // la hoja ya trae, desde antes, la columna A (ID) pre-numerada a mano (1, 2, 3…)
-  // en varias filas por adelantado, aunque el resto de esas filas (B en adelante)
-  // esté vacío. Si el rango de detección incluye la columna A, la API de Sheets
-  // considera esas filas "ocupadas" (por el número de ID) y agrega la fila nueva
-  // hasta después de la última, muy abajo y fuera del área con formato — aunque
-  // en las columnas correctas. Al anclar la detección solo en B:AV (que sí está
-  // realmente vacío en esas filas), la API encuentra la primera fila libre de
-  // verdad. Y usando OVERWRITE en vez de INSERT_ROWS, se llena esa fila existente
-  // en su lugar (con su ID y formato ya puestos) en vez de insertar una fila nueva
-  // que recorriera hacia abajo la numeración y el formato de todo lo que sigue.
+  // Escritura directa a la fila y columnas exactas — nada de detección automática.
+  const range = `${SHEET_TAB}!B${targetRow}:AV${targetRow}`;
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(
-    SHEET_RANGE
-  )}:append?valueInputOption=USER_ENTERED&insertDataOption=OVERWRITE`;
+    range
+  )}?valueInputOption=USER_ENTERED`;
 
   const res = await fetch(url, {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
@@ -253,6 +252,30 @@ async function appendToSheet(data) {
   if (!res.ok) {
     throw new Error(`Sheets API respondió ${res.status}: ${await res.text()}`);
   }
+}
+
+// Cuenta cuántas filas ya tienen algo en la columna B (Nombre completo, de
+// arriba hacia abajo sin huecos) y regresa el número de la siguiente fila
+// libre. La API de Sheets, al leer una columna abierta como "B:B", solo
+// regresa hasta la última fila con contenido real — así que el largo de esa
+// lista + 1 es exactamente la primera fila vacía de verdad.
+async function findNextEmptyRow(sheetId, accessToken) {
+  const range = `${SHEET_TAB}!B:B`;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(
+    range
+  )}`;
+
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+
+  if (!res.ok) {
+    throw new Error(`No se pudo leer la columna B del Sheet: ${res.status} ${await res.text()}`);
+  }
+
+  const json = await res.json();
+  const filas = json.values || [];
+  return filas.length + 1;
 }
 
 // Firma un JWT con la cuenta de servicio y lo cambia por un access token OAuth2.
