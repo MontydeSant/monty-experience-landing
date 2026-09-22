@@ -254,13 +254,14 @@ async function appendToSheet(data) {
   }
 }
 
-// Cuenta cuántas filas ya tienen algo en la columna B (Nombre completo, de
-// arriba hacia abajo sin huecos) y regresa el número de la siguiente fila
-// libre. La API de Sheets, al leer una columna abierta como "B:B", solo
-// regresa hasta la última fila con contenido real — así que el largo de esa
-// lista + 1 es exactamente la primera fila vacía de verdad.
+// La hoja ya trae, de antemano, muchas filas con el ID puesto a mano (1, 2, 3…)
+// pero sin nombre — son las "líneas" preparadas para ir llenando. Esta función
+// busca la PRIMERA de esas líneas que todavía no tiene nombre en la columna B
+// (no solo la última fila usada), para llenar los huecos en orden en vez de
+// seguir amontonando todo hasta el fondo. Si ya no queda ninguna línea
+// preparada libre, sigue agregando justo después de la última fila usada.
 async function findNextEmptyRow(sheetId, accessToken) {
-  const range = `${SHEET_TAB}!B:B`;
+  const range = `${SHEET_TAB}!A:B`;
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(
     range
   )}`;
@@ -270,11 +271,24 @@ async function findNextEmptyRow(sheetId, accessToken) {
   });
 
   if (!res.ok) {
-    throw new Error(`No se pudo leer la columna B del Sheet: ${res.status} ${await res.text()}`);
+    throw new Error(`No se pudo leer las columnas A:B del Sheet: ${res.status} ${await res.text()}`);
   }
 
   const json = await res.json();
   const filas = json.values || [];
+
+  for (let i = 0; i < filas.length; i++) {
+    const fila = filas[i] || [];
+    const colA = (fila[0] || '').toString().trim();
+    const colB = (fila[1] || '').toString().trim();
+    const esEtiqueta = colA.toLowerCase() === 'id' || colA.toLowerCase() === 'ejemplo';
+    if (colA && !esEtiqueta && !colB) {
+      return i + 1; // fila 1-based con ID puesto pero nombre vacío
+    }
+  }
+
+  // No quedan líneas pre-numeradas libres: se agrega después de la última
+  // fila con datos (en A o B) que exista hasta ahora.
   return filas.length + 1;
 }
 
