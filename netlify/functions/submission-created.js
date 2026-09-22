@@ -84,7 +84,7 @@ async function sendWelcomeEmail(data) {
       from: RESEND_FROM,
       to: [actorEmail],
       cc: [MONTY_CC],
-      subject: `${nombre}, tu perfil ya está en Monty Experience`,
+      subject: `${nombre}, ya eres parte del directorio de casting`,
       html: buildEmailHtml(nombre),
     }),
   });
@@ -94,22 +94,35 @@ async function sendWelcomeEmail(data) {
   }
 }
 
+// Link real del botón "AGENDAR MI CAFECITO CON MONTY" de la landing (Cal.com,
+// data-cal-link="montydesant/30min") — mismo destino que el CTA principal del sitio.
+const CAL_LINK = 'https://cal.com/montydesant/30min';
+
 function buildEmailHtml(nombre) {
   return `<!doctype html>
 <html>
   <body style="margin:0;background:#0d0d0d;padding:40px 20px;font-family:Georgia,'Times New Roman',serif;">
     <div style="max-width:520px;margin:0 auto;background:#161616;border:1px solid #2a2a2a;border-radius:12px;padding:40px 32px;">
       <p style="color:#c9a7ff;letter-spacing:2px;font-size:12px;text-transform:uppercase;margin:0 0 24px;">Monty Experience</p>
-      <h1 style="color:#ffffff;font-size:24px;margin:0 0 20px;line-height:1.3;">Recibimos tu perfil, ${escapeHtml(nombre)}.</h1>
+      <h1 style="color:#ffffff;font-size:24px;margin:0 0 20px;line-height:1.3;">${escapeHtml(nombre)}, ya eres parte del directorio de casting.</h1>
       <p style="color:#d8d8d8;font-size:15px;line-height:1.7;margin:0 0 16px;">
-        Ya quedó registrado. A partir de aquí tu información empieza a formar parte del
-        directorio de actores con el que trabajamos casting y escuelas de cine.
+        Tu perfil quedó registrado. A partir de hoy formas parte del directorio con el que
+        trabajamos casting y escuelas de cine.
       </p>
       <p style="color:#d8d8d8;font-size:15px;line-height:1.7;margin:0 0 16px;">
-        Si tu siguiente paso es actualizar tu book y encontrar la dirección exacta para
-        volver a competir en el mercado, ahí es donde entra la Asesoría METASTAR.
+        Pero un perfil no diagnostica nada. Un cafecito sí.
       </p>
-      <p style="color:#8a8a8a;font-size:13px;line-height:1.6;margin:32px 0 0;">
+      <p style="color:#d8d8d8;font-size:15px;line-height:1.7;margin:0 0 16px;">
+        Quiero sentarme contigo — un café online, por Google Meet — para entender exactamente
+        dónde estás parado y cómo hacer que tu book te respalde en cada casting.
+      </p>
+      <p style="color:#d8d8d8;font-size:15px;line-height:1.7;margin:0 0 28px;">
+        Si te interesa, dale clic al link de aquí abajo.
+      </p>
+      <p style="margin:0 0 32px;text-align:center;">
+        <a href="${CAL_LINK}" style="display:inline-block;background:#7c5cbf;color:#ffffff;text-decoration:none;font-family:Georgia,'Times New Roman',serif;font-size:15px;padding:14px 28px;border-radius:8px;">Agendar mi cafecito con Monty →</a>
+      </p>
+      <p style="color:#8a8a8a;font-size:13px;line-height:1.6;margin:0;">
         — Equipo Monty Experience
       </p>
     </div>
