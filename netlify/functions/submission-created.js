@@ -26,7 +26,7 @@ const crypto = require('crypto');
 const RESEND_FROM = 'Monty Experience <equipo@montyexperience.com>';
 const MONTY_CC = 'lm.productionsfm@gmail.com';
 const SHEET_TAB = 'Actores';
-const SHEET_RANGE = `${SHEET_TAB}!A:AV`;
+const SHEET_RANGE = `${SHEET_TAB}!B:AV`;
 
 exports.handler = async (event) => {
   let data = {};
@@ -138,6 +138,22 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
+// Antes esta columna era una fórmula de Sheets; ahora, como el rango de detección
+// ya no incluye la columna A, se calcula aquí mismo y se manda como número — así
+// no hay riesgo de pisar ninguna fórmula existente en la hoja.
+function computeEdadActual(fechaNacimiento) {
+  if (!fechaNacimiento) return '';
+  const fecha = new Date(fechaNacimiento);
+  if (isNaN(fecha.getTime())) return '';
+  const hoy = new Date();
+  let edad = hoy.getFullYear() - fecha.getFullYear();
+  const mesDiff = hoy.getMonth() - fecha.getMonth();
+  if (mesDiff < 0 || (mesDiff === 0 && hoy.getDate() < fecha.getDate())) {
+    edad -= 1;
+  }
+  return edad;
+}
+
 // ---------------------------------------------------------------------------
 // Fila nueva en Google Sheets
 // ---------------------------------------------------------------------------
@@ -156,15 +172,15 @@ async function appendToSheet(data) {
   const contactoActor = [data.contacto_actor, data.email].filter(Boolean).join(' / ');
 
   // Orden exacto de columnas del Google Sheet "actores_monty_experience", pestaña
-  // "Actores" (A → AV, 48 columnas). Las columnas internas (Notas de casting,
-  // Fecha de sesión, Paquete, METASTAR, Notas internas) y las que Monty llena
-  // después a mano (ID, Edad actual —fórmula—, Link al book) se dejan en blanco.
+  // "Actores" (B → AV, 47 columnas — la columna A "ID" se deja fuera a propósito,
+  // ver nota abajo). Las columnas internas (Notas de casting, Fecha de sesión,
+  // Paquete, METASTAR, Notas internas) y la que Monty llena después a mano
+  // (Link al book) se dejan en blanco.
   const row = [
-    '', // A   ID
     data.nombre_completo || '', // B
     data.nombre_artistico || '', // C
     data.fecha_nacimiento || '', // D
-    '', // E   Edad actual (fórmula)
+    computeEdadActual(data.fecha_nacimiento), // E   Edad actual (calculada aquí mismo)
     data.rango_edad || '', // F
     data.genero_tipo || '', // G
     data.ciudad || '', // H
@@ -210,9 +226,20 @@ async function appendToSheet(data) {
     '', // AV  Notas internas (interno)
   ];
 
+  // Por qué el rango empieza en B y no en A, y por qué OVERWRITE y no INSERT_ROWS:
+  // la hoja ya trae, desde antes, la columna A (ID) pre-numerada a mano (1, 2, 3…)
+  // en varias filas por adelantado, aunque el resto de esas filas (B en adelante)
+  // esté vacío. Si el rango de detección incluye la columna A, la API de Sheets
+  // considera esas filas "ocupadas" (por el número de ID) y agrega la fila nueva
+  // hasta después de la última, muy abajo y fuera del área con formato — aunque
+  // en las columnas correctas. Al anclar la detección solo en B:AV (que sí está
+  // realmente vacío en esas filas), la API encuentra la primera fila libre de
+  // verdad. Y usando OVERWRITE en vez de INSERT_ROWS, se llena esa fila existente
+  // en su lugar (con su ID y formato ya puestos) en vez de insertar una fila nueva
+  // que recorriera hacia abajo la numeración y el formato de todo lo que sigue.
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(
     SHEET_RANGE
-  )}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
+  )}:append?valueInputOption=USER_ENTERED&insertDataOption=OVERWRITE`;
 
   const res = await fetch(url, {
     method: 'POST',
