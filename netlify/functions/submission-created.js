@@ -26,7 +26,7 @@ const crypto = require('crypto');
 const RESEND_FROM = 'Monty Experience <equipo@montyexperience.com>';
 const MONTY_CC = 'lm.productionsfm@gmail.com';
 const SHEET_TAB = 'Actores';
-const SHEET_RANGE = `${SHEET_TAB}!A1:AV1`;
+const SHEET_RANGE = `${SHEET_TAB}!A:AV`;
 
 exports.handler = async (event) => {
   let data = {};
