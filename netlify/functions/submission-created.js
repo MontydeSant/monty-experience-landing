@@ -93,9 +93,11 @@ async function sendWelcomeEmail(data) {
   }
 }
 
-// Link real del botón "AGENDAR MI CAFECITO CON MONTY" de la landing (Cal.com,
-// data-cal-link="montydesant/30min") — mismo destino que el CTA principal del sitio.
-const CAL_LINK = 'https://cal.com/montydesant/30min';
+// A propósito NO es el link directo de Cal.com: manda a la landing principal
+// para que quien reciba el correo (o alguien a quien se lo reenvíe, o a quien
+// no le termine quedando la sesión) primero vea de qué se trata Monty
+// Experience — ahí mismo está el botón de agendar cafecito, en el hero.
+const CAL_LINK = 'https://montyexperience.com';
 
 function buildEmailHtml(nombre) {
   return `<!doctype html>
