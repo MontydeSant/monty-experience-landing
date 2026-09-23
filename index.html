@@ -485,7 +485,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     .claqueta-overlay.show{ opacity:1; }
     .claqueta-overlay.hide{ opacity:0; }
     .claqueta-board{ position:relative; width:min(80vw, 340px); transform:scale(.3); opacity:0; }
-    .claqueta-board.playing{ animation:claqueta-pop .45s cubic-bezier(.34,1.56,.64,1) forwards; }
+    .claqueta-board.playing{ animation:claqueta-pop .32s cubic-bezier(.34,1.56,.64,1) forwards; }
     @keyframes claqueta-pop{
       0%{ transform:scale(.3); opacity:0; }
       60%{ transform:scale(1.1); opacity:1; }
@@ -496,7 +496,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     .claqueta-body-stripe{ position:absolute; left:0; top:0; width:100%; height:38px; background:repeating-linear-gradient(135deg, #fff 0 22px, var(--accent) 22px 44px); z-index:0; }
     /* El brazo cuelga de una bisagra fija en la esquina superior derecha del cuerpo: abierto de entrada, cierra de golpe */
     .claqueta-arm{ position:absolute; left:0; top:0; width:100%; height:38px; transform-origin:0% 100%; transform:rotate(-26deg); z-index:2; }
-    .claqueta-board.playing .claqueta-arm{ animation:claqueta-clap .38s cubic-bezier(.36,0,.66,1) forwards; animation-delay:.9s; }
+    .claqueta-board.playing .claqueta-arm{ animation:claqueta-clap .3s cubic-bezier(.36,0,.66,1) forwards; animation-delay:.55s; }
     @keyframes claqueta-clap{
       0%{ transform:rotate(-26deg); }
       70%{ transform:rotate(4deg); }
@@ -506,7 +506,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     .claqueta-stripes{ width:100%; height:100%; border-radius:8px 8px 2px 2px; background:repeating-linear-gradient(135deg, #fff 0 22px, var(--accent) 22px 44px); box-shadow:0 8px 22px rgba(0,0,0,.55); }
     .claqueta-hinge{ position:absolute; left:12px; bottom:5px; width:12px; height:12px; border-radius:50%; background:var(--bg-dark); border:2px solid #fff; z-index:3; }
     .claqueta-flash{ position:absolute; inset:0; background:#fff; opacity:0; mix-blend-mode:screen; pointer-events:none; z-index:3; }
-    .claqueta-board.playing .claqueta-flash{ animation:claqueta-flash .3s ease-out forwards; animation-delay:.9s; }
+    .claqueta-board.playing .claqueta-flash{ animation:claqueta-flash .3s ease-out forwards; animation-delay:.55s; }
     @keyframes claqueta-flash{
       0%{ opacity:0; }
       35%{ opacity:.4; }
@@ -1206,9 +1206,9 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     var board = document.getElementById('claquetaBoard');
     if(!overlay || !board) return;
 
-    var HOLD_MS = 2200;   // tiempo visible antes de empezar a desvanecer
-    var FADE_MS = 300;    // duración del desvanecido
-    var CLAP_DELAY_S = 0.9; // debe coincidir con animation-delay del golpe en CSS
+    var HOLD_MS = 1100;   // tiempo visible antes de empezar a desvanecer
+    var FADE_MS = 220;    // duración del desvanecido
+    var CLAP_DELAY_S = 0.55; // debe coincidir con animation-delay del golpe en CSS
     var playing = false;
     var audioCtx = null;
 
