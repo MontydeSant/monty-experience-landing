@@ -1292,6 +1292,11 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         var calLink = calBtn.getAttribute('data-cal-link');
         var calConfig = {};
         try{ calConfig = JSON.parse(calBtn.getAttribute('data-cal-config') || '{}'); }catch(err){}
+        // Precarga el modal de Cal.com en paralelo a la claqueta, para que cuando
+        // la animación termine el calendario ya esté listo (sin tiempo de carga extra)
+        if(typeof Cal === 'function'){
+          try{ Cal('preload', { calLink: calLink, type: 'modal' }); }catch(err){}
+        }
         playClaqueta(function(){
           if(typeof Cal === 'function'){
             Cal('modal', { calLink: calLink, config: calConfig });
