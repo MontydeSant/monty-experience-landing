@@ -17,22 +17,25 @@
 
 <link rel="icon" type="image/png" href="images/logo.png">
 <link rel="apple-touch-icon" href="images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <style>
   :root{
-    --bg:#08030d;
-    --card:#11071f;
-    --card2:#120722;
-    --border:#2b1145;
-    --border-strong:#3d1761;
-    --accent:#d946ef;
-    --accent2:#c084fc;
-    --accent3:#a855f7;
+    --bg:#1c0e2c;
+    --card:#241433;
+    --card2:#2a1638;
+    --border:#3a2152;
+    --border-strong:#4d2a68;
+    --accent:#F68318;
+    --accent2:#FDC005;
+    --accent3:#f6a623;
     --text:#cbd5e1;
     --text-strong:#ffffff;
     --muted:#94a3b8;
-    --footer:#9d68b8;
+    --footer:#d9a05c;
     --danger:#ef4444;
     padding-top: calc(env(safe-area-inset-top, 0px));
     padding-bottom: calc(env(safe-area-inset-bottom, 0px));
@@ -49,7 +52,7 @@
     background-blend-mode: soft-light, normal;
     background-attachment: fixed, fixed;
     color:var(--text);
-    font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family:'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     line-height:1.55;
     -webkit-font-smoothing:antialiased;
   }
@@ -74,6 +77,7 @@
     margin:0 auto 6px auto;
   }
   .brand-sub{
+    font-family:'Courier Prime', monospace; 
     font-size:10.5px;
     letter-spacing:1.5px;
     color:var(--footer);
@@ -83,10 +87,11 @@
   }
 
   .badge-neon{
+    font-family:'Courier Prime', monospace; 
     display:inline-block;
-    background:rgba(217,70,239,.15);
+    background:rgba(246,131,24,.15);
     border:1.5px solid var(--accent);
-    color:#f5d0fe;
+    color:#ffd9a0;
     font-size:10.5px;
     font-weight:800;
     letter-spacing:1.6px;
@@ -97,6 +102,7 @@
   }
 
   h1.title{
+    font-family:'Special Elite', cursive; 
     font-size:23px;
     font-weight:800;
     color:var(--text-strong);
@@ -107,7 +113,7 @@
   }
   h1.title .neon{
     color:var(--accent);
-    text-shadow:0 0 16px rgba(217,70,239,.65);
+    text-shadow:0 0 16px rgba(246,131,24,.65);
   }
 
   p{ margin:0 0 12px; color:var(--text); font-size:14.5px; }
@@ -128,6 +134,15 @@
     border-bottom:1px solid var(--border-strong);
   }
 
+
+  @keyframes btnGlow{
+    0%, 100%{ box-shadow:0 0 0 rgba(246,131,24,0); }
+    50%{ box-shadow:0 0 26px 2px rgba(246,131,24,.55); }
+  }
+  @keyframes btnPulse{
+    0%, 100%{ transform:scale(1); }
+    50%{ transform:scale(1.035); }
+  }
   .cta-btn{
     display:inline-block;
     width:100%;
@@ -138,11 +153,11 @@
     font-size:15px;
     padding:14px 20px;
     border-radius:25px;
-    border:2px solid #f5d0fe;
-    box-shadow:0 0 20px rgba(217,70,239,.5);
+    border:2px solid #ffd9a0;
+    box-shadow:0 0 20px rgba(246,131,24,.5);
     letter-spacing:.4px;
     cursor:pointer;
-    font-family:inherit;
+    font-family:'Special Elite', cursive;
   }
   .cta-btn:disabled{ opacity:.55; cursor:default; box-shadow:none; }
   .cta-btn.ghost{
@@ -151,13 +166,12 @@
     border:2px solid var(--border-strong);
     color:var(--text);
   }
-  #ctaCV{ animation:cta-pulse 2.2s ease-in-out infinite; }
-  @keyframes cta-pulse{
-    0%, 100%{ transform:scale(1); box-shadow:0 0 20px rgba(217,70,239,.5); }
-    50%{ transform:scale(1.045); box-shadow:0 0 32px rgba(217,70,239,.85); }
+  .cta-btn:not(.ghost):not(:disabled){
+    animation: btnGlow 2.6s ease-in-out infinite, btnPulse 3.8s ease-in-out infinite;
   }
+  .cta-btn.ghost, .cta-btn:disabled{ animation:none; }
   @media (prefers-reduced-motion: reduce){
-    #ctaCV{ animation:none; }
+    .cta-btn{ animation:none !important; }
   }
 
   .btn-row{ display:flex; gap:10px; margin-top:20px; }
@@ -175,6 +189,7 @@
     z-index:5;
   }
   #progressLabel{
+    font-family:'Courier Prime', monospace; 
     font-size:10.5px;
     letter-spacing:1.5px;
     text-transform:uppercase;
@@ -194,7 +209,7 @@
   #progressFill{
     height:100%;
     background:linear-gradient(90deg, var(--accent3), var(--accent));
-    box-shadow:0 0 10px rgba(217,70,239,.7);
+    box-shadow:0 0 10px rgba(246,131,24,.7);
     border-radius:6px;
     transition:width .35s ease;
     width:0%;
@@ -214,6 +229,7 @@
   }
 
   h2.sec-title{
+    font-family:'Special Elite', cursive; 
     font-size:17px;
     font-weight:800;
     color:var(--text-strong);
@@ -233,7 +249,7 @@
     display:block;
     font-size:12.5px;
     font-weight:700;
-    color:#f5d0fe;
+    color:#ffd9a0;
     margin-bottom:6px;
     letter-spacing:.2px;
   }
@@ -253,7 +269,7 @@
   input:focus, textarea:focus, select:focus{
     outline:none;
     border-color:var(--accent);
-    box-shadow:0 0 0 3px rgba(217,70,239,.18);
+    box-shadow:0 0 0 3px rgba(246,131,24,.18);
   }
   textarea{ min-height:64px; resize:vertical; }
   .field.invalid input, .field.invalid select, .field.invalid textarea{
@@ -280,7 +296,7 @@
   .hp{ position:absolute; left:-9999px; opacity:0; }
 
   .hint-note{
-    background:rgba(217,70,239,.08);
+    background:rgba(246,131,24,.08);
     border:1.5px dashed var(--accent3);
     border-radius:8px;
     padding:10px 13px;
@@ -289,12 +305,12 @@
     color:#e9d5ff;
     line-height:1.5;
   }
-  .hint-note b{ color:#f5d0fe; }
+  .hint-note b{ color:#ffd9a0; }
 
   .closing-card{
-    background:linear-gradient(180deg, #18092c 0%, #0d0417 100%);
+    background:linear-gradient(180deg, #2e1839 0%, #170a22 100%);
     border:2px solid var(--accent2);
-    box-shadow:0 0 24px rgba(192,132,252,.25);
+    box-shadow:0 0 24px rgba(253,192,5,.25);
     border-radius:14px;
     padding:26px 22px;
     text-align:center;
@@ -309,6 +325,8 @@
   }
   footer.brandfoot .fm{ color:var(--accent); font-weight:800; font-size:12px; letter-spacing:.5px; }
   footer.brandfoot .fs{ color:var(--muted); font-size:11.5px; }
+  footer.brandfoot .fp{ margin-top:6px; }
+  footer.brandfoot .fp a{ color:var(--muted); font-size:11px; text-decoration:underline; }
 
   #sendError{
     display:none;
@@ -329,9 +347,9 @@
   }
   #confirmOverlay[hidden]{ display:none; }
   .confirm-card{
-    background:linear-gradient(180deg, #18092c 0%, #0d0417 100%);
+    background:linear-gradient(180deg, #2e1839 0%, #170a22 100%);
     border:2px solid var(--accent2);
-    box-shadow:0 0 30px rgba(192,132,252,.35);
+    box-shadow:0 0 30px rgba(253,192,5,.35);
     border-radius:14px;
     padding:26px 22px;
     text-align:center;
@@ -339,6 +357,7 @@
     width:100%;
   }
   .confirm-card .confirm-label{
+    font-family:'Courier Prime', monospace; 
     display:block; font-size:11px; font-weight:800; color:var(--danger);
     letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px;
   }
@@ -387,37 +406,36 @@
       <p class="sec-hint">Lo básico para identificarte y saber para qué tipo de proyecto encajas.</p>
 
       <div class="field" data-required="1">
-        <label>Nombre completo<span class="req">*</span></label>
-        <input type="text" name="nombre_completo" autocomplete="name">
+        <label for="f_nombre_completo">Nombre completo<span class="req">*</span></label>
+        <input id="f_nombre_completo" type="text" name="nombre_completo" autocomplete="name">
         <div class="err">Falta tu nombre completo.</div>
       </div>
       <div class="field">
-        <label>Nombre artístico (si usas uno distinto)</label>
-        <input type="text" name="nombre_artistico">
+        <label for="f_nombre_artistico">Nombre artístico (si usas uno distinto)</label>
+        <input id="f_nombre_artistico" type="text" name="nombre_artistico">
+      </div>
+      <div class="field">
+        <label for="f_fecha_nacimiento">Fecha de nacimiento <span style="font-weight:300;opacity:.65;">(opcional)</span></label>
+        <input id="f_fecha_nacimiento" type="date" name="fecha_nacimiento">
       </div>
       <div class="field" data-required="1">
-        <label>Fecha de nacimiento<span class="req">*</span></label>
-        <input type="date" name="fecha_nacimiento">
-        <div class="err">Falta tu fecha de nacimiento.</div>
-      </div>
-      <div class="field" data-required="1">
-        <label>Rango de edad que interpretas<span class="req">*</span></label>
-        <input type="text" name="rango_edad" placeholder="ej. 25–35">
+        <label for="f_rango_edad">Rango de edad que interpretas<span class="req">*</span></label>
+        <input id="f_rango_edad" type="text" name="rango_edad" placeholder="ej. 25–35">
         <div class="err">Cuéntanos qué rango interpretas.</div>
       </div>
       <div class="field" data-required="1">
-        <label>Género / tipo actoral<span class="req">*</span></label>
-        <input type="text" name="genero_tipo" placeholder="ej. Femenino · dramática-comedia">
+        <label for="f_genero_tipo">Género / tipo actoral<span class="req">*</span></label>
+        <input id="f_genero_tipo" type="text" name="genero_tipo" placeholder="ej. Femenino · dramática-comedia">
         <div class="err">Falta este dato.</div>
       </div>
       <div class="field" data-required="1">
-        <label>Ciudad de residencia<span class="req">*</span></label>
-        <input type="text" name="ciudad">
+        <label for="f_ciudad">Ciudad de residencia<span class="req">*</span></label>
+        <input id="f_ciudad" type="text" name="ciudad">
         <div class="err">Falta tu ciudad.</div>
       </div>
       <div class="field" data-required="1">
-        <label>¿Te puedes mover o viajar para un proyecto?<span class="req">*</span></label>
-        <select name="viaja">
+        <label for="f_viaja">¿Te puedes mover o viajar para un proyecto?<span class="req">*</span></label>
+        <select id="f_viaja" name="viaja">
           <option value="">Selecciona…</option>
           <option>Sí</option>
           <option>No</option>
@@ -426,8 +444,8 @@
         <div class="err">Selecciona una opción.</div>
       </div>
       <div class="field">
-        <label>Nacionalidad(es)</label>
-        <input type="text" name="nacionalidad">
+        <label for="f_nacionalidad">Nacionalidad(es)</label>
+        <input id="f_nacionalidad" type="text" name="nacionalidad">
       </div>
     </section>
 
@@ -437,29 +455,29 @@
       <p class="sec-hint">Lo que un casting necesita para saber si encajas en un personaje antes de verte en persona.</p>
 
       <div class="field" data-required="1">
-        <label>Estatura en cm<span class="req">*</span></label>
-        <input type="number" name="estatura_cm" inputmode="numeric">
+        <label for="f_estatura_cm">Estatura en cm<span class="req">*</span></label>
+        <input id="f_estatura_cm" type="number" name="estatura_cm" inputmode="numeric">
         <div class="err">Falta tu estatura.</div>
       </div>
       <div class="field">
-        <label>Complexión / tipo de cuerpo</label>
-        <input type="text" name="complexion">
+        <label for="f_complexion">Complexión / tipo de cuerpo</label>
+        <input id="f_complexion" type="text" name="complexion">
       </div>
       <div class="field">
-        <label>Color de cabello</label>
-        <input type="text" name="color_cabello">
+        <label for="f_color_cabello">Color de cabello</label>
+        <input id="f_color_cabello" type="text" name="color_cabello">
       </div>
       <div class="field">
-        <label>Color de ojos</label>
-        <input type="text" name="color_ojos">
+        <label for="f_color_ojos">Color de ojos</label>
+        <input id="f_color_ojos" type="text" name="color_ojos">
       </div>
       <div class="field">
-        <label>Tatuajes o perforaciones visibles</label>
-        <input type="text" name="tatuajes" placeholder="Sí / No — y dónde">
+        <label for="f_tatuajes">Tatuajes o perforaciones visibles</label>
+        <input id="f_tatuajes" type="text" name="tatuajes" placeholder="Sí / No — y dónde">
       </div>
       <div class="field">
-        <label>Rasgos distintivos</label>
-        <textarea name="rasgos_distintivos" placeholder="Cicatrices, lunares, algo que te haga reconocible en cámara…"></textarea>
+        <label for="f_rasgos_distintivos">Rasgos distintivos</label>
+        <textarea id="f_rasgos_distintivos" name="rasgos_distintivos" placeholder="Cicatrices, lunares, algo que te haga reconocible en cámara…"></textarea>
       </div>
     </section>
 
@@ -469,36 +487,36 @@
       <p class="sec-hint">Esto es lo que te puede meter a un casting que ni siquiera esperabas.</p>
 
       <div class="field">
-        <label>Idiomas y nivel</label>
-        <input type="text" name="idiomas" placeholder="ej. Español nativo, inglés C1">
+        <label for="f_idiomas">Idiomas y nivel</label>
+        <input id="f_idiomas" type="text" name="idiomas" placeholder="ej. Español nativo, inglés C1">
       </div>
       <div class="field">
-        <label>Acentos que dominas</label>
-        <input type="text" name="acentos">
+        <label for="f_acentos">Acentos que dominas</label>
+        <input id="f_acentos" type="text" name="acentos">
       </div>
       <div class="field">
-        <label>Canto</label>
-        <input type="text" name="canto" placeholder="Tipo de voz / nivel">
+        <label for="f_canto">Canto</label>
+        <input id="f_canto" type="text" name="canto" placeholder="Tipo de voz / nivel">
       </div>
       <div class="field">
-        <label>Baile</label>
-        <input type="text" name="baile" placeholder="Estilos">
+        <label for="f_baile">Baile</label>
+        <input id="f_baile" type="text" name="baile" placeholder="Estilos">
       </div>
       <div class="field">
-        <label>Deportes / artes marciales</label>
-        <input type="text" name="deportes">
+        <label for="f_deportes">Deportes / artes marciales</label>
+        <input id="f_deportes" type="text" name="deportes">
       </div>
       <div class="field">
-        <label>Manejo</label>
-        <input type="text" name="manejo" placeholder="Auto manual, moto, caballo, licencia…">
+        <label for="f_manejo">Manejo</label>
+        <input id="f_manejo" type="text" name="manejo" placeholder="Auto manual, moto, caballo, licencia…">
       </div>
       <div class="field">
-        <label>Instrumentos musicales</label>
-        <input type="text" name="instrumentos">
+        <label for="f_instrumentos">Instrumentos musicales</label>
+        <input id="f_instrumentos" type="text" name="instrumentos">
       </div>
       <div class="field">
-        <label>Otras habilidades especiales</label>
-        <textarea name="otras_habilidades" placeholder="Doblaje, improvisación, acrobacia…"></textarea>
+        <label for="f_otras_habilidades">Otras habilidades especiales</label>
+        <textarea id="f_otras_habilidades" name="otras_habilidades" placeholder="Doblaje, improvisación, acrobacia…"></textarea>
       </div>
     </section>
 
@@ -512,36 +530,36 @@
       </div>
 
       <div class="field">
-        <label>Formación actoral / escuela</label>
-        <input type="text" name="formacion">
+        <label for="f_formacion">Formación actoral / escuela</label>
+        <input id="f_formacion" type="text" name="formacion">
       </div>
       <div class="field">
-        <label>Coach o taller actual</label>
-        <input type="text" name="coach_taller">
+        <label for="f_coach_taller">Coach o taller actual</label>
+        <input id="f_coach_taller" type="text" name="coach_taller">
       </div>
       <div class="field">
-        <label>Años de experiencia</label>
-        <input type="number" name="anos_experiencia" inputmode="numeric">
+        <label for="f_anos_experiencia">Años de experiencia</label>
+        <input id="f_anos_experiencia" type="number" name="anos_experiencia" inputmode="numeric">
       </div>
       <div class="field">
-        <label>Créditos en cine</label>
-        <textarea name="creditos_cine" style="min-height:96px" placeholder="Ejemplo:&#10;1. &quot;Después del Silencio&quot; (2022), rol secundario&#10;2. &quot;Fin de Semana&quot; (2021), protagónico&#10;3. &quot;La Otra Orilla&quot; (2019), reparto"></textarea>
+        <label for="f_creditos_cine">Créditos en cine</label>
+        <textarea id="f_creditos_cine" name="creditos_cine" style="min-height:96px" placeholder="Ejemplo:&#10;1. &quot;Después del Silencio&quot; (2022), rol secundario&#10;2. &quot;Fin de Semana&quot; (2021), protagónico&#10;3. &quot;La Otra Orilla&quot; (2019), reparto"></textarea>
       </div>
       <div class="field">
-        <label>Créditos en TV</label>
-        <textarea name="creditos_tv" style="min-height:96px" placeholder="Ejemplo:&#10;1. &quot;Vecinos&quot; (2021), participación especial&#10;2. &quot;La Rosa de Guadalupe&quot; (2020), antagonista&#10;3. &quot;Serie Azul&quot; (2019), recurrente"></textarea>
+        <label for="f_creditos_tv">Créditos en TV</label>
+        <textarea id="f_creditos_tv" name="creditos_tv" style="min-height:96px" placeholder="Ejemplo:&#10;1. &quot;Vecinos&quot; (2021), participación especial&#10;2. &quot;La Rosa de Guadalupe&quot; (2020), antagonista&#10;3. &quot;Serie Azul&quot; (2019), recurrente"></textarea>
       </div>
       <div class="field">
-        <label>Créditos en teatro</label>
-        <textarea name="creditos_teatro" style="min-height:96px" placeholder="Ejemplo:&#10;1. &quot;La Casa de Bernarda Alba&quot; (2019)&#10;2. &quot;Bodas de Sangre&quot; (2018)&#10;3. &quot;Un Tranvía Llamado Deseo&quot; (2017)"></textarea>
+        <label for="f_creditos_teatro">Créditos en teatro</label>
+        <textarea id="f_creditos_teatro" name="creditos_teatro" style="min-height:96px" placeholder="Ejemplo:&#10;1. &quot;La Casa de Bernarda Alba&quot; (2019)&#10;2. &quot;Bodas de Sangre&quot; (2018)&#10;3. &quot;Un Tranvía Llamado Deseo&quot; (2017)"></textarea>
       </div>
       <div class="field">
-        <label>Comerciales / branded content</label>
-        <textarea name="comerciales" style="min-height:96px" placeholder="Ejemplo:&#10;1. Campaña Telcel (2023)&#10;2. Campaña Bimbo (2022)&#10;3. Campaña Liverpool (2021)"></textarea>
+        <label for="f_comerciales">Comerciales / branded content</label>
+        <textarea id="f_comerciales" name="comerciales" style="min-height:96px" placeholder="Ejemplo:&#10;1. Campaña Telcel (2023)&#10;2. Campaña Bimbo (2022)&#10;3. Campaña Liverpool (2021)"></textarea>
       </div>
       <div class="field">
-        <label>Tu proyecto más destacado</label>
-        <input type="text" name="proyecto_destacado">
+        <label for="f_proyecto_destacado">Tu proyecto más destacado</label>
+        <input id="f_proyecto_destacado" type="text" name="proyecto_destacado">
       </div>
     </section>
 
@@ -551,20 +569,20 @@
       <p class="sec-hint">Tu book de Monty Experience ya lo tenemos nosotros — esto es lo demás. Si no tienes alguno de estos, déjalo sin contestar.</p>
 
       <div class="field">
-        <label>Link a tu demo reel principal</label>
-        <input type="url" name="reel" placeholder="https://">
+        <label for="f_reel">Link a tu demo reel principal</label>
+        <input id="f_reel" type="url" name="reel" placeholder="https://">
       </div>
       <div class="field">
-        <label>Instagram</label>
-        <input type="text" name="instagram" placeholder="@tuusuario">
+        <label for="f_instagram">Instagram</label>
+        <input id="f_instagram" type="text" name="instagram" placeholder="@tuusuario">
       </div>
       <div class="field">
-        <label>IMDB</label>
-        <input type="text" name="imdb" placeholder="https://imdb.com/name/…">
+        <label for="f_imdb">IMDB</label>
+        <input id="f_imdb" type="text" name="imdb" placeholder="https://imdb.com/name/…">
       </div>
       <div class="field">
-        <label>Sitio web propio</label>
-        <input type="url" name="sitio_web" placeholder="https://">
+        <label for="f_sitio_web">Sitio web propio</label>
+        <input id="f_sitio_web" type="url" name="sitio_web" placeholder="https://">
       </div>
     </section>
 
@@ -574,33 +592,33 @@
       <p class="sec-hint">Para que sepan exactamente a quién y cómo contactar, y para ligar esta ficha a tu expediente con nosotros.</p>
 
       <div class="field">
-        <label>¿Tienes agencia o representante?</label>
-        <select name="tiene_agencia">
+        <label for="f_tiene_agencia">¿Tienes agencia o representante?</label>
+        <select id="f_tiene_agencia" name="tiene_agencia">
           <option value="">Selecciona…</option>
           <option>Sí</option>
           <option>No</option>
         </select>
       </div>
       <div class="field">
-        <label>Nombre del representante</label>
-        <input type="text" name="representante_nombre">
+        <label for="f_representante_nombre">Nombre del representante</label>
+        <input id="f_representante_nombre" type="text" name="representante_nombre">
       </div>
       <div class="field">
-        <label>Contacto del representante</label>
-        <input type="text" name="representante_contacto" placeholder="Tel. o email">
+        <label for="f_representante_contacto">Contacto del representante</label>
+        <input id="f_representante_contacto" type="text" name="representante_contacto" placeholder="Tel. o email">
       </div>
       <div class="field" data-required="1">
-        <label>Tu contacto directo<span class="req">*</span></label>
-        <input type="text" name="contacto_actor" placeholder="Tel. o email">
+        <label for="f_contacto_actor">Tu contacto directo<span class="req">*</span></label>
+        <input id="f_contacto_actor" type="text" name="contacto_actor" placeholder="Tel. o email">
         <div class="err">Déjanos un teléfono o correo directo.</div>
       </div>
       <div class="field">
-        <label>Sindicato / ANDA (número si aplica)</label>
-        <input type="text" name="sindicato">
+        <label for="f_sindicato">Sindicato / ANDA (número si aplica)</label>
+        <input id="f_sindicato" type="text" name="sindicato">
       </div>
       <div class="field" data-required="1">
-        <label>Tu disponibilidad ahora mismo<span class="req">*</span></label>
-        <select name="disponibilidad">
+        <label for="f_disponibilidad">Tu disponibilidad ahora mismo<span class="req">*</span></label>
+        <select id="f_disponibilidad" name="disponibilidad">
           <option value="">Selecciona…</option>
           <option>Buscando proyecto</option>
           <option>Ocupado</option>
@@ -609,8 +627,8 @@
         <div class="err">Selecciona una opción.</div>
       </div>
       <div class="field" data-required="1">
-        <label>Tu correo<span class="req">*</span></label>
-        <input type="email" name="email" autocomplete="email">
+        <label for="f_email">Tu correo<span class="req">*</span></label>
+        <input id="f_email" type="email" name="email" autocomplete="email">
         <div class="err">Necesitamos un correo para confirmar tu ficha.</div>
       </div>
 
@@ -635,6 +653,7 @@
     <div class="confirm-card">
       <span class="confirm-label">Antes de enviar</span>
       <p>Esta información se va a registrar en el directorio y no la vas a poder corregir después.<br>Revísala bien antes de continuar.</p>
+      <p style="font-size:12.5px;">Al confirmar, aceptas nuestro <a href="privacidad.html" target="_blank" rel="noopener">Aviso de Privacidad</a>.</p>
       <div class="btn-row">
         <button type="button" class="cta-btn ghost" id="confirmCancelBtn">Quiero revisarla</button>
         <button type="button" class="cta-btn" id="confirmSendBtn">Sí, enviar mi ficha</button>
@@ -662,6 +681,7 @@
   <footer class="brandfoot">
     <span class="fm">MONTY EXPERIENCE</span>
     <span class="fs"> · Directorio de actores</span>
+    <div class="fp"><a href="privacidad.html">Política de Privacidad</a></div>
   </footer>
 
 </div>
