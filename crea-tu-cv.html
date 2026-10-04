@@ -99,6 +99,7 @@
   .paper-card.p0{ transform:translateX(-50%) translateY(0) rotate(0deg); z-index:3; opacity:1; }
   .paper-card.p1{ transform:translateX(-50%) translateY(9px) rotate(-6deg); z-index:2; opacity:.92; }
   .paper-card.p2{ transform:translateX(-50%) translateY(16px) rotate(6deg); z-index:1; opacity:.8; }
+  .paper-card.solo{ position:static; left:auto; top:auto; width:100%; transform:none; rotate:none; opacity:1; z-index:auto; box-shadow:0 20px 50px rgba(0,0,0,.55); }
   .tpl-tag{
     font-family:'Courier Prime', monospace; position:absolute; top:7px; right:7px; z-index:5; background:rgba(0,0,0,.68); color:#ffd9a0; font-size:8.5px; font-weight:800; letter-spacing:1px; text-transform:uppercase; padding:3px 8px; border-radius:20px; pointer-events:none; }
   .stack-hint{ text-align:center; font-size:11.5px; color:var(--muted); margin:16px 0 12px; }
@@ -255,6 +256,48 @@
   [contenteditable="true"]:hover{ outline:1px dashed rgba(124,92,191,.45); outline-offset:2px; }
   [contenteditable="true"]:focus{ outline:1.5px solid #7c5cbf; outline-offset:2px; background:rgba(124,92,191,.06); }
 
+  /* ===== Pantalla de edición (editar directo sobre la plantilla elegida) ===== */
+  #editScreen{ max-width:640px; margin:0 auto; }
+  .edit-hint{ text-align:center; font-size:11.5px; color:var(--accent2); font-weight:700; margin:-6px 0 20px; }
+  .edit-stage{ position:relative; }
+  .edit-stage .paper-card{ cursor:default; }
+  .edit-actions{ display:flex; flex-direction:column; gap:10px; margin-top:24px; }
+  .edit-back-link{
+    display:block; text-align:center; background:transparent; border:none; color:var(--muted);
+    font-size:12.5px; font-family:'Courier Prime', monospace; text-decoration:underline; cursor:pointer; padding:4px;
+  }
+
+  /* ===== Modal de confirmación antes de generar el PDF ===== */
+  #cvConfirmOverlay{
+    position:fixed; inset:0; z-index:9999;
+    background:rgba(4,2,8,.8);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+  }
+  #cvConfirmOverlay[hidden]{ display:none; }
+  .cv-confirm-card{
+    background:linear-gradient(180deg, #2e1839 0%, #170a22 100%);
+    border:2px solid var(--accent2);
+    box-shadow:0 0 30px rgba(253,192,5,.35);
+    border-radius:14px; padding:26px 22px; text-align:center; max-width:380px; width:100%;
+  }
+  .cv-confirm-card .confirm-label{
+    font-family:'Courier Prime', monospace;
+    display:block; font-size:11px; font-weight:800; color:var(--danger);
+    letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px;
+  }
+  .cv-confirm-card p{ font-size:14.5px; line-height:1.6; color:var(--text); margin:0 0 20px; }
+  .cv-confirm-card .btn-row{ display:flex; flex-direction:column; gap:10px; margin-top:0; }
+  .cta-btn{
+    display:block; width:100%; font-family:'Special Elite', cursive; font-weight:800; font-size:13.5px;
+    letter-spacing:.3px; padding:13px 20px; border-radius:24px; cursor:pointer; text-align:center;
+    background:#fff; color:#241433; border:2px solid var(--accent2); box-shadow:0 8px 20px rgba(0,0,0,.3);
+  }
+  .cta-btn:active{ transform:translateY(1px); }
+  .cta-btn.ghost{
+    background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,.4); box-shadow:none;
+  }
+
 </style>
 
 <div class="wrap">
@@ -301,6 +344,9 @@
             <img class="photo cv-photo" alt="" style="display:none">
             <div class="avatar-fallback cv-avatar-fallback">AR</div>
           </div>
+
+          <div class="sec-bar" id="aPerfilBar">Semblanza</div>
+          <p class="skills-line" id="aPerfil" contenteditable="true" style="margin:0 0 14px;">Actriz de dramática-comedia radicada en Ciudad de México, con 8 años de experiencia en cine, TV y teatro. Bilingüe (español/inglés), con formación en canto y danza.</p>
 
           <div class="stats" id="aStats">
             <div class="stat-row"><em>Estatura</em><b>165 cm</b></div>
@@ -474,9 +520,36 @@
 
   </div>
 
+  <!-- PANTALLA DE EDICIÓN -- la misma plantilla elegida, en grande, editable directamente -->
+  <div id="editScreen" style="display:none;">
+    <h1 class="title">Edita tu <span class="neon">CV</span></h1>
+    <p class="lead">Así se va a ver tu CV. Toca cualquier texto para corregirlo antes de confirmar.</p>
+    <p class="edit-hint">✎ Toca el texto que quieras cambiar — se guarda solo</p>
+
+    <div class="edit-stage" id="editStage"></div>
+
+    <div class="edit-actions">
+      <button type="button" class="confirm-btn" id="editConfirmBtn">Confirmar y descargar</button>
+      <div class="confirm-msg" id="editConfirmMsg" style="display:none;"></div>
+      <button type="button" class="edit-back-link" id="editBackBtn">‹ Elegir otra plantilla</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIRMACIÓN ANTES DE GENERAR EL PDF -->
+  <div id="cvConfirmOverlay" hidden>
+    <div class="cv-confirm-card">
+      <span class="confirm-label">Antes de descargar</span>
+      <p>Tu CV se va a generar con esta información.<br>Revísala bien antes de continuar.</p>
+      <div class="btn-row">
+        <button type="button" class="cta-btn ghost" id="cvConfirmCancelBtn">Quiero revisarla de nuevo</button>
+        <button type="button" class="cta-btn" id="cvConfirmDownloadBtn">Sí, descargar mi CV</button>
+      </div>
+    </div>
+  </div>
+
   <div class="thanks-screen" id="thankYouScreen" style="display:none;">
     <div class="badge-neon">✓ Tu ficha está lista</div>
-    <h1 class="title">Ya tienes tu <span class="neon">CV</span>.<br>¿Ahora qué chingados hago?</h1>
+    <h1 class="title">Ya tienes tu <span class="neon">CV</span>.<br>¿Ahora qué hacemos?</h1>
 
     <div class="insight-card">
       <strong class="insight-lead">Tener la ficha no resuelve nada si no sabes por dónde moverla.</strong>
@@ -531,14 +604,51 @@
   // ejemplo "Ana Ruiz" tal como estaba. Todo el texto llenado así queda
   // editable (contenteditable) por si algo hay que corregir antes del PDF.
   // ---------------------------------------------------------------------
+  var DEFAULT_ACTOR_STATE = {
+    nombre_completo: "Ana Ruiz", nombre_artistico: "",
+    genero_tipo: "Femenino · Dramática y comedia",
+    contacto_actor: "55 1234 5678", instagram: "@anaruizactriz",
+    imdb: "imdb.com/name/ejemplo", reel: "vimeo.com/ejemplo-reel",
+    estatura_cm: "165", complexion: "Media", color_ojos: "Café", color_cabello: "Castaño oscuro",
+    nacionalidad: "Mexicana", rango_edad: "25-35", idiomas: "Español, inglés (C1)", canto: "Mezzosoprano",
+    ciudad: "Ciudad de México",
+    formacion: "CasAzul", coach_taller: "Sharon (EL LLAMADO)", anos_experiencia: "8",
+    creditos_cine: "1. \"Después del Silencio\" (2022), rol secundario\n2. \"Fin de Semana\" (2021), protagónico\n3. \"La Otra Orilla\" (2019), reparto",
+    creditos_tv: "1. \"Vecinos\" (2021), participación especial\n2. \"La Rosa de Guadalupe\" (2020), antagonista",
+    creditos_teatro: "1. \"La Casa de Bernarda Alba\" (2019)\n2. \"Bodas de Sangre\" (2018)\n3. \"Un Tranvía Llamado Deseo\" (2017)",
+    comerciales: "1. Telcel (2023)\n2. Bimbo (2022)\n3. Liverpool (2021)",
+    proyecto_destacado: "Selección oficial, Festival de Morelia — \"Después del Silencio\"",
+    acentos: "Neutro, norteño, yucateco", baile: "Jazz, contemporáneo", deportes: "Natación, box", manejo: "Auto manual",
+    semblanza: "Actriz de dramática-comedia radicada en Ciudad de México, con 8 años de experiencia en cine, TV y teatro. Bilingüe (español/inglés), con formación en canto y danza."
+  };
+
+  // ---------------------------------------------------------------------
+  // Autofill: si el actor acaba de llenar "Perfil Monty Experience", sus
+  // datos ya están en localStorage (mismo dominio) y los usamos para llenar
+  // los 3 templates de una vez, en vez de que los vuelva a escribir aquí.
+  // Si no hay datos (alguien entra directo a esta página), se usa el ejemplo
+  // "Ana Ruiz" -- pero ahora como un objeto de datos más, para que la
+  // pantalla de edición también tenga algo consistente que mostrar.
+  // Todo el texto llenado así queda editable (contenteditable) por si algo
+  // hay que corregir antes del PDF, y además hay una pantalla de edición
+  // completa antes de confirmar la descarga (ver más abajo).
+  // ---------------------------------------------------------------------
+  var actorState = DEFAULT_ACTOR_STATE;
   (function autofillFromPerfil(){
     var raw;
     try{ raw = localStorage.getItem("monty_perfil_handoff_v1"); }catch(e){ return; }
     if(!raw) return;
     var d;
     try{ d = JSON.parse(raw); }catch(e){ return; }
-    if(d && typeof d === "object") applyActorData(d);
+    if(d && typeof d === "object") actorState = d;
   })();
+  var previewBadgeEl = document.getElementById("previewBadge");
+  if(previewBadgeEl){
+    previewBadgeEl.textContent = (actorState === DEFAULT_ACTOR_STATE)
+      ? "Vista previa — con datos de ejemplo"
+      : "Con tu información — revisa y corrige lo que haga falta";
+  }
+  applyActorData(actorState);
 
   function esc(s){
     return String(s).replace(/[&<>]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c]; });
@@ -631,9 +741,6 @@
   }
 
   function applyActorData(d){
-    var badge = document.getElementById("previewBadge");
-    if(badge) badge.textContent = "Con tu información — revisa y corrige lo que haga falta";
-
     var nombre = d.nombre_artistico || d.nombre_completo || "";
     var name = splitName(nombre);
     var role = d.genero_tipo || "";
@@ -642,6 +749,14 @@
     var teatro = parseCreditLines(d.creditos_teatro);
     var comerciales = parseCreditLines(d.comerciales);
     var cineTv = cine.concat(tv);
+
+    // Fix: antes de llenar con los datos reales, se borra TODO el contenido
+    // de ejemplo ("Ana Ruiz") de las secciones opcionales. Si el actor deja
+    // un campo en blanco en el formulario, la sección correspondiente del CV
+    // se queda vacía (y su encabezado se oculta) en vez de mostrar datos de
+    // ejemplo que el actor nunca puso -- eso hacía ver como que trabajó en
+    // proyectos donde nunca estuvo.
+    clearOptionalDefaults();
 
     // Nombre
     if(nombre){
@@ -778,9 +893,12 @@
       if(aOtras) aOtras.innerHTML = otrasParts.join(" &nbsp;·&nbsp; ");
     }
 
-    // Perfil (bio auto-redactada) — queda editable para que se pueda afinar
-    var bio = buildBio(d);
+    // Perfil: si el actor escribió su propia semblanza, esa manda. Si no,
+    // se usa la bio auto-redactada a partir de sus datos estructurados.
+    // Queda editable para que se pueda afinar en cualquier caso.
+    var bio = (d.semblanza && d.semblanza.trim()) ? d.semblanza.trim() : buildBio(d);
     if(bio){
+      setTextIfPresent(document.getElementById("aPerfil"), bio);
       setTextIfPresent(document.getElementById("bPerfil"), bio);
       setTextIfPresent(document.getElementById("cPerfil"), bio);
     }
@@ -799,6 +917,103 @@
     if(cineTv.length){
       var bExp = document.getElementById("bExperiencia");
       if(bExp) bExp.innerHTML = rowsToJobs(cineTv);
+    }
+
+    hideEmptySections();
+  }
+
+  function clearOptionalDefaults(){
+    var byId = document.getElementById.bind(document);
+    [
+      "aStats","aFormacion","aCineTV","aTeatro","aAcentos","aOtrasHabilidades",
+      "bFormacion","bExperiencia","bLogros",
+      "cContacto","cFormacion","cDatos","cCineTV","cTeatroComerciales","cFoot"
+    ].forEach(function(id){ var el = byId(id); if(el) el.innerHTML = ""; });
+    ["aPerfil","aComerciales","bPerfil","cPerfil"].forEach(function(id){ var el = byId(id); if(el) el.textContent = ""; });
+  }
+
+  // Tras llenar con los datos reales, si una sección se quedó sin nada que
+  // mostrar (el actor no llenó ese campo), se oculta junto con su encabezado
+  // en vez de dejar un título suelto sin contenido debajo.
+  function hideEmptySections(){
+    function isEmpty(el){ return !el || el.innerHTML.replace(/&nbsp;|\s/g, "").length === 0; }
+    function toggle(contentEl, headingEl){
+      if(!contentEl) return;
+      var empty = isEmpty(contentEl);
+      contentEl.style.display = empty ? "none" : "";
+      if(headingEl) headingEl.style.display = empty ? "none" : "";
+    }
+
+    // Template A (Clásico) -- cada bloque tiene su propio ".sec-bar" justo antes
+    ["aPerfil","aFormacion","aCineTV","aTeatro","aComerciales"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) toggle(el, el.previousElementSibling);
+    });
+    // "Habilidades y otros" es un encabezado compartido por acentos + otras habilidades
+    var aAcentosEl = document.getElementById("aAcentos");
+    var aOtrasEl = document.getElementById("aOtrasHabilidades");
+    var habilidadesHeading = aAcentosEl ? aAcentosEl.previousElementSibling : null;
+    var acentosEmpty = isEmpty(aAcentosEl);
+    var otrasEmpty = isEmpty(aOtrasEl);
+    if(aAcentosEl) aAcentosEl.style.display = acentosEmpty ? "none" : "";
+    if(aOtrasEl) aOtrasEl.style.display = otrasEmpty ? "none" : "";
+    if(habilidadesHeading) habilidadesHeading.style.display = (acentosEmpty && otrasEmpty) ? "none" : "";
+
+    // Template B (Editorial) -- cada bloque tiene su propio ".sec-title" justo antes
+    ["bPerfil","bFormacion","bExperiencia","bLogros"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) toggle(el, el.previousElementSibling);
+    });
+
+    // Template C (Bold) -- Formación y Datos van dentro de su propia ".box"; Cine/TV y
+    // Teatro/comerciales tienen su propio ".exp-sec-title" justo antes; Perfil comparte
+    // el div padre con su ".label"
+    var cFormEl = document.getElementById("cFormacion");
+    if(cFormEl) toggle(cFormEl, cFormEl.closest(".box"));
+    var cDatosEl = document.getElementById("cDatos");
+    if(cDatosEl) toggle(cDatosEl, cDatosEl.closest(".box"));
+    var cCineTVEl = document.getElementById("cCineTV");
+    if(cCineTVEl) toggle(cCineTVEl, cCineTVEl.previousElementSibling);
+    var cTeatroComEl = document.getElementById("cTeatroComerciales");
+    if(cTeatroComEl) toggle(cTeatroComEl, cTeatroComEl.previousElementSibling);
+    var cPerfilEl = document.getElementById("cPerfil");
+    if(cPerfilEl) toggle(cPerfilEl, cPerfilEl.previousElementSibling);
+  }
+
+  // ---------------------------------------------------------------------
+  // Pantalla de edición: en vez de un formulario aparte, se agranda la
+  // MISMA tarjeta (.paper-card) que el actor elegió -- la que ya tiene
+  // sus campos contenteditable -- y se mueve del carrusel chico a esta
+  // pantalla. Como es el mismo nodo que usa downloadCvPdf() para generar
+  // el PDF, lo que el actor corrija ahí queda reflejado tal cual, sin
+  // tener que sincronizar nada de vuelta a actorState.
+  // ---------------------------------------------------------------------
+  function scaleSoloCard(tpl){
+    var card = cards[tpl];
+    if(!card) return;
+    var inner = card.querySelector(".scaleInner");
+    var width = card.getBoundingClientRect().width || card.offsetWidth;
+    if(!width) return;
+    var scale = width / NATURAL_W;
+    inner.style.transform = "scale(" + scale + ")";
+    card.style.height = Math.round(inner.scrollHeight * scale) + "px";
+  }
+
+  function moveCardToSolo(tpl){
+    var card = cards[tpl];
+    if(!card || !editStage) return;
+    card.classList.remove("p0", "p1", "p2");
+    card.classList.add("solo");
+    editStage.appendChild(card);
+    scaleSoloCard(tpl);
+  }
+
+  function resetCardFromSolo(tpl){
+    var card = cards[tpl];
+    if(!card || !stack) return;
+    if(card.parentNode === editStage){
+      card.classList.remove("solo");
+      stack.appendChild(card);
     }
   }
 
@@ -885,38 +1100,108 @@
     });
   });
 
+  // "Elegir plantilla" ya NO descarga directo -- primero agranda esa misma
+  // tarjeta para que el actor la repase y corrija ahí mismo antes de confirmar.
+  var editScreen = document.getElementById("editScreen");
+  var editStage = document.getElementById("editStage");
+  var editConfirmBtn = document.getElementById("editConfirmBtn");
+  var editBackBtn = document.getElementById("editBackBtn");
+  var cvConfirmOverlay = document.getElementById("cvConfirmOverlay");
+  var cvConfirmCancelBtn = document.getElementById("cvConfirmCancelBtn");
+  var cvConfirmDownloadBtn = document.getElementById("cvConfirmDownloadBtn");
+  var chosenTpl = null;
+
   confirmBtn.addEventListener("click", function(e){
     e.stopPropagation();
     if(confirmBtn.disabled) return;
-    var chosen = order[0];
-    try{ sessionStorage.setItem("monty_cv_template_choice", chosen); }catch(err){}
-    confirmBtn.disabled = true;
-    confirmBtn.classList.add("confirmed");
-    confirmBtn.textContent = "Generando tu CV…";
-    confirmMsg.style.display = "none";
+    chosenTpl = order[0];
+    try{ sessionStorage.setItem("monty_cv_template_choice", chosenTpl); }catch(err){}
+    pickerScreen.style.display = "none";
+    editScreen.style.display = "block";
+    moveCardToSolo(chosenTpl);
+    window.scrollTo({ top:0, behavior:"smooth" });
+  });
 
-    downloadCvPdf(chosen).then(function(){
+  editBackBtn.addEventListener("click", function(){
+    resetCardFromSolo(chosenTpl);
+    computeScale();
+    layout();
+    editScreen.style.display = "none";
+    pickerScreen.style.display = "block";
+    window.scrollTo({ top:0, behavior:"smooth" });
+  });
+
+  // Mientras se edita en grande, el texto puede cambiar de ancho/altura --
+  // se recalcula la altura de la tarjeta para que no se corte ni deje
+  // espacio de más debajo del contenido.
+  editStage.addEventListener("input", function(){
+    if(chosenTpl) scaleSoloCard(chosenTpl);
+  });
+
+  editConfirmBtn.addEventListener("click", function(){
+    cvConfirmOverlay.hidden = false;
+    document.body.style.overflow = "hidden";
+  });
+
+  cvConfirmCancelBtn.addEventListener("click", function(){
+    cvConfirmOverlay.hidden = true;
+    document.body.style.overflow = "";
+  });
+
+  var editConfirmMsg = document.getElementById("editConfirmMsg");
+
+  cvConfirmDownloadBtn.addEventListener("click", function(){
+    cvConfirmOverlay.hidden = true;
+    document.body.style.overflow = "";
+
+    // El PDF se genera directo del mismo nodo .cv que el actor acaba de
+    // editar en pantalla -- no hace falta volcar nada a actorState primero.
+    var chosen = chosenTpl;
+    editConfirmBtn.disabled = true;
+    editConfirmBtn.textContent = "Generando tu CV…";
+    if(editConfirmMsg) editConfirmMsg.style.display = "none";
+
+    // Promise.resolve().then(...) asegura que un error SÍNCRONO dentro de
+    // downloadCvPdf (por ejemplo si html2canvas/jsPDF no cargaron) también
+    // caiga en el .catch() de abajo, en vez de romper sin avisar al actor.
+    Promise.resolve().then(function(){
+      return downloadCvPdf(chosen);
+    }).then(function(){
+      editConfirmBtn.disabled = false;
+      editConfirmBtn.textContent = "Confirmar y descargar";
+      resetCardFromSolo(chosen);
+      computeScale();
+      layout();
+      editScreen.style.display = "none";
       showThankYou();
     }).catch(function(err){
-      confirmBtn.disabled = false;
-      confirmBtn.classList.remove("confirmed");
-      confirmBtn.textContent = "Elegir plantilla " + tplNames[chosen];
-      confirmMsg.style.display = "block";
-      confirmMsg.textContent = "No pudimos generar tu PDF. Intenta de nuevo.";
+      editConfirmBtn.disabled = false;
+      editConfirmBtn.textContent = "Confirmar y descargar";
+      if(editConfirmMsg){
+        editConfirmMsg.style.display = "block";
+        editConfirmMsg.textContent = "No pudimos generar tu PDF. Intenta de nuevo.";
+      }
     });
   });
 
   backToPickerBtn.addEventListener("click", function(){
+    resetCardFromSolo(chosenTpl);
     thankYouScreen.style.display = "none";
+    editScreen.style.display = "none";
     pickerScreen.style.display = "block";
     confirmBtn.disabled = false;
     confirmBtn.classList.remove("confirmed");
     confirmMsg.style.display = "none";
+    computeScale();
     layout();
     window.scrollTo({ top:0, behavior:"smooth" });
   });
 
-  window.addEventListener("resize", computeScale);
+  function handleResize(){
+    if(pickerScreen.style.display !== "none") computeScale();
+    if(editScreen.style.display !== "none" && chosenTpl) scaleSoloCard(chosenTpl);
+  }
+  window.addEventListener("resize", handleResize);
   computeScale();
   layout();
 
