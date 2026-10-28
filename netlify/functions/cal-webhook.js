@@ -42,6 +42,21 @@ function resolveEventSourceUrl(booking) {
   return 'https://montyexperience.com';
 }
 
+// El navegador (assets/js/tracking.js) manda event_id, origen, fbp y fbc dentro
+// de metadata[...] del embed de Cal.com. Cal los guarda en la reserva y los
+// reenvia en el webhook como payload.metadata.*. Con el MISMO event_id, Meta
+// deduplica el Schedule del navegador con el de este servidor (cuenta 1, no 2).
+function leerMetadata(booking) {
+  const m = (booking && booking.metadata) || {};
+  const limpia = (v) => (typeof v === 'string' && v.length <= 200 ? v : null);
+  return {
+    eventId: limpia(m.eventId),
+    origen: limpia(m.origen) || 'organico',
+    fbp: limpia(m.fbp),
+    fbc: limpia(m.fbc),
+  };
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
@@ -74,7 +89,7 @@ exports.handler = async (event) => {
   const slug = booking.eventType?.slug || booking.type || '';
 
   if (!TRACKED_SLUGS.includes(slug)) {
-    console.log(`[DIAG] Slug no coincide con TRACKED_SLUGS: "${slug}"`);
+    console.log(`[DIAG] Slug no coincide con TRACKED_SLUGS: "${slug}". Si es un tipo de evento nuevo que quieres medir, agregalo a TRACKED_SLUGS.`);
     return { statusCode: 200, body: `Ignored (slug not tracked: ${slug})` };
   }
 
@@ -82,6 +97,8 @@ exports.handler = async (event) => {
   const email = attendee.email || null;
   const phone = normalizePhone(attendee.phoneNumber || attendee.phone);
   const bookingUid = booking.uid || `${Date.now()}`;
+  const meta = leerMetadata(booking);
+  const eventId = meta.eventId || bookingUid;
 
   const hashedEmail = sha256(email);
   const hashedPhone = sha256(phone);
@@ -92,16 +109,20 @@ exports.handler = async (event) => {
 
   if (!pixelId || !adAccountId || !accessToken) {
     console.error('Faltan variables de entorno META_PIXEL_ID / META_AD_ACCOUNT_ID / META_ACCESS_TOKEN.');
-    return { statusCode: 200, body: 'Missing Meta env vars, logged' };
+    // 500 (no 200) a proposito: asi el fallo aparece en rojo en Cal.com -> Webhooks
+    // -> historial de envios, en vez de perderse en silencio en los logs de Netlify.
+    return { statusCode: 500, body: 'Missing Meta env vars' };
   }
 
-  console.log(`[DIAG] Enviando evento Schedule a Meta. event_id=${bookingUid}`);
+  console.log(`[DIAG] Enviando evento Schedule a Meta. event_id=${eventId} origen=${meta.origen} fbp=${meta.fbp ? 'si' : 'no'} fbc=${meta.fbc ? 'si' : 'no'}`);
 
   const capiResult = await sendCapiEvent({
     pixelId,
     accessToken,
     eventName: 'Schedule',
-    eventId: bookingUid,
+    eventId,
+    fbp: meta.fbp,
+    fbc: meta.fbc,
     eventSourceUrl: resolveEventSourceUrl(booking),
     userData: {
       em: hashedEmail ? [hashedEmail] : undefined,
@@ -109,6 +130,7 @@ exports.handler = async (event) => {
     },
     customData: {
       content_name: slug,
+      origen: meta.origen,
     },
   });
 

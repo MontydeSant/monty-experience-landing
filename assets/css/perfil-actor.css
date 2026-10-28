@@ -1,0 +1,330 @@
+  :root{
+    --bg:#1c0e2c;
+    --card:var(--surface-card);
+    --card2:var(--surface-section-b);
+    --border:#3a2152;
+    --border-strong:#4d2a68;
+    --accent:#F68318;
+    --accent2:#FDC005;
+    --accent3:#f6a623;
+    --text:#cbd5e1;
+    --text-strong:#ffffff;
+    --muted:#94a3b8;
+    --footer:#d9a05c;
+    --danger:#ef4444;
+    padding-top: calc(env(safe-area-inset-top, 0px));
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px));
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    background-color:var(--bg-stage);
+    background-image:var(--grain), radial-gradient(ellipse 85% 65% at 50% 36%, #3a1f60 0%, #22123a 38%, #120a1e 66%, var(--gradient-deep) 100%);
+    background-size:180px 180px, cover;
+    background-blend-mode:soft-light, normal;
+    background-attachment:fixed, fixed;
+    color:var(--text);
+    font-family:'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{
+    max-width:560px;
+    margin:0 auto;
+    padding:22px 18px 40px;
+  }
+
+  /* ---------- header de marca ---------- */
+  .brand-row{
+    text-align:center;
+    padding-bottom:14px;
+    margin-bottom:18px;
+    border-bottom:1.5px solid var(--border-strong);
+  }
+  .logo-img{
+    width:170px;
+    height:auto;
+    display:block;
+    margin:0 auto 6px auto;
+  }
+  .brand-sub{
+    font-family:'Courier Prime', monospace; 
+    font-size:10.5px;
+    letter-spacing:1.5px;
+    color:var(--footer);
+    font-weight:700;
+    text-transform:uppercase;
+    margin-top:2px;
+  }
+
+  .badge-neon{
+    font-family:'Courier Prime', monospace; 
+    display:inline-block;
+    background:rgba(246,131,24,.15);
+    border:1.5px solid var(--accent);
+    color:#ffd9a0;
+    font-size:10.5px;
+    font-weight:800;
+    letter-spacing:1.6px;
+    text-transform:uppercase;
+    padding:5px 14px;
+    border-radius:20px;
+    margin-bottom:10px;
+  }
+
+  h1.title{
+    font-family:'Special Elite', cursive; 
+    font-size:23px;
+    font-weight:400;
+    color:var(--text-strong);
+    margin:0 0 8px;
+    letter-spacing:-.3px;
+    line-height:1.25;
+    text-wrap:balance;
+  }
+  h1.title .neon{
+    color:var(--accent);
+    text-shadow:0 0 16px rgba(246,131,24,.65);
+  }
+
+  p{ margin:0 0 12px; color:var(--text); font-size:14.5px; }
+  .muted{ color:var(--muted); font-size:13px; }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:16px;
+  }
+  .card-gradient{
+    background:linear-gradient(135deg, rgba(46,15,77,.85) 0%, rgba(18,7,33,.95) 100%);
+    border-left:4px solid var(--accent);
+    border-top:1px solid var(--border-strong);
+    border-right:1px solid var(--border-strong);
+    border-bottom:1px solid var(--border-strong);
+  }
+
+
+  
+  
+  
+  
+  
+  
+  
+  @media (prefers-reduced-motion: reduce){
+    .cta-btn{ animation:none !important; }
+  }
+
+  .btn-row{ display:flex; gap:10px; margin-top:20px; }
+  .btn-row .cta-btn{ flex:1; }
+  #navRow[hidden]{ display:none; }
+  .intro-sticker{ display:block; width:min(55vw, 200px); height:auto; margin:30px auto 0; transform:rotate(-4deg); filter:drop-shadow(0 10px 24px rgba(0,0,0,.5)); }
+  .thanks-sticker{ display:block; width:min(50vw, 190px); height:auto; margin:26px auto 0; transform:rotate(3deg); filter:drop-shadow(0 10px 24px rgba(0,0,0,.5)); }
+
+  /* ---------- progreso ---------- */
+  #progressWrap{
+    position:sticky;
+    top:env(safe-area-inset-top, 0px);
+    background:var(--bg);
+    padding:10px 0 14px;
+    z-index:5;
+  }
+  #progressLabel{
+    font-family:'Courier Prime', monospace; 
+    font-size:10.5px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--accent2);
+    font-weight:800;
+    margin-bottom:6px;
+    display:flex;
+    justify-content:space-between;
+  }
+  #progressTrack{
+    height:6px;
+    border-radius:6px;
+    background:var(--card2);
+    border:1px solid var(--border);
+    overflow:hidden;
+  }
+  #progressFill{
+    height:100%;
+    background:linear-gradient(90deg, var(--accent3), var(--accent));
+    box-shadow:0 0 10px rgba(246,131,24,.7);
+    border-radius:6px;
+    transition:width .35s ease;
+    width:0%;
+  }
+
+  /* ---------- pasos / secciones ---------- */
+  .step{ }
+  .step[hidden]{ display:none !important; }
+
+  #stepStage{
+    opacity:1;
+    transition: opacity .22s linear;
+  }
+  #stepStage.fading{ opacity:0; }
+  @media (prefers-reduced-motion: reduce){
+    #stepStage{ transition:none; }
+  }
+
+  h2.sec-title{
+    font-family:'Special Elite', cursive; 
+    font-size:17px;
+    font-weight:400;
+    color:var(--text-strong);
+    margin:0 0 4px;
+    padding-left:12px;
+    border-left:4px solid var(--accent);
+    letter-spacing:-.1px;
+  }
+  .sec-hint{
+    padding-left:16px;
+    margin-bottom:16px;
+    font-size:13px;
+  }
+
+  .field{ margin-bottom:14px; }
+  .field label{
+    display:block;
+    font-size:12.5px;
+    font-weight:700;
+    color:#ffd9a0;
+    margin-bottom:6px;
+    letter-spacing:.2px;
+  }
+  .field label .req{ color:var(--danger); margin-left:3px; }
+  .field .help{ font-size:11.5px; color:var(--muted); margin-top:4px; }
+
+  input[type=text], input[type=email], input[type=date], input[type=number], input[type=url], textarea, select{
+    width:100%;
+    background:var(--card2);
+    border:1.5px solid var(--border-strong);
+    border-radius:8px;
+    padding:11px 12px;
+    font-size:14.5px;
+    color:var(--text-strong);
+    font-family:inherit;
+  }
+  input:focus, textarea:focus, select:focus{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(246,131,24,.18);
+  }
+  textarea{ min-height:64px; resize:vertical; }
+  .field.invalid input, .field.invalid select, .field.invalid textarea{
+    border-color:var(--danger);
+  }
+  .field .err{
+    display:none;
+    color:var(--danger);
+    font-size:11.5px;
+    margin-top:4px;
+    font-weight:700;
+  }
+  .field.invalid .err{ display:block; }
+
+  select{
+    appearance:none;
+    -webkit-appearance:none;
+    background-image:linear-gradient(45deg, transparent 50%, var(--accent2) 50%), linear-gradient(135deg, var(--accent2) 50%, transparent 50%);
+    background-position: calc(100% - 18px) center, calc(100% - 13px) center;
+    background-size:5px 5px, 5px 5px;
+    background-repeat:no-repeat;
+  }
+
+  .hp{ position:absolute; left:-9999px; opacity:0; }
+
+  .hint-note{
+    background:rgba(246,131,24,.08);
+    border:1.5px dashed var(--accent3);
+    border-radius:8px;
+    padding:10px 13px;
+    margin:-2px 0 16px;
+    font-size:12.5px;
+    color:#e9d5ff;
+    line-height:1.5;
+  }
+  .hint-note b{ color:#ffd9a0; }
+
+  .closing-card{
+    background:linear-gradient(180deg, #2e1839 0%, #170a22 100%);
+    border:2px solid var(--accent2);
+    box-shadow:0 0 24px rgba(253,192,5,.25);
+    border-radius:14px;
+    padding:26px 22px;
+    text-align:center;
+    margin-top:10px;
+  }
+
+  footer.brandfoot{
+    text-align:center;
+    margin-top:26px;
+    padding-top:12px;
+    border-top:1.5px solid var(--border-strong);
+  }
+  footer.brandfoot .fm{ color:var(--accent); font-weight:800; font-size:12px; letter-spacing:.5px; }
+  footer.brandfoot .fs{ color:var(--muted); font-size:11.5px; }
+  footer.brandfoot .fp{ margin-top:6px; }
+  footer.brandfoot .fp a{ color:var(--muted); font-size:11px; text-decoration:underline; }
+
+  #sendError{
+    display:none;
+    color:#fca5a5;
+    background:rgba(239,68,68,.1);
+    border:1.5px solid var(--danger);
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:12.5px;
+    margin-top:12px;
+  }
+
+  #confirmOverlay{
+    position:fixed; inset:0; z-index:9999;
+    background:rgba(4,2,8,.8);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+  }
+  #confirmOverlay[hidden]{ display:none; }
+  .confirm-card{
+    background:linear-gradient(180deg, #2e1839 0%, #170a22 100%);
+    border:2px solid var(--accent2);
+    box-shadow:0 0 30px rgba(253,192,5,.35);
+    border-radius:14px;
+    padding:26px 22px;
+    text-align:center;
+    max-width:380px;
+    width:100%;
+  }
+  .confirm-card .confirm-label{
+    font-family:'Courier Prime', monospace; 
+    display:block; font-size:11px; font-weight:800; color:var(--danger);
+    letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px;
+  }
+  .confirm-card p{ font-size:14.5px; line-height:1.6; color:var(--text); margin:0 0 20px; }
+  .confirm-card .btn-row{ margin-top:0; }
+
+/* ===== utilidades migradas desde atributos style="" (el HTML ya no lleva estilos en línea) ===== */
+.u-1{ margin:0 !important; }
+.u-2{ font-weight:300 !important;opacity:.65 !important; }
+.u-3{ min-height:96px !important; }
+.u-4{ font-size:12.5px !important; }
+.u-5{ display:block;font-size:11px !important;font-weight:800 !important;color:var(--accent2) !important;letter-spacing:1.5px !important;text-transform:uppercase !important;margin-bottom:10px !important; }
+.u-6{ font-size:16px !important;line-height:1.6 !important;color:#fff !important;margin-bottom:6px !important;font-weight:600 !important; }
+.u-7{ margin-bottom:16px !important; }
+.u-8{ text-decoration:none !important; }
+
+/* ===== alineación con el sistema de diseño Monty Experience (tokens de global.css) ===== */
+.brand-sub{ font-family:var(--font-bitacora); letter-spacing:.1em; color:var(--text-muted); font-weight:400; }
+.badge-neon{
+  font-family:var(--font-bitacora); font-weight:400; letter-spacing:.1em; font-size:.72rem;
+  color:var(--accent-signal); background:rgba(253,192,5,.06);
+  border:1px solid rgba(253,192,5,.45); border-radius:var(--radius-pill); padding:6px 14px;
+}
+h1.title .neon{ color:var(--accent-signal); text-shadow:0 0 30px rgba(253,192,5,.5); }
