@@ -1,0 +1,2 @@
+# URLs limpias del blog: /blog/mi-post abre /blog/mi-post.html (si el archivo existe, gana el archivo)
+/blog/:slug /blog/:slug.html 200
