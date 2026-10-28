@@ -24,20 +24,39 @@
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- META PIXEL -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1527954495275305');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
+/></noscript>
+<script src="/assets/js/tracking.js" defer></script>
+<script src="/assets/js/claqueta.js" defer></script>
 </head>
 <body>
+<link rel="stylesheet" href="/assets/css/global.css">
 <style>
   :root{
-    --bg:#1c0e2c;
+    --bg:var(--bg-stage);
     --card:#241433;
     --card2:#2a1638;
     --border:#3a2152;
     --border-strong:#4d2a68;
-    --accent:#F68318;
-    --accent2:#FDC005;
+    --accent:var(--accent-guide);
+    --accent2:var(--accent-signal);
     --accent3:#f6a623;
     --text:#cbd5e1;
-    --text-strong:#ffffff;
+    --text-strong:var(--text-primary);
     --muted:#94a3b8;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
