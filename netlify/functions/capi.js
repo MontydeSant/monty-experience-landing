@@ -35,8 +35,15 @@ function verifyCalSignature(rawBody, signatureHeader, secret) {
 }
 
 // Envia un evento server-side a Meta via Conversions API.
-async function sendCapiEvent({ pixelId, accessToken, eventName, eventId, eventSourceUrl, userData, customData }) {
-  const url = `https://graph.facebook.com/${GRAPH_VERSION}/${pixelId}/events?access_token=${encodeURIComponent(accessToken)}`;
+// fbp/fbc (opcionales) son las señales de coincidencia mas fuertes: vienen del
+// navegador via metadata de Cal.com y NO se hashean. El token viaja en el
+// encabezado Authorization (no en la URL) para que no quede en logs.
+async function sendCapiEvent({ pixelId, accessToken, eventName, eventId, eventSourceUrl, userData, customData, fbp, fbc }) {
+  const url = `https://graph.facebook.com/${GRAPH_VERSION}/${pixelId}/events`;
+
+  const user = Object.assign({}, userData);
+  if (fbp) user.fbp = fbp;
+  if (fbc) user.fbc = fbc;
 
   const payload = {
     data: [
@@ -46,7 +53,7 @@ async function sendCapiEvent({ pixelId, accessToken, eventName, eventId, eventSo
         event_id: eventId,
         action_source: 'system_generated',
         event_source_url: eventSourceUrl,
-        user_data: userData,
+        user_data: user,
         custom_data: customData || {},
       },
     ],
@@ -54,7 +61,10 @@ async function sendCapiEvent({ pixelId, accessToken, eventName, eventId, eventSo
 
   const res = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
     body: JSON.stringify(payload),
   });
 
