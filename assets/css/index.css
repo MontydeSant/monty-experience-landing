@@ -490,10 +490,10 @@
   }
   .proceso-road-svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
   .road-path-base{ fill:none; stroke:rgba(255,255,255,.25); stroke-width:3; stroke-linecap:round; stroke-dasharray:2 14; }
-  .road-path-progress{ fill:none; stroke:var(--yellow); stroke-width:3; stroke-linecap:round; stroke-dasharray:2 14;
-    filter:drop-shadow(0 0 6px rgba(253,192,5,.7)); }
+  .road-path-progress{ fill:none; stroke:var(--pkg-accent, var(--yellow)); stroke-width:3; stroke-linecap:round; stroke-dasharray:2 14;
+    filter:drop-shadow(0 0 6px var(--pkg-accent-glow, rgba(253,192,5,.7))); }
   .road-arrow-base{ fill:rgba(255,255,255,.18); }
-  .road-arrow-progress{ fill:var(--yellow); opacity:0; transition:opacity .4s ease; filter:drop-shadow(0 0 6px rgba(253,192,5,.7)); }
+  .road-arrow-progress{ fill:var(--pkg-accent, var(--yellow)); opacity:0; transition:opacity .4s ease; filter:drop-shadow(0 0 6px var(--pkg-accent-glow, rgba(253,192,5,.7))); }
 
   .road-point{ position:absolute; transform:translate(-50%,-50%); }
   .road-badge{
@@ -511,9 +511,9 @@
     display:flex; align-items:center; justify-content:center;
     transition:background .35s ease, border-color .35s ease, color .35s ease;
   }
-  .road-point.is-lit .road-badge{ background:var(--yellow); border-color:var(--yellow); box-shadow:0 0 26px rgba(253,192,5,.6); transform:scale(1.1); }
+  .road-point.is-lit .road-badge{ background:var(--pkg-accent, var(--yellow)); border-color:var(--pkg-accent, var(--yellow)); box-shadow:0 0 26px var(--pkg-accent-glow, rgba(253,192,5,.6)); transform:scale(1.1); }
   .road-point.is-lit .road-badge svg{ stroke:var(--bg-dark); }
-  .road-point.is-lit .road-num{ background:var(--yellow); border-color:var(--yellow); color:var(--bg-dark); }
+  .road-point.is-lit .road-num{ background:var(--pkg-accent, var(--yellow)); border-color:var(--pkg-accent, var(--yellow)); color:var(--bg-dark); }
 
   .road-label{ position:absolute; width:clamp(148px,15vw,205px); opacity:.42; transition:opacity .4s ease; z-index:3; }
   .road-label h3{ font-family:'Special Elite', cursive; font-weight:400; font-size:.9rem; margin:0 0 5px; color:#fff; }
@@ -734,10 +734,7 @@
   .pkg-elite   .pkg-ideal .kw{ color:#e6a0c4; }
   .pkg-fenix   .pkg-ideal .kw{ color:#ffab6b; }
 
-  .pkg-stats{
-    display:flex; gap:20px; padding-top:12px; margin:0 0 16px;
-    border-top:1px dashed rgba(255,255,255,.2);
-  }
+  .pkg-stats{ display:flex; gap:20px; padding-top:0; margin:0 0 16px; }
   .pkg-stat .n{ font-family:'Special Elite', cursive; font-weight:400; font-size:1.15rem; color:#fff; display:block; }
   .pkg-stat .l{
     font-family:'Courier Prime', monospace; font-size:.6rem; text-transform:uppercase;
@@ -1490,3 +1487,165 @@
 .u-5{ left:60% !important;top:40% !important; }
 .u-6{ left:80% !important;top:58% !important; }
 .u-7{ left:95% !important;top:16% !important; }
+
+  /* ===================== MODAL "TU EXPERIENCIA": sustituye al panel en línea de las tarjetas —
+     se abre con una transición FLIP (crece desde la propia tarjeta), fondo de la página visible
+     y desenfocado detrás, se cierra solo con la X. Adentro vive el camino curvo (recoloreado por
+     paquete) en desktop, y un mini-carrusel de paradas en mobile, más el resumen debajo. ===================== */
+  .exp-backdrop{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(5,3,10,.74); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    opacity:0; pointer-events:none; transition:opacity .4s ease;
+  }
+  .exp-backdrop.is-open{ opacity:1; pointer-events:auto; }
+
+  .exp-modal{
+    position:fixed; z-index:201; top:50%; left:50%;
+    width:min(1340px, 95vw); height:min(90vh, 980px);
+    background-color:#170b28;
+    background-image:var(--grain), radial-gradient(ellipse 90% 70% at 50% 10%, #241238 0%, #170b28 45%, #0a0512 100%);
+    background-size:180px 180px, cover; background-blend-mode:soft-light, normal;
+    border-radius:22px; box-shadow:0 40px 90px rgba(0,0,0,.65);
+    overflow:hidden; opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .4s ease;
+  }
+  .exp-modal.is-open{ opacity:1; visibility:visible; pointer-events:auto; }
+  .exp-modal.is-animating{ transition:transform .48s cubic-bezier(.3,.9,.25,1), opacity .4s ease; }
+
+  .exp-modal-close{
+    position:absolute; top:16px; right:16px; z-index:5; width:38px; height:38px; border-radius:50%;
+    background:rgba(13,11,18,.55); border:1.5px solid rgba(255,255,255,.3); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:1.3rem; line-height:1; cursor:pointer;
+    transition:border-color .25s ease, transform .25s ease;
+  }
+  .exp-modal-close:hover{ transform:scale(1.08) rotate(90deg); }
+  .exp-modal-classic .exp-modal-close{ border-color:#93a6e6; }
+  .exp-modal-elite   .exp-modal-close{ border-color:#e6a0c4; }
+  .exp-modal-fenix   .exp-modal-close{ border-color:#ffab6b; }
+  /* el cierre va fuera de .exp-modal-panel (es el mismo para los 3) */
+
+  .exp-modal-inner{ position:absolute; inset:0; overflow-y:auto; padding:56px 44px 40px; }
+  @media(max-width:700px){ .exp-modal-inner{ padding:50px 18px 28px; } }
+
+  .exp-modal-panel{ display:none; }
+  .exp-modal-panel.is-active{ display:block; }
+  .exp-modal-panel .exp-modal-eyebrow{
+    display:block; text-align:center; font-family:'Courier Prime', monospace; font-size:.74rem;
+    letter-spacing:.1em; text-transform:uppercase; margin:0 0 6px;
+  }
+  .exp-modal-classic .exp-modal-eyebrow{ color:#93a6e6; }
+  .exp-modal-elite   .exp-modal-eyebrow{ color:#e6a0c4; }
+  .exp-modal-fenix   .exp-modal-eyebrow{ color:#ffab6b; }
+  .exp-modal-panel h3.exp-modal-title{
+    text-align:center; font-family:'Special Elite', cursive; font-weight:400;
+    font-size:clamp(1.25rem,2.6vw,1.6rem); margin:0 0 30px; color:#fff;
+  }
+
+  /* --- Desktop: mismo camino curvo de siempre, recoloreado por --pkg-accent --- */
+  .exp-modal-classic{ --pkg-accent:#93a6e6; --pkg-accent-glow:rgba(147,166,230,.6); }
+  .exp-modal-elite  { --pkg-accent:#e6a0c4; --pkg-accent-glow:rgba(230,160,196,.6); }
+  .exp-modal-fenix  { --pkg-accent:#ffab6b; --pkg-accent-glow:rgba(255,171,107,.6); }
+
+  .exp-road-wrap{ position:relative; margin-top:42px; }
+  @media(max-width:900px){ .exp-road-wrap{ margin-top:0; } }
+  /* el camino usa TODO el ancho del modal (antes tenía un tope de 1220px heredado
+     de la sección completa) y los textos/iconos bajan un poco de tamaño — con
+     más modal y menos texto, los 6 puntos dejan de sentirse amontonados */
+  .exp-road-wrap .proceso-road{ max-width:none; }
+  .exp-road-wrap .road-label{ width:clamp(140px,13vw,185px); }
+  .exp-road-wrap .road-label h3{ font-size:.84rem; }
+  .exp-road-wrap .road-label p{ font-size:.7rem; line-height:1.45; }
+  .exp-road-wrap .road-badge{ width:clamp(38px,3.6vw,48px); height:clamp(38px,3.6vw,48px); }
+  /* el mismo colchón que el camino original tenía antes de su botón (proceso-cta margin-top:104px) —
+     las etiquetas de los puntos sobresalen de su caja por ser position:absolute, así que sin este
+     espacio chocan con el resumen de abajo */
+  .exp-road-wrap .proceso-road{ margin-bottom:96px; }
+  @media(max-width:900px){ .exp-road-wrap .proceso-road{ margin-bottom:0; } }
+  @media(min-width:901px){
+    .exp-steps-mobile{ display:none; }
+    .proceso-road{ max-width:980px; margin:0 auto; } /* reusa la clase original tal cual */
+  }
+  @media(max-width:900px){
+    .proceso-road{ display:none; }
+  }
+
+  /* --- Mobile: mini-carrusel horizontal de paradas (mismo patrón ya probado en las tarjetas) --- */
+  .exp-steps-mobile{ margin:0 -18px; }
+  .exp-steps-track{
+    display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+    padding:4px 18px 14px; scrollbar-width:none;
+  }
+  .exp-steps-track::-webkit-scrollbar{ display:none; }
+  .exp-step-card{
+    flex:0 0 auto; width:80vw; max-width:320px; min-height:200px; scroll-snap-align:center;
+    background:#0e0817; border:1px solid rgba(255,255,255,.1); border-radius:16px; padding:26px 22px;
+  }
+  .exp-step-card .exp-step-badge{
+    width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:var(--bg-dark); border:2px solid var(--pkg-accent); margin-bottom:14px; position:relative;
+  }
+  .exp-step-card .exp-step-badge svg{ width:19px; height:19px; stroke:var(--pkg-accent); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+  .exp-step-card .exp-step-num{
+    position:absolute; top:-6px; left:-6px; width:18px; height:18px; border-radius:50%;
+    background:var(--pkg-accent); color:#0e0817; font-family:'Special Elite', cursive; font-size:.58rem;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .exp-step-card h4{ font-family:'Special Elite', cursive; font-weight:400; font-size:.98rem; color:#fff; margin:0 0 8px; }
+  .exp-step-card p{ font-family:'Courier Prime', monospace; font-size:.82rem; line-height:1.6; color:var(--text-muted); margin:0; text-align:justify; text-justify:inter-word; }
+  .exp-steps-dots{ display:flex; justify-content:center; gap:7px; margin-top:4px; }
+  .exp-steps-dots .dot{ width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.25); transition:background .3s ease, transform .3s ease; }
+  .exp-steps-dots .dot.is-active{ background:var(--pkg-accent); transform:scale(1.3); }
+
+  /* --- Resumen debajo (reusa pkg-stats/pkg-includes ya existentes) --- */
+  .exp-modal .exp-summary{ max-width:600px; margin:72px auto 0; }
+  @media(max-width:900px){ .exp-modal .exp-summary{ margin-top:46px; } }
+
+  /* etiqueta que reemplaza a las líneas punteadas: un solo quiebre de sección, claro y sin ruido */
+  .exp-summary-eyebrow{
+    display:block; text-align:center; font-family:'Courier Prime', monospace; font-size:.72rem;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--pkg-accent, var(--text-muted));
+    margin:0 0 22px; opacity:.85;
+  }
+  .exp-summary-eyebrow::before, .exp-summary-eyebrow::after{ content:'— '; }
+  .exp-summary-eyebrow::after{ content:' —'; }
+
+  /* estadísticas como chips — número grande en el color del paquete, con un halo sutil detrás */
+  .exp-modal .pkg-stats{ justify-content:center; gap:16px; margin:0 0 30px; }
+  .exp-modal .pkg-stat{
+    flex:1; max-width:150px; text-align:center; padding:16px 10px 14px; border-radius:14px;
+    background:rgba(255,255,255,.035); border:1px solid color-mix(in srgb, var(--pkg-accent, #fff) 35%, transparent);
+    box-shadow:0 0 22px color-mix(in srgb, var(--pkg-accent, #fff) 14%, transparent);
+  }
+  .exp-modal .pkg-stat .n{
+    font-size:1.65rem; color:var(--pkg-accent, #fff);
+    text-shadow:0 0 18px color-mix(in srgb, var(--pkg-accent, #fff) 55%, transparent);
+  }
+  .exp-modal .pkg-stat .l{ font-size:.66rem; color:rgba(255,255,255,.78); margin-top:4px; }
+
+  /* lista de incluye: más grande y con más aire, como pediste */
+  .exp-modal .pkg-includes{ gap:16px; max-width:480px; margin-left:auto; margin-right:auto; }
+  .exp-modal .pkg-includes li{ font-size:.92rem; line-height:1.55; gap:12px; color:rgba(255,255,255,.92); }
+  .exp-modal .pkg-includes .tick{ width:19px; height:19px; min-width:19px; font-size:10px; margin-top:1px; }
+  @media(max-width:700px){
+    .exp-modal .pkg-includes li{ font-size:.88rem; line-height:1.55; gap:11px; }
+    .exp-modal .pkg-stat{ padding:14px 6px 12px; }
+    .exp-modal .pkg-stat .n{ font-size:1.4rem; }
+  }
+
+  .exp-modal-classic .exp-summary .tick{ background:#93a6e6; }
+  .exp-modal-elite   .exp-summary .tick{ background:#e6a0c4; }
+  .exp-modal-fenix   .exp-summary .tick{ background:#ffab6b; }
+
+  .exp-modal .exp-micro{
+    font-family:'Courier Prime', monospace; font-size:.82rem; color:var(--text-muted);
+    text-align:center; margin:26px 0 16px;
+  }
+  .exp-modal .pkg-cta{
+    display:flex; width:fit-content; margin:0 auto; font-size:.92rem; padding:12px 26px;
+    border-color:var(--pkg-accent, rgba(255,255,255,.55));
+  }
+  .exp-modal .pkg-cta:hover{ border-color:var(--pkg-accent, #fff); }
+
+  @media(prefers-reduced-motion: reduce){
+    .exp-backdrop, .exp-modal, .exp-modal.is-animating{ transition:opacity .15s ease !important; }
+  }
