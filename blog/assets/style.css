@@ -1,0 +1,70 @@
+/* blog/assets/style.css — CSS COMPARTIDO del blog (un solo archivo para el índice y todos los posts).
+   Se carga DESPUÉS de ../../assets/css/global.css, así que usa sus tokens (--accent-signal, --font-guion...).
+   Cualquier ajuste visual del blog se hace aquí, una vez.
+   OJO: el grano se referencia con ruta propia (no con var(--grain)): una url() dentro de una variable se
+   resuelve desde el archivo que la USA, y este archivo vive a otra profundidad que global.css. */
+
+.blog-page{ min-height:100svh; display:flex; flex-direction:column; background:var(--bg-stage); }
+.blog-main{ flex:1; padding:40px var(--space-section-x) 72px;
+  background-color:var(--surface-section-a);
+  background-image:url("../../assets/img/grano.svg"), radial-gradient(ellipse 90% 70% at 50% 0%, #241238 0%, var(--surface-section-a) 45%, var(--gradient-deep) 100%);
+  background-size:180px 180px, cover; background-blend-mode:soft-light, normal; }
+.blog-wrap{ width:100%; max-width:720px; margin:0 auto; }
+.blog-wrap--wide{ max-width:980px; }
+
+/* migas de pan */
+.crumbs{ font-family:var(--font-bitacora); font-size:.74rem; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); margin:0 0 26px; }
+.crumbs a{ color:var(--text-muted); text-decoration:none; }
+.crumbs a:hover{ color:var(--accent-signal); }
+.crumbs span[aria-hidden]{ margin:0 8px; opacity:.6; }
+
+/* artículo */
+.post .post-meta{ font-family:var(--font-bitacora); font-size:.76rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin:0 0 14px; }
+.post h1{ font-family:var(--font-guion); font-weight:400; font-size:clamp(1.7rem, 4.4vw, 2.5rem); line-height:1.22; margin:0 0 22px; color:var(--text-primary); }
+.post .lead{ font-family:var(--font-cuerpo); font-size:1.12rem; line-height:1.7; color:#fff; margin:0 0 28px; padding-left:16px; border-left:3px solid var(--accent-guide); }
+.post h2{ font-family:var(--font-guion); font-weight:400; font-size:clamp(1.25rem, 2.8vw, 1.65rem); line-height:1.32; margin:44px 0 14px; color:var(--text-primary); }
+.post p, .post li{ font-family:var(--font-cuerpo); font-size:1.02rem; line-height:1.78; color:var(--text-muted); }
+.post p{ margin:0 0 18px; }
+.post ul, .post ol{ margin:0 0 20px; padding-left:22px; }
+.post li{ margin-bottom:10px; }
+.post strong{ color:var(--text-primary); font-weight:600; }
+.post a{ color:var(--accent-signal); text-underline-offset:3px; }
+.post a:hover{ color:var(--accent-guide); }
+.post .hl{ color:var(--accent-signal); text-shadow:0 0 30px rgba(253,192,5,.4); }
+.post blockquote{ margin:28px 0; padding:18px 22px; background:var(--surface-card); border-left:3px solid var(--accent-signal);
+  border-radius:0 var(--radius-md) var(--radius-md) 0; font-family:var(--font-guion); font-size:1.12rem; line-height:1.5; color:#fff; }
+
+/* foto del propio portafolio */
+.post figure{ margin:32px 0; }
+.post figure img{ display:block; width:100%; max-width:380px; margin:0 auto; border-radius:var(--radius-sm); box-shadow:var(--shadow-tile); }
+.post figcaption{ margin-top:12px; text-align:center; font-family:var(--font-bitacora); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); }
+.post .fig-pair{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.post .fig-pair figure{ margin:0; }
+@media(max-width:560px){ .post .fig-pair{ grid-template-columns:1fr; } }
+
+/* tabla de paquetes dentro del post */
+.pkg-table{ display:grid; gap:14px; margin:8px 0 26px; }
+.pkg-row{ background:var(--surface-card); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius-md); padding:18px 20px; }
+.pkg-row h3{ font-family:var(--font-guion); font-weight:400; font-size:1.12rem; margin:0 0 6px; color:var(--text-primary); }
+.pkg-row p{ margin:0; font-family:var(--font-bitacora); font-size:.86rem; line-height:1.65; }
+
+/* CTA final del post */
+.post-cta{ margin:52px 0 0; padding:32px 26px; text-align:center; background:var(--surface-card); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius-card); box-shadow:var(--shadow-tile); }
+.post-cta .cta-title{ font-family:var(--font-guion); font-size:clamp(1.15rem, 2.6vw, 1.45rem); line-height:1.35; margin:0 0 10px; color:var(--text-primary); }
+.post-cta .cta-micro{ font-family:var(--font-bitacora); font-size:.82rem; color:var(--text-muted); margin:0 0 22px; }
+.post-back{ display:inline-block; margin-top:26px; font-family:var(--font-bitacora); font-size:.8rem; color:var(--text-muted); text-decoration:none; }
+.post-back:hover{ color:var(--accent-signal); }
+
+/* índice del blog */
+.blog-head{ text-align:center; margin:0 0 44px; }
+.blog-head h1{ font-family:var(--font-guion); font-weight:400; font-size:clamp(1.7rem, 4.4vw, 2.4rem); line-height:1.22; margin:0 0 14px; }
+.blog-head p{ font-family:var(--font-bitacora); font-size:.9rem; line-height:1.6; color:var(--text-muted); max-width:52ch; margin:0 auto; }
+.blog-grid{ display:grid; gap:20px; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); }
+.post-card{ display:flex; flex-direction:column; background:var(--surface-card); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius-card); overflow:hidden; text-decoration:none; box-shadow:var(--shadow-tile); transition:transform .3s cubic-bezier(.2,.8,.3,1.4), border-color .3s ease; }
+.post-card:hover{ transform:translateY(-6px); border-color:var(--accent-guide); }
+.post-card img{ width:100%; aspect-ratio:4/3; object-fit:cover; object-position:center 20%; display:block; }
+.post-card .pc-body{ padding:20px 22px 24px; }
+.post-card .pc-date{ font-family:var(--font-bitacora); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); }
+.post-card h2{ font-family:var(--font-guion); font-weight:400; font-size:1.12rem; line-height:1.35; margin:10px 0 10px; color:var(--text-primary); }
+.post-card p{ font-family:var(--font-bitacora); font-size:.82rem; line-height:1.6; color:var(--text-muted); margin:0; }
+@media(prefers-reduced-motion: reduce){ .post-card{ transition:none; } .post-card:hover{ transform:none; } }

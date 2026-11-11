@@ -1,0 +1,415 @@
+/* ==========================================================================
+   global.css — Monty Experience
+   ÚNICA fuente del diseño compartido. Toda página del sitio enlaza este
+   archivo; el diseño de la landing principal y el de las demás páginas sale
+   de aquí, así que un cambio de color, tipografía o botón se hace UNA vez.
+
+   Cómo se usa en cada página (en el <head>, en este orden):
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="/assets/css/global.css">
+     ...y después, si la página lo necesita, su <style> propio (solo lo específico).
+
+   Reglas del sistema (ver sistema de diseño "Monty Experience"):
+   · Dos voces: Special Elite (guion: titulares, botones) y Courier Prime
+     (bitácora: apoyo, etiquetas, datos, texto largo). Inter solo cuando el
+     texto es largo y necesita legibilidad por encima de carácter.
+   · Naranja (accent-guide) SEÑALA; amarillo (accent-signal) CONFIRMA. Nunca
+     decorativos, nunca intercambiables.
+   · Fondos oscuros siempre con grano + degradado radial hacia gradient-deep.
+   · Un único tratamiento de botón (CTAButton): primario animado y secundario.
+   · Todo movimiento se apaga con prefers-reduced-motion.
+   ========================================================================== */
+
+/* ───────────── 1. TOKENS ───────────── */
+:root{
+  /* color */
+  --bg-stage:#1c0e2c;
+  --surface-section-a:#170b28;
+  --surface-section-b:#1a0e2a;
+  --surface-section-c:#150b22;
+  --surface-footer:#12081f;
+  --surface-card:#0e0817;
+  --surface-topbar:#0d0714;
+  --gradient-deep:#0a0512;
+  --surface-note:#fff8f6;
+  --text-primary:#ffffff;
+  --text-muted:#d9c3d0;
+  --accent-signal:#fdc005;
+  --accent-guide:#f68318;
+
+  /* tipografía */
+  --font-guion:'Special Elite', cursive;
+  --font-bitacora:'Courier Prime', monospace;
+  --font-cuerpo:'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* espaciado */
+  --space-section-x:6vw;
+  --space-section-y-desktop:96px;
+  --space-section-y-mobile:64px;
+  --space-card-padding:26px;
+
+  /* radio */
+  --radius-xs:2px;  --radius-sm:4px;  --radius-md:6px;  --radius-lg:14px;
+  --radius-xl:16px; --radius-card:18px; --radius-pill:26px; --radius-circle:50%;
+
+  /* sombra */
+  --shadow-tile:0 16px 34px rgba(0,0,0,.5);
+  --shadow-logo:0 18px 40px rgba(0,0,0,.55);
+  --shadow-gallery:0 26px 54px rgba(0,0,0,.55);
+  --shadow-note:0 14px 30px rgba(0,0,0,.5);
+
+  /* grano fílmico (única textura del sistema) */
+  --grain:url("../img/grano.svg");
+
+  /* alias heredados: el CSS de la landing y de las páginas de herramientas
+     todavía usa estos nombres; apuntan a los tokens de arriba. */
+  --yellow:var(--accent-signal);
+  --orange:var(--accent-guide);
+  --bg-dark:var(--bg-stage);
+  --cream:var(--surface-note);
+}
+
+/* ───────────── 2. BASE ───────────── */
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg-stage);color:var(--text-primary);font-family:var(--font-cuerpo);}
+@media (prefers-reduced-motion: no-preference){
+  html{ scroll-behavior:smooth; }
+}
+
+/* barra superior fija */
+.label-bar{
+  position:sticky; top:0; left:0; right:0; z-index:30;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 18px; background:rgba(13,7,20,.95); backdrop-filter:blur(6px);
+  font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.label-bar b{ color:#fff; }
+
+/* ───────────── 3. CTAButton (primario + secundario) ───────────── */
+@keyframes btnGlow{
+  0%, 100%{ box-shadow:0 0 0 rgba(246,131,24,0); }
+  50%{ box-shadow:0 0 26px 2px rgba(246,131,24,.55); }
+}
+@keyframes btnShine{
+  0%{ left:-60%; }
+  38%{ left:130%; }
+  100%{ left:130%; }
+}
+@keyframes btnPulse{
+  0%, 100%{ transform:scale(1); }
+  50%{ transform:scale(1.035); }
+}
+.btn-wrap{
+  display:inline-flex;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  animation:btnGlow 2.6s ease-in-out infinite, btnPulse 3.8s ease-in-out infinite;
+}
+.btn-wrap::after{
+  content:"";
+  position:absolute;
+  top:0; left:-60%;
+  width:38%; height:100%;
+  background:linear-gradient(115deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.4) 50%, rgba(255,255,255,0) 100%);
+  transform:skewX(-18deg);
+  animation:btnShine 3.4s ease-in-out infinite;
+  pointer-events:none;
+}
+.btn-icon{
+  width:44px; display:flex; align-items:center; justify-content:center;
+  font-size:1rem; background:var(--accent-signal); color:var(--bg-stage);
+}
+.btn{
+  padding:14px 24px; font-size:.94rem;
+  font-family:var(--font-guion);
+  background:transparent; color:#fff;
+  border:2px solid var(--accent-guide); border-left:none;
+  cursor:pointer;
+}
+a.btn{ display:inline-flex; align-items:center; justify-content:center; text-decoration:none; }
+
+/* variante secundaria: contacto directo (WhatsApp). Quieta hasta el hover. */
+.btn.btn-secundario{
+  background:transparent; color:var(--surface-note);
+  border:2px solid rgba(255,248,246,.3);
+  transition:border-color .3s ease, color .3s ease;
+}
+.btn-icon.btn-icon-secundario{
+  background:transparent; color:var(--surface-note);
+  border:2px solid rgba(255,248,246,.3); border-right:none;
+  transition:border-color .3s ease, color .3s ease;
+}
+.btn-wrap.btn-wrap-secundario{
+  animation:none;
+  transition:transform .3s cubic-bezier(.2,.8,.3,1.4);
+}
+.btn-wrap.btn-wrap-secundario::after{ animation:none; opacity:0; }
+.btn-wrap.btn-wrap-secundario:hover{ transform:translateY(-7px); }
+.btn-wrap.btn-wrap-secundario:hover .btn.btn-secundario,
+.btn-wrap.btn-wrap-secundario:hover .btn-icon.btn-icon-secundario{
+  border-color:var(--accent-signal); color:var(--accent-signal);
+}
+.btn:focus-visible{ outline:2px solid var(--accent-signal); outline-offset:3px; }
+
+/* ───────────── 4. FOOTER ───────────── */
+.site-footer{
+  position:relative;
+  padding:34px 6vw;
+  background:var(--gradient-deep);
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.site-footer-inner{
+  max-width:1100px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:18px;
+}
+.footer-brand{
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--font-guion); font-size:.92rem; color:var(--surface-note);
+}
+.footer-brand img{ width:30px; height:30px; object-fit:contain; }
+.footer-links{ display:flex; gap:22px; }
+.footer-links a{
+  font-family:var(--font-bitacora); font-size:.8rem;
+  color:var(--text-muted); text-decoration:none;
+  transition:color .25s ease;
+}
+.footer-links a:hover{ color:var(--accent-signal); }
+@media(max-width:640px){
+  .site-footer-inner{ flex-direction:column; text-align:center; }
+}
+
+/* ───────────── 5. CLAQUETA (ClapperboardTransition) ─────────────
+   Se dispara solo desde /assets/js/claqueta.js, al decidir agendar o
+   escribir por WhatsApp. Nunca por scroll, hover o carga. */
+.claqueta-overlay{ position:fixed; inset:0; z-index:99999; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(4,2,8,.94); opacity:0; transition:opacity .3s ease; }
+.claqueta-overlay[hidden]{ display:none; }
+.claqueta-overlay.show{ opacity:1; }
+.claqueta-overlay.hide{ opacity:0; }
+.claqueta-board{ position:relative; width:min(80vw, 340px); transform:scale(.3); opacity:0; }
+.claqueta-board.playing{ animation:claqueta-pop .32s cubic-bezier(.34,1.56,.64,1) forwards; }
+@keyframes claqueta-pop{
+  0%{ transform:scale(.3); opacity:0; }
+  60%{ transform:scale(1.1); opacity:1; }
+  100%{ transform:scale(1); opacity:1; }
+}
+.claqueta-body{ position:relative; padding-top:38px; background:var(--bg-stage); border:1.5px solid rgba(246,131,24,.4); border-radius:8px; box-shadow:0 18px 44px rgba(0,0,0,.6), 0 0 40px rgba(246,131,24,.18); overflow:hidden; z-index:1; }
+.claqueta-body-stripe{ position:absolute; left:0; top:0; width:100%; height:38px; background:repeating-linear-gradient(135deg, #fff 0 22px, var(--accent-guide) 22px 44px); z-index:0; }
+.claqueta-arm{ position:absolute; left:0; top:0; width:100%; height:38px; transform-origin:0% 100%; transform:rotate(-26deg); z-index:2; }
+.claqueta-board.playing .claqueta-arm{ animation:claqueta-clap .3s cubic-bezier(.36,0,.66,1) forwards; animation-delay:.55s; }
+@keyframes claqueta-clap{
+  0%{ transform:rotate(-26deg); }
+  70%{ transform:rotate(4deg); }
+  85%{ transform:rotate(-2deg); }
+  100%{ transform:rotate(0deg); }
+}
+.claqueta-stripes{ width:100%; height:100%; border-radius:8px 8px 2px 2px; background:repeating-linear-gradient(135deg, #fff 0 22px, var(--accent-guide) 22px 44px); box-shadow:0 8px 22px rgba(0,0,0,.55); }
+.claqueta-hinge{ position:absolute; left:12px; bottom:5px; width:12px; height:12px; border-radius:50%; background:var(--bg-stage); border:2px solid #fff; z-index:3; }
+.claqueta-flash{ position:absolute; inset:0; background:#fff; opacity:0; mix-blend-mode:screen; pointer-events:none; z-index:3; }
+.claqueta-board.playing .claqueta-flash{ animation:claqueta-flash .3s ease-out forwards; animation-delay:.55s; }
+@keyframes claqueta-flash{
+  0%{ opacity:0; }
+  35%{ opacity:.4; }
+  100%{ opacity:0; }
+}
+.claqueta-brand{ position:relative; padding:22px 20px 30px; text-align:center; z-index:1; }
+.claqueta-logo{ display:block; width:min(72%, 230px); height:auto; margin:0 auto; filter:drop-shadow(0 0 18px rgba(246,131,24,.35)); }
+.claqueta-tag{ display:block; margin-top:10px; font-family:var(--font-bitacora); font-size:.82rem; letter-spacing:.04em; color:var(--text-muted); text-transform:uppercase; }
+@media(max-width:480px){
+  .claqueta-logo{ width:min(72%, 190px); }
+  .claqueta-arm{ height:30px; }
+  .claqueta-body{ padding-top:30px; }
+  .claqueta-body-stripe{ height:30px; }
+}
+
+/* ───────────── 6. COMPONENTES PARA PÁGINAS DEL SITIO ─────────────
+   Prefijo mx-. Los usan las páginas que no son la landing (privacidad,
+   gracias, 404, bio de Instagram). Todo sale de los tokens de arriba. */
+
+/* estructura de página: escenario + contenido + footer abajo */
+.mx-page{ min-height:100svh; display:flex; flex-direction:column; }
+.mx-main{ flex:1; }
+.mx-container{ width:100%; max-width:760px; margin:0 auto; }
+.mx-container--narrow{ max-width:560px; }
+
+/* GrainBackground: grano + degradado radial hacia gradient-deep (siempre juntos) */
+.mx-stage,
+.mx-surface-a,
+.mx-surface-b,
+.mx-surface-c{
+  position:relative;
+  background-size:180px 180px, cover;
+  background-repeat:repeat, no-repeat;
+  background-blend-mode:soft-light, normal;
+}
+.mx-stage{
+  background-color:var(--bg-stage);
+  background-image:var(--grain), radial-gradient(ellipse 85% 65% at 50% 36%, #3a1f60 0%, #22123a 38%, #120a1e 66%, #05030a 100%);
+}
+.mx-surface-a{
+  background-color:var(--surface-section-a);
+  background-image:var(--grain), radial-gradient(ellipse 90% 70% at 50% 15%, #241238 0%, var(--surface-section-a) 45%, var(--gradient-deep) 100%);
+}
+.mx-surface-b{
+  background-color:var(--surface-section-b);
+  background-image:var(--grain), radial-gradient(ellipse 90% 70% at 50% 100%, #2a1642 0%, var(--surface-section-b) 45%, var(--gradient-deep) 100%);
+}
+.mx-surface-c{
+  background-color:var(--surface-section-c);
+  background-image:var(--grain), radial-gradient(ellipse 90% 70% at 50% 0%, #241238 0%, var(--surface-section-c) 45%, var(--gradient-deep) 100%);
+}
+
+/* ritmo de sección */
+.mx-section{ padding:var(--space-section-y-mobile) var(--space-section-x); }
+@media(min-width:900px){ .mx-section{ padding-top:var(--space-section-y-desktop); padding-bottom:var(--space-section-y-desktop); } }
+
+/* SectionHeading / HeroText */
+.mx-eyebrow{
+  display:block; margin:0 0 14px;
+  font-family:var(--font-bitacora); font-size:.72rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--text-muted);
+}
+.mx-h1{
+  font-family:var(--font-guion); font-weight:400; font-style:normal;
+  font-size:clamp(1.5rem, 3.6vw, 2.2rem); line-height:1.22; letter-spacing:0;
+  margin:0 0 22px; max-width:23ch; color:var(--text-primary);
+}
+.mx-h2{
+  font-family:var(--font-guion); font-weight:400;
+  font-size:clamp(1.3rem, 2.8vw, 1.7rem); line-height:1.32;
+  margin:0 0 12px; color:var(--text-primary);
+}
+/* una palabra puntual en accent-signal, con el resplandor del sistema (máx. una por título) */
+.mx-accent{ color:var(--accent-signal); text-shadow:0 0 30px rgba(253,192,5,.5); }
+.mx-sub{
+  font-family:var(--font-bitacora); font-size:clamp(.82rem, 1vw, .92rem);
+  line-height:1.6; color:var(--text-muted); margin:0 0 24px; max-width:46ch;
+}
+.mx-sub b{ color:var(--accent-signal); font-weight:700; text-shadow:0 0 30px rgba(253,192,5,.5); }
+.mx-stat{
+  font-family:var(--font-bitacora); font-size:clamp(.95rem, 1.05vw, 1.05rem);
+  color:var(--accent-signal); text-shadow:0 0 30px rgba(253,192,5,.5); margin:0 0 28px;
+}
+.mx-center{ text-align:center; }
+.mx-center .mx-h1, .mx-center .mx-sub{ margin-left:auto; margin-right:auto; }
+
+/* insignia en píldora */
+.mx-badge{
+  display:inline-block; padding:6px 14px; margin:0 0 20px;
+  font-family:var(--font-bitacora); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--accent-signal); border:1px solid rgba(253,192,5,.45); border-radius:var(--radius-pill);
+  background:rgba(253,192,5,.06);
+}
+
+/* tarjeta: objeto apoyado sobre la sección (siempre más oscura que su fondo) */
+.mx-card{
+  background:var(--surface-card);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--radius-card);
+  padding:var(--space-card-padding);
+  box-shadow:var(--shadow-tile);
+}
+
+/* nota en "papel" (superficie clara: lleva su propio texto oscuro, sin grano) */
+.mx-note{
+  background:var(--surface-note); color:#2a1d2e;
+  border-radius:var(--radius-xs); padding:16px 18px;
+  box-shadow:var(--shadow-note);
+  font-family:var(--font-guion); font-size:.95rem; line-height:1.5;
+}
+
+/* texto largo (bitácora): políticas, instrucciones */
+.mx-prose{ font-family:var(--font-bitacora); font-size:.86rem; line-height:1.75; color:var(--text-muted); }
+.mx-prose h2{
+  font-family:var(--font-guion); font-weight:400; font-size:1.15rem; line-height:1.35;
+  color:var(--text-primary); margin:30px 0 10px;
+}
+.mx-prose h2:first-child{ margin-top:0; }
+.mx-prose p{ margin:0 0 12px; }
+.mx-prose strong{ color:var(--text-primary); font-weight:700; }
+.mx-prose ul{ margin:0 0 12px; padding-left:20px; }
+.mx-prose li{ margin-bottom:8px; }
+.mx-prose a{ color:var(--accent-signal); text-underline-offset:3px; }
+.mx-prose a:hover{ color:var(--accent-guide); }
+
+/* enlace discreto de regreso */
+.mx-back{
+  display:inline-block; margin-top:22px;
+  font-family:var(--font-bitacora); font-size:.8rem; color:var(--text-muted); text-decoration:none;
+  transition:color .25s ease;
+}
+.mx-back:hover{ color:var(--accent-signal); }
+
+/* foto/logo flotante: nada se queda perfectamente quieto */
+@keyframes mxFloat{
+  0%, 100%{ transform:translateY(0); }
+  50%{ transform:translateY(-8px); }
+}
+.mx-float{ animation:mxFloat 5.2s ease-in-out infinite; }
+.mx-logo{ display:block; width:min(60vw, 220px); height:auto; margin:0 auto 28px; filter:drop-shadow(0 18px 40px rgba(0,0,0,.55)); }
+
+/* barra superior de páginas del sitio */
+.mx-topbar{ justify-content:space-between; }
+.mx-topbar a{ color:var(--text-muted); text-decoration:none; transition:color .25s ease; }
+.mx-topbar a:hover{ color:var(--accent-signal); }
+.mx-topbar img{ width:26px; height:26px; object-fit:contain; vertical-align:middle; margin-right:8px; }
+
+/* pasos numerados (bio de Instagram) */
+.mx-steps{ display:grid; gap:14px; grid-template-columns:repeat(3,1fr); margin-top:44px; text-align:left; }
+.mx-step .mx-step-num{ display:block; font-family:var(--font-bitacora); font-size:.72rem; letter-spacing:.1em; color:var(--accent-signal); margin-bottom:10px; }
+.mx-step p{ margin:0; font-family:var(--font-bitacora); font-size:.84rem; line-height:1.6; color:var(--text-muted); }
+.mx-step p strong{ color:var(--text-primary); }
+@media(max-width:720px){ .mx-steps{ grid-template-columns:1fr; } }
+
+/* ───────────── 7. ACCESIBILIDAD: movimiento ───────────── */
+@media(prefers-reduced-motion: reduce){
+  .btn-wrap, .btn-wrap::after, .mx-float{ animation:none !important; }
+  .btn-wrap.btn-wrap-secundario{ transition:none !important; }
+  .btn-wrap.btn-wrap-secundario:hover{ transform:none !important; }
+  .claqueta-board.playing, .claqueta-board.playing .claqueta-arm, .claqueta-board.playing .claqueta-flash{ animation:none !important; }
+  .claqueta-board{ transform:none; opacity:1; }
+}
+
+/* ───────────── 8. AJUSTES DE LAYOUT PARA PÁGINAS DEL SITIO ───────────── */
+.mx-main--center{ display:flex; align-items:center; }
+.mx-sub--small{ margin:16px auto 0; font-size:.78rem; }
+
+/* ───────────── 9. BOTÓN CTA PARA <button>/<a> SUELTOS (páginas-herramienta) ─────────────
+   Mismo tratamiento que CTAButton (icono amarillo + borde naranja), pero sin
+   wrapper: el icono se dibuja con ::before. Lo usan perfil-actor y crea-tu-cv. */
+.cta-btn, .confirm-btn, .cta-btn-main{
+  position:relative; display:inline-flex; align-items:center; justify-content:center;
+  text-align:center; text-decoration:none; overflow:hidden; cursor:pointer;
+  font-family:var(--font-guion); font-weight:400; font-size:.94rem; letter-spacing:0;
+  color:#fff; background:transparent;
+  border:2px solid var(--accent-guide); border-left:none; border-radius:0;
+  box-shadow:none; padding:14px 22px 14px 66px;
+}
+.cta-btn{ width:100%; }
+.cta-btn::before, .confirm-btn::before, .cta-btn-main::before{
+  content:"▸"; position:absolute; left:0; top:0; bottom:0; width:44px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--accent-signal); color:var(--bg-stage); font-size:1rem;
+}
+.cta-btn:not(.ghost):not(:disabled),
+.confirm-btn:not([disabled]):not(.confirmed),
+.cta-btn-main{ animation:btnGlow 2.6s ease-in-out infinite, btnPulse 3.8s ease-in-out infinite; }
+.cta-btn:active, .confirm-btn:active{ transform:translateY(1px); }
+.cta-btn:focus-visible, .confirm-btn:focus-visible, .cta-btn-main:focus-visible{ outline:2px solid var(--accent-signal); outline-offset:3px; }
+/* variante secundaria (ghost): quieta, borde tenue */
+.cta-btn.ghost{ border-color:rgba(255,248,246,.3); color:var(--surface-note); animation:none; }
+.cta-btn.ghost::before{ background:transparent; color:var(--surface-note); border:2px solid rgba(255,248,246,.3); border-right:none; top:-2px; bottom:-2px; }
+.cta-btn:disabled, .confirm-btn[disabled]{ opacity:.55; cursor:default; animation:none; }
+.confirm-btn.confirmed{ animation:none; opacity:.85; }
+@media(prefers-reduced-motion: reduce){
+  .cta-btn, .confirm-btn, .cta-btn-main{ animation:none !important; }
+}
+
+/* ───────────── 10. IMÁGENES CON width/height (evita saltos de layout) ─────────────
+   Los atributos width/height reservan el espacio antes de que cargue la imagen.
+   :where() tiene especificidad 0: cualquier regla de tamaño propia de la página gana. */
+:where(img[width][height]){ width:auto; height:auto; }
