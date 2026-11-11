@@ -222,8 +222,6 @@
     .sub-photo{ width:70px; height:88px; }
 
     .crown-row{ gap:20px; }
-    .ghost, .ghost2{ display:none; }
-    .desktop-accent{ display:none; }
     .logo-row{ margin-bottom:10px; align-items:center; }
     .crown-row.logo-row{ gap:8px; }
     .headline-row{ margin-bottom:10px; }
@@ -291,17 +289,6 @@
     background-repeat:repeat, no-repeat;
     background-blend-mode:soft-light, normal;
   }
-  .problema-head{ text-align:center; max-width:720px; margin:0 auto 56px; }
-  .problema-head h2{
-    font-family:'Special Elite', cursive; font-weight:400;
-    font-size:clamp(1.4rem, 3vw, 2.1rem); line-height:1.32; margin:0 0 16px;
-  }
-  .problema-head h2 .accent{ color:var(--yellow); text-shadow:0 0 30px rgba(253,192,5,.5); }
-  .problema-head .p-sub{
-    font-family:'Courier Prime', monospace; color:var(--text-muted);
-    font-size:clamp(.9rem, 1.1vw, 1.05rem); margin:0 0 20px; line-height:1.55;
-  }
-  .problema-head .p-sub b{ color:#fff; }
   .problema-cols{
     display:flex; gap:34px; max-width:960px; margin:0 auto;
     flex-wrap:wrap; justify-content:center;
@@ -361,7 +348,6 @@
 
   @media(max-width:900px){
     .problema{ padding:64px 5vw 70px; }
-    .problema-head{ margin-bottom:38px; }
     .problema-cols{ gap:20px; }
     .p-card{ padding:24px 20px; }
     .problema-stat{ margin-bottom:40px; }
@@ -471,17 +457,6 @@
     background-repeat:repeat, no-repeat;
     background-blend-mode:soft-light, normal;
   }
-  .proceso-head{ text-align:center; max-width:680px; margin:0 auto; }
-  .proceso-head .chip{
-    display:inline-block; font-family:'Courier Prime', monospace; font-size:.7rem; font-weight:700;
-    letter-spacing:.1em; text-transform:uppercase; color:var(--bg-dark);
-    background:var(--yellow); padding:6px 16px; border-radius:20px; margin:0 0 16px;
-    box-shadow:0 0 20px rgba(253,192,5,.35);
-  }
-  .proceso-head h2{
-    font-family:'Special Elite', cursive; font-weight:400;
-    font-size:clamp(1.3rem, 2.8vw, 1.9rem); margin:0;
-  }
 
   /* ===== Desktop: camino tipo roadmap (curva), iconos + números, se ilumina con el cursor ===== */
   .proceso-road{
@@ -523,53 +498,16 @@
 
   .road-label.pos-ul{ right:calc(100% + 20px); bottom:calc(100% + 14px); text-align:right; }
   .road-label.pos-dr{ left:calc(100% + 20px); top:calc(100% + 14px); text-align:left; }
-
-  .proceso-cta{ display:flex; justify-content:center; margin-top:104px; }
-  @media(max-width:900px){ .proceso-cta{ margin-top:72px; } }
+  @media(max-width:900px){ }
 
   /* ===== Mobile: lista vertical, iconos + números, se ilumina al ir tocando cada uno ===== */
   .proceso-path-mobile{ display:none; }
 
   @media(min-width:901px){
-    .proceso-path-mobile{ display:none; }
   }
 
   @media(max-width:900px){
     .proceso-road{ display:none; }
-    .proceso-path-mobile{ display:block; position:relative; max-width:480px; margin:30px auto 0; padding-left:54px; }
-    .pm-line-base{
-      position:absolute; left:19px; top:6px; bottom:6px; width:2px;
-      background-image:linear-gradient(rgba(255,255,255,.28) 60%, transparent 40%);
-      background-size:2px 14px; background-repeat:repeat-y;
-    }
-    .pm-line-progress{
-      position:absolute; left:19px; top:6px; width:2px; height:0%;
-      background:var(--yellow); box-shadow:0 0 12px rgba(253,192,5,.6);
-      transition:height .5s cubic-bezier(.2,.8,.2,1);
-    }
-    .pm-step{ position:relative; padding-bottom:26px; }
-    .pm-step:last-child{ padding-bottom:0; }
-    .pm-badge{
-      position:absolute; left:-54px; top:0; width:38px; height:38px; border-radius:50%;
-      background:var(--bg-dark); border:2px solid rgba(255,255,255,.28); z-index:2;
-      display:flex; align-items:center; justify-content:center;
-      transition:background .35s ease, border-color .35s ease, box-shadow .35s ease;
-    }
-    .pm-badge svg{ width:18px; height:18px; stroke:var(--text-muted); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; transition:stroke .35s ease; }
-    .pm-num{
-      position:absolute; top:-5px; left:-5px; width:16px; height:16px; border-radius:50%;
-      background:var(--bg-dark); border:1px solid rgba(255,255,255,.3);
-      font-family:'Special Elite', cursive; font-size:.54rem; color:var(--text-muted);
-      display:flex; align-items:center; justify-content:center;
-      transition:background .35s ease, border-color .35s ease, color .35s ease;
-    }
-    .pm-step.is-lit .pm-badge{ background:var(--yellow); border-color:var(--yellow); box-shadow:0 0 20px rgba(253,192,5,.55); }
-    .pm-step.is-lit .pm-badge svg{ stroke:var(--bg-dark); }
-    .pm-step.is-lit .pm-num{ background:var(--yellow); border-color:var(--yellow); color:var(--bg-dark); }
-    .pm-content{ opacity:.45; transition:opacity .35s ease; }
-    .pm-step.is-lit .pm-content{ opacity:1; }
-    .pm-content h3{ font-family:'Special Elite', cursive; font-weight:400; font-size:.9rem; margin:0 0 4px; color:#fff; }
-    .pm-content p{ font-family:'Courier Prime', monospace; font-size:.78rem; line-height:1.45; color:var(--text-muted); margin:0; }
   }
 
   /* ===================== SECCIÓN: REFLEXIÓN — "¿Qué va a pasar cuando llegue el tercero?" ===================== */
@@ -711,28 +649,6 @@
     display:flex; flex-direction:column; justify-content:center; overflow-y:auto;
     opacity:0; pointer-events:none; transition:opacity .55s ease;
   }
-  .pkg-card.is-open .pkg-panel{ opacity:1; pointer-events:auto; }
-  .pkg-close{
-    position:absolute; top:16px; right:16px; width:30px; height:30px; border-radius:50%;
-    background:rgba(13,11,18,.45); color:#fff; transform:rotate(45deg);
-    display:flex; align-items:center; justify-content:center; font-size:1.1rem; cursor:pointer;
-  }
-  .pkg-classic .pkg-close{ border:1.5px solid #93a6e6; }
-  .pkg-elite   .pkg-close{ border:1.5px solid #e6a0c4; }
-  .pkg-fenix   .pkg-close{ border:1.5px solid #ffab6b; }
-
-  .pkg-caption-open{
-    font-family:'Special Elite', cursive; font-weight:400; font-size:1.1rem; color:#fff;
-    margin:0 0 10px; padding-right:40px;
-  }
-  .pkg-ideal{
-    font-family:'Courier Prime', monospace; font-size:.82rem; color:rgba(255,255,255,.88);
-    line-height:1.5; margin:0 0 16px; padding-right:40px;
-  }
-  .pkg-ideal .kw{ font-weight:700; }
-  .pkg-classic .pkg-ideal .kw{ color:#93a6e6; }
-  .pkg-elite   .pkg-ideal .kw{ color:#e6a0c4; }
-  .pkg-fenix   .pkg-ideal .kw{ color:#ffab6b; }
 
   .pkg-stats{ display:flex; gap:20px; padding-top:0; margin:0 0 16px; }
   .pkg-stat .n{ font-family:'Special Elite', cursive; font-weight:400; font-size:1.15rem; color:#fff; display:block; }
@@ -794,8 +710,6 @@
     /* el panel abierto va mas compacto en mobile para que el desglose completo
        (incluido Fenix, el mas largo) quepa dentro de la tarjeta 9:16 sin scroll interno */
     .pkg-panel{ padding:14px 16px 10px; }
-    .pkg-caption-open{ font-size:1rem; margin:0 0 5px; padding-right:36px; }
-    .pkg-ideal{ font-size:.74rem; line-height:1.36; margin:0 0 8px; padding-right:36px; }
     .pkg-stats{ padding-top:7px; margin:0 0 8px; gap:16px; }
     .pkg-includes{ gap:4px; }
     .pkg-includes li{ font-size:.68rem; line-height:1.26; gap:7px; }
@@ -807,7 +721,6 @@
     /* el panel abierto va ligeramente mas compacto en desktop para que el desglose
        completo (incluido Fenix, el mas largo) quepa dentro de la tarjeta 4:5 sin scroll interno */
     .pkg-caption-open{ font-size:1.02rem; margin:0 0 7px; }
-    .pkg-ideal{ font-size:.76rem; line-height:1.42; margin:0 0 11px; }
     .pkg-stats{ padding-top:9px; margin:0 0 11px; gap:18px; }
     .pkg-includes{ gap:6px; }
     .pkg-includes li{ font-size:.71rem; line-height:1.3; gap:8px; }
@@ -911,7 +824,6 @@
   }
   .port-dots .port-dot.is-active{ background:var(--yellow); width:18px; border-radius:3px; }
 
-
   /* ===================== SECCIÓN: SOBRE MÍ — formato carta/confesión: retrato
      chico flotando arriba (misma familia de animación que el portafolio) y
      el texto abajo como un mensaje personal, directo, al actor que lee ===================== */
@@ -1014,8 +926,6 @@
   .sm-more-btn.is-open .sm-more-icon{
     transform:rotate(135deg); background:var(--orange); color:#1c0e2c;
   }
-
-
 
   /* ===================== SECCIÓN: TESTIMONIOS — mosaico flotante de cápsulas
      (mismo lenguaje visual que "mapa de posibilidades"); al tocar una se abre
@@ -1135,22 +1045,6 @@
     position:absolute; left:0; right:0; bottom:38px; z-index:1; text-align:center;
     font-family:'Special Elite', cursive; font-weight:400; font-size:1.05rem; color:#fff;
   }
-  .testi-modal-note{
-    position:absolute; left:0; right:0; bottom:16px; z-index:1; text-align:center;
-    font-family:'Courier Prime', monospace; font-size:.66rem; letter-spacing:.03em;
-    text-transform:uppercase; color:var(--text-muted); padding:0 20px;
-  }
-  .testi-modal-play{
-    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    width:56px; height:56px; border-radius:50%; z-index:1;
-    background:rgba(253,192,5,.92); box-shadow:0 0 30px rgba(253,192,5,.55);
-    display:flex; align-items:center; justify-content:center;
-  }
-  .testi-modal-play::after{
-    content:''; margin-left:4px;
-    border-style:solid; border-width:10px 0 10px 16px;
-    border-color:transparent transparent transparent #1c0e2c;
-  }
   .testi-modal-close{
     position:absolute; top:12px; right:12px; z-index:3;
     width:38px; height:38px; border-radius:50%; border:none; cursor:pointer;
@@ -1264,8 +1158,6 @@
   }
   .faq-extras-cta{ padding:0 30px 26px; text-align:center; }
 
-
-
   /* ===================== SECCIÓN: CIERRE — mantra + CTA final ===================== */
   .cta-final{
     position:relative;
@@ -1286,10 +1178,6 @@
     text-shadow:0 0 40px rgba(253,192,5,.25);
   }
   .cta-final-btns{ margin-bottom:26px; }
-  .cta-final-micro{
-    font-family:'Courier Prime', monospace; font-size:.9rem;
-    color:var(--text-muted); margin:0 0 10px;
-  }
   .cta-final-cupos{
     font-family:'Courier Prime', monospace; font-size:.82rem;
     letter-spacing:.03em; text-transform:uppercase;
@@ -1334,7 +1222,6 @@
     font-family:'Courier Prime', monospace; font-size:.9rem;
     color:var(--text-muted); margin:0 0 26px;
   }
-
 
   /* ===================== SECCIÓN: NAV DE SECCIONES (debajo del hero) ===================== */
   .section-nav{
