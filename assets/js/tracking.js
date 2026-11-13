@@ -147,22 +147,22 @@ window.MX = window.MX || {};
       }
     } catch (e) {}
 
-    // 4) Paquetes: ViewContent cuando una tarjeta se abre (solo navegador)
+    // 4) Paquetes: ViewContent cuando se abre el modal de una experiencia (solo navegador).
+    //    El modal recibe la clase is-open y su panel activo indica el paquete (data-pkg).
     try {
-      var cards = document.querySelectorAll('.pkg-card');
-      if (cards.length && 'MutationObserver' in window) {
-        var last = '';
-        var mo = new MutationObserver(function (muts) {
-          muts.forEach(function (m) {
-            var c = m.target;
-            if (!c.classList || !c.classList.contains('is-open')) return;
-            var name = (c.className.match(/pkg-(classic|elite|fenix)/) || [])[1] || 'paquete';
-            if (name === last) return;
-            last = name;
+      var modal = document.getElementById('expModal');
+      if (modal && 'MutationObserver' in window) {
+        var wasOpen = false;
+        var mo = new MutationObserver(function () {
+          var open = modal.classList.contains('is-open');
+          if (open && !wasOpen) {
+            var panel = modal.querySelector('.exp-modal-panel.is-active');
+            var name = (panel && panel.getAttribute('data-pkg')) || 'paquete';
             trackEvent('ViewContent', { content_name: 'Paquete ' + name, content_category: 'paquetes' }, false);
-          });
+          }
+          wasOpen = open;
         });
-        cards.forEach(function (c) { mo.observe(c, { attributes: true, attributeFilter: ['class'] }); });
+        mo.observe(modal, { attributes: true, attributeFilter: ['class'] });
       }
     } catch (e) {}
   }
