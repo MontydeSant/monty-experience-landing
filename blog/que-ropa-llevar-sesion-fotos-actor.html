@@ -64,12 +64,25 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 /></noscript>
 <script src="/blog/assets/blog.js" defer></script>
+<script src="/blog/assets/nav.js" defer></script>
 </head>
 <body class="blog-page" data-post-title="¿Qué ropa llevar a tu sesión de fotos de actor?">
-<header class="label-bar mx-topbar">
-  <a href="/"><img src="/assets/img/logo-monty.webp" alt="" width="420" height="323">Monty Experience</a>
-  <a href="/blog/">Blog</a>
-</header>
+<header class="site-nav" id="siteNav">
+    <a class="site-nav-logo" href="/" aria-label="Monty Experience, inicio"><img src="/assets/img/logo-monty.webp" alt="Monty Experience" width="50" height="38"></a>
+    <ul class="site-nav-links">
+      <li><a href="/#paquetes"><img src="/assets/img/nav-paquetes.webp" alt="" width="22" height="22" loading="lazy"><span>Experiencias</span></a></li>
+      <li><a href="/#portafolio"><img src="/assets/img/nav-book.webp" alt="" width="22" height="22" loading="lazy"><span>Book</span></a></li>
+      <li><a href="/#sobre-mi"><img src="/assets/img/nav-acerca.webp" alt="" width="22" height="22" loading="lazy"><span>Acerca de mí</span></a></li>
+      <li><a href="/#faq"><img src="/assets/img/nav-preguntas.webp" alt="" width="22" height="22" loading="lazy"><span>Preguntas</span></a></li>
+      <li><a href="/blog/" aria-current="page"><img src="/assets/img/nav-blog.webp" alt="" width="22" height="22" loading="lazy"><span>Blog</span></a></li>
+      <li><a href="/#testimonios"><img src="/assets/img/nav-testimonios.webp" alt="" width="22" height="22" loading="lazy"><span>Testimonios</span></a></li>
+    </ul>
+    <a class="site-nav-cta" href="/#paquetes"><span>Agendar mi cafecito</span></a>
+    <button type="button" class="site-nav-toggle" id="siteNavToggle" aria-expanded="false" aria-controls="siteNav" aria-label="Abrir menú">
+      <svg class="icon-burger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </header>
 <main class="blog-main">
   <div class="blog-wrap">
     <nav class="crumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span aria-hidden="true">›</span><a href="/blog/">Blog</a><span aria-hidden="true">›</span>Qué ropa llevar a tu sesión</nav>
