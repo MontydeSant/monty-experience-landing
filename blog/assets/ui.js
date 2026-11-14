@@ -2,6 +2,11 @@
    · Al abrir un artículo (o volver), el contenido se disuelve ~300 ms y la tarjeta elegida "salta" un poco; el header no se mueve.
    · Sin JS o con prefers-reduced-motion, los enlaces funcionan normal y al instante. */
 (function(){
+  /* Al abrir otra página del blog siempre se empieza arriba (sin heredar la posición de la página anterior). */
+  try{ if('scrollRestoration' in history) history.scrollRestoration='manual'; }catch(x){}
+  function toTop(){ if(location.hash) return; window.scrollTo(0,0); var w=document.querySelector('.site-nav')||document.body; try{ w.scrollIntoView({block:'start'}); }catch(x){} }
+  toTop(); window.addEventListener('load',toTop);
+  window.addEventListener('pageshow',function(e){ if(!e.persisted) toTop(); });
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   function reset(){ document.body.classList.remove('is-leaving'); var c=document.querySelector('.post-card.is-chosen'); if(c) c.classList.remove('is-chosen'); }
   window.addEventListener('pageshow',function(e){ if(e.persisted) reset(); });
