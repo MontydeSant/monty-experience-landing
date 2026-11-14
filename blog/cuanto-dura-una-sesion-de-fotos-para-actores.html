@@ -65,6 +65,9 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 /></noscript>
 <script src="/blog/assets/blog.js" defer></script>
 <script src="/blog/assets/nav.js" defer></script>
+<script src="/blog/assets/ui.js" defer></script>
+<script src="/assets/js/tracking.js" defer></script>
+<script src="/assets/js/claqueta.js" defer></script>
 </head>
 <body class="blog-page" data-post-title="¿Cuánto dura una sesión de fotos para actores y qué esperar?">
 <header class="site-nav" id="siteNav">
@@ -77,7 +80,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       <li><a href="/blog/" aria-current="page"><img src="/assets/img/nav-blog.webp" alt="" width="22" height="22" loading="lazy"><span>Blog</span></a></li>
       <li><a href="/#testimonios"><img src="/assets/img/nav-testimonios.webp" alt="" width="22" height="22" loading="lazy"><span>Testimonios</span></a></li>
     </ul>
-    <a class="site-nav-cta" href="/#paquetes"><span>Agendar mi cafecito</span></a>
+    <button type="button" class="site-nav-cta" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'><span>Agendar mi cafecito</span></button>
     <button type="button" class="site-nav-toggle" id="siteNavToggle" aria-expanded="false" aria-controls="siteNav" aria-label="Abrir menú">
       <svg class="icon-burger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
@@ -85,10 +88,10 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   </header>
 <main class="blog-main">
   <div class="blog-wrap">
-    <nav class="crumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span aria-hidden="true">›</span><a href="/blog/">Blog</a><span aria-hidden="true">›</span>Cuánto dura una sesión de fotos</nav>
+    <div class="post-top"><a class="back-pill" href="/blog/"><span aria-hidden="true">‹</span> Todos los artículos</a><span class="post-tag">La sesión</span></div>
     <article class="post">
       <p class="post-meta">Por Monty · 28 de octubre de 2026</p>
-      <h1>¿Cuánto dura una sesión de fotos para actores y qué esperar?</h1>
+      <h1>¿Cuánto dura una sesión de fotos para actores y <span class="mx-accent">qué esperar</span>?</h1>
       <p class="lead">Una sesión de fotos para actores en Monty Experience dura <strong>1 hora en Classic, 3 horas en Elite y 5 horas en Fénix</strong>. Antes hay una junta por Google Meet, durante te ves en pantalla mientras se toman las fotos, y la entrega llega en 5 a 15 días hábiles, según tu experiencia.</p>
 <h2>Antes de la sesión: la junta por Meet</h2>
 <p>Nadie llega en frío. Antes hay una junta por Google Meet para hablar de ti, de tu momento actual y de lo que quieres que tu imagen diga. Ahí se decide también qué ropa llevar y, en las experiencias que lo incluyen, se arma el mood&shy;board personalizado.</p>
@@ -113,10 +116,23 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       <aside class="post-cta">
         <p class="cta-title">Agenda tu cafecito y elige la duración que va con tu momento</p>
         <p class="cta-micro">Una llamada de 30 minutos. Sin compromiso.</p>
-        <div class="btn-wrap"><span class="btn-icon">▸</span><a class="btn" href="/#paquetes">Agendar mi cafecito con Monty</a></div>
+        <div class="btn-wrap"><span class="btn-icon">▸</span><button type="button" class="btn" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'>Agendar mi cafecito con Monty</button></div>
       </aside>
-      <a class="post-back" href="/blog/">‹ Volver al blog</a>
     </article>
+    <section class="post-more" aria-label="Sigue leyendo">
+      <p class="post-more-title">Sigue leyendo</p>
+      <div class="post-more-grid">
+        <a class="post-card" href="/blog/cuanto-cuesta-un-book-de-actor-cdmx.html">
+          <img src="/assets/img/index-707199a9.jpg" width="700" height="875" loading="lazy" alt="Retrato editorial de actriz para personal branding, fondo turquesa de estudio">
+          <div class="pc-body"><span class="pc-tag">Precios</span><span class="pc-title">¿Cuánto cuesta un book de actor en CDMX?</span><span class="pc-more">Leer ›</span></div>
+        </a>
+        <a class="post-card" href="/blog/cada-cuanto-actualizar-book-de-actor.html">
+          <img src="/assets/img/index-f43ea234.jpg" width="700" height="875" loading="lazy" alt="Retrato sobrio y directo de actor para casting corporativo">
+          <div class="pc-body"><span class="pc-tag">Tu book</span><span class="pc-title">¿Cada cuánto debes actualizar tu book de actor?</span><span class="pc-more">Leer ›</span></div>
+        </a>
+      </div>
+      <div class="post-actions"><a class="back-pill" href="/blog/"><span aria-hidden="true">‹</span> Ver todos los artículos</a></div>
+    </section>
   </div>
 </main>
 <footer class="site-footer">
@@ -132,5 +148,11 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     </span>
   </div>
 </footer>
+<!-- CAL.COM EMBED — pop-up al hacer clic -->
+<script type="text/javascript">
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", {origin:"https://cal.com"});
+  Cal("ui", {"styles":{"branding":{"brandColor":"#f68318"}},"hideEventTypeDetails":false,"layout":"month_view"});
+</script>
 </body>
 </html>

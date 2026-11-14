@@ -65,6 +65,9 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 /></noscript>
 <script src="/blog/assets/blog.js" defer></script>
 <script src="/blog/assets/nav.js" defer></script>
+<script src="/blog/assets/ui.js" defer></script>
+<script src="/assets/js/tracking.js" defer></script>
+<script src="/assets/js/claqueta.js" defer></script>
 </head>
 <body class="blog-page" data-post-title="¿Cada cuánto debes actualizar tu book de actor?">
 <header class="site-nav" id="siteNav">
@@ -77,7 +80,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       <li><a href="/blog/" aria-current="page"><img src="/assets/img/nav-blog.webp" alt="" width="22" height="22" loading="lazy"><span>Blog</span></a></li>
       <li><a href="/#testimonios"><img src="/assets/img/nav-testimonios.webp" alt="" width="22" height="22" loading="lazy"><span>Testimonios</span></a></li>
     </ul>
-    <a class="site-nav-cta" href="/#paquetes"><span>Agendar mi cafecito</span></a>
+    <button type="button" class="site-nav-cta" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'><span>Agendar mi cafecito</span></button>
     <button type="button" class="site-nav-toggle" id="siteNavToggle" aria-expanded="false" aria-controls="siteNav" aria-label="Abrir menú">
       <svg class="icon-burger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
@@ -85,10 +88,10 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   </header>
 <main class="blog-main">
   <div class="blog-wrap">
-    <nav class="crumbs" aria-label="Migas de pan"><a href="/">Inicio</a><span aria-hidden="true">›</span><a href="/blog/">Blog</a><span aria-hidden="true">›</span>Cada cuánto actualizar tu book</nav>
+    <div class="post-top"><a class="back-pill" href="/blog/"><span aria-hidden="true">‹</span> Todos los artículos</a><span class="post-tag">Tu book</span></div>
     <article class="post">
       <p class="post-meta">Por Monty · 28 de octubre de 2026</p>
-      <h1>¿Cada cuánto debes actualizar tu book de actor?</h1>
+      <h1>¿Cada cuánto debes <span class="mx-accent">actualizar tu book</span> de actor?</h1>
       <p class="lead">Actualiza tu book cuando la persona de las fotos ya no sea la que entra al casting. No existe un número mágico de años: existen señales, como un cambio físico, un cambio de rumbo, material que sientes ajeno o fotos que ya no te dan ganas de mandar.</p>
 <h2>Las señales de que tu book ya cumplió su ciclo</h2>
 <ul>
@@ -111,10 +114,23 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       <aside class="post-cta">
         <p class="cta-title">¿No sabes si tu book ya cumplió su ciclo? Platiquémoslo en un cafecito</p>
         <p class="cta-micro">Una llamada de 30 minutos. Sin compromiso.</p>
-        <div class="btn-wrap"><span class="btn-icon">▸</span><a class="btn" href="/#paquetes">Agendar mi cafecito con Monty</a></div>
+        <div class="btn-wrap"><span class="btn-icon">▸</span><button type="button" class="btn" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'>Agendar mi cafecito con Monty</button></div>
       </aside>
-      <a class="post-back" href="/blog/">‹ Volver al blog</a>
     </article>
+    <section class="post-more" aria-label="Sigue leyendo">
+      <p class="post-more-title">Sigue leyendo</p>
+      <div class="post-more-grid">
+        <a class="post-card" href="/blog/que-ropa-llevar-sesion-fotos-actor.html">
+          <img src="/assets/img/index-891a4a85.jpg" width="700" height="875" loading="lazy" alt="Retrato de personaje y comedia para actor de reparto, look excéntrico">
+          <div class="pc-body"><span class="pc-tag">Looks</span><span class="pc-title">¿Qué ropa llevar a tu sesión de fotos de actor?</span><span class="pc-more">Leer ›</span></div>
+        </a>
+        <a class="post-card" href="/blog/book-tecnico-vs-retrato-conceptual-actor.html">
+          <img src="/assets/img/index-aff1acc0.jpg" width="700" height="875" loading="lazy" alt="Retrato sobrio de actriz para casting, fondo claro de estudio">
+          <div class="pc-body"><span class="pc-tag">Estilo</span><span class="pc-title">Book técnico o retrato conceptual: ¿cuál necesita un actor?</span><span class="pc-more">Leer ›</span></div>
+        </a>
+      </div>
+      <div class="post-actions"><a class="back-pill" href="/blog/"><span aria-hidden="true">‹</span> Ver todos los artículos</a></div>
+    </section>
   </div>
 </main>
 <footer class="site-footer">
@@ -130,5 +146,11 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     </span>
   </div>
 </footer>
+<!-- CAL.COM EMBED — pop-up al hacer clic -->
+<script type="text/javascript">
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", {origin:"https://cal.com"});
+  Cal("ui", {"styles":{"branding":{"brandColor":"#f68318"}},"hideEventTypeDetails":false,"layout":"month_view"});
+</script>
 </body>
 </html>
