@@ -40,6 +40,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 /></noscript>
 <script src="/blog/assets/blog.js" defer></script>
 <script src="/blog/assets/nav.js" defer></script>
+<script src="/blog/assets/rail.js" defer></script>
 </head>
 <body class="blog-page" data-post-title="Blog">
 <header class="site-nav" id="siteNav">
@@ -66,11 +67,14 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       <h1>Lo que todo actor se pregunta <span class="mx-accent">antes de su book</span></h1>
       <p>Precios, looks, tiempos y qué sigue después de las fotos. Respuestas claras, en cristiano y de cafecito.</p>
     </header>
-    <div class="blog-grid">
+    <section class="blog-feature" aria-label="Artículo destacado">
     <a class="post-card post-card--featured" href="/blog/cuanto-cuesta-un-book-de-actor-cdmx.html">
       <img src="/assets/img/index-707199a9.jpg" width="700" height="875" loading="lazy" alt="Retrato editorial de actriz para personal branding, fondo turquesa de estudio">
       <div class="pc-body"><div class="pc-top"><span class="pc-tag">Precios</span><span class="pc-date">28 de octubre de 2026</span></div><h2>¿Cuánto cuesta un book de actor en CDMX?</h2><p>Un book de actor en CDMX con Monty Experience va de $6,200 a $14,000 MXN. Qué incluye cada rango y qué mueve el precio.</p><span class="pc-more">Leer artículo ›</span></div>
     </a>
+    </section>
+    <section class="blog-rail-wrap" aria-label="Más artículos">
+      <div class="blog-rail" id="blogRail">
     <a class="post-card" href="/blog/cada-cuanto-actualizar-book-de-actor.html">
       <img src="/assets/img/index-f43ea234.jpg" width="700" height="875" loading="lazy" alt="Retrato sobrio y directo de actor para casting corporativo">
       <div class="pc-body"><div class="pc-top"><span class="pc-tag">Tu book</span><span class="pc-date">28 de octubre de 2026</span></div><h2>¿Cada cuánto debes actualizar tu book de actor?</h2><p>No hay un número mágico de años: hay señales. Cómo saber si tu book de actor ya no te representa y cuándo toca renovarlo.</p><span class="pc-more">Leer ›</span></div>
@@ -91,7 +95,11 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       <img src="/assets/img/index-a552ccac.jpg" width="700" height="875" loading="lazy" alt="Retrato sonriente de actor para casting, fondo naranja de estudio">
       <div class="pc-body"><div class="pc-top"><span class="pc-tag">La sesión</span><span class="pc-date">28 de octubre de 2026</span></div><h2>¿Cuánto dura una sesión de fotos para actores y qué esperar?</h2><p>De 1 a 5 horas según la experiencia. Qué pasa antes, durante y después de una sesión de book para actores en CDMX.</p><span class="pc-more">Leer ›</span></div>
     </a>
-    </div>
+      </div>
+      <button type="button" class="rail-btn rail-prev" id="railPrev" aria-label="Artículos anteriores"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button type="button" class="rail-btn rail-next" id="railNext" aria-label="Más artículos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      <div class="rail-dots" id="railDots" aria-hidden="true"></div>
+    </section>
   </div>
 </main>
 <footer class="site-footer">
