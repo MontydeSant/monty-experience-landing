@@ -155,6 +155,20 @@ a.btn{ display:inline-flex; align-items:center; justify-content:center; text-dec
 }
 .btn:focus-visible{ outline:2px solid var(--accent-signal); outline-offset:3px; }
 
+/* CTAs intermedios: mismo botón del hero, insertados después de que cierra una sección,
+   nunca pegados al texto. */
+.mid-cta{
+  display:flex; flex-direction:column; align-items:center; gap:14px;
+  padding:40px 20px; text-align:center;
+}
+.mid-cta-caption{
+  margin:0; max-width:420px;
+  font-family:var(--font-bitacora); font-size:.85rem; color:var(--text-muted);
+}
+@media(max-width:600px){
+  .mid-cta{ padding:28px 20px; }
+}
+
 /* ───────────── 4. FOOTER ───────────── */
 .site-footer{
   position:relative;
@@ -413,3 +427,127 @@ a.btn{ display:inline-flex; align-items:center; justify-content:center; text-dec
    Los atributos width/height reservan el espacio antes de que cargue la imagen.
    :where() tiene especificidad 0: cualquier regla de tamaño propia de la página gana. */
 :where(img[width][height]){ width:auto; height:auto; }
+
+/* ───────────── 11. HEADER FLOTANTE (site-nav) — píldora translúcida tipo Apple ─────────────
+   Fijo arriba, glassmorphism morado oscuro con acento dorado. Logo + links (icono+texto) + CTA. */
+.site-nav{
+  position:fixed; z-index:120; top:calc(14px + env(safe-area-inset-top,0px));
+  left:50%; translate:-50% 0;
+  width:min(980px, calc(100% - 24px));
+  display:flex; align-items:center; gap:10px;
+  padding:8px 10px 8px 14px;
+  border-radius:var(--radius-pill);
+  background:rgba(28,14,44,.55);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);
+  backdrop-filter:blur(20px) saturate(160%);
+  border:1px solid rgba(253,192,5,.22);
+  box-shadow:0 16px 36px -16px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.06);
+  transition:background .3s ease, border-radius .3s ease;
+}
+.site-nav.is-open{
+  background:rgba(17,9,28,.97);
+  -webkit-backdrop-filter:blur(26px) saturate(160%);
+  backdrop-filter:blur(26px) saturate(160%);
+  border-radius:28px;
+}
+.site-nav-logo{ display:inline-flex; flex:0 0 auto; line-height:0; }
+.site-nav-logo img{ width:50px; height:38px; object-fit:contain; display:block; }
+.site-nav-links{
+  list-style:none; margin:0; padding:0; display:flex; align-items:center;
+  gap:0; margin-left:10px; margin-right:auto; overflow-x:auto; scrollbar-width:none;
+  min-width:0;
+}
+.site-nav-links::-webkit-scrollbar{ display:none; }
+.site-nav-links li{ flex:0 0 auto; }
+.site-nav-links a{
+  display:flex; align-items:center; gap:6px;
+  padding:7px 9px; border-radius:999px;
+  text-decoration:none; color:var(--text-muted);
+  font-family:var(--font-bitacora); font-size:.63rem; letter-spacing:.04em; text-transform:uppercase;
+  white-space:nowrap;
+  transition:color .25s ease, background .25s ease;
+}
+.site-nav-links a:hover,
+.site-nav-links a:focus-visible{ color:var(--text-primary); background:rgba(253,192,5,.1); }
+.site-nav-links a img{ width:20px; height:20px; border-radius:6px; display:block; flex:0 0 auto; }
+/* CTA del header: píldora sólida dorada, tipografía Special Elite (la de toda la landing),
+   con el mismo glow + brillo animado que las demás claquetas del sitio. */
+@keyframes navCtaGlow{
+  0%, 100%{ box-shadow:0 6px 18px -8px rgba(0,0,0,.5), 0 0 0 rgba(253,192,5,0); }
+  50%{ box-shadow:0 6px 18px -8px rgba(0,0,0,.5), 0 0 24px 3px rgba(253,192,5,.6); }
+}
+@keyframes navCtaPulse{
+  0%, 100%{ transform:scale(1); }
+  50%{ transform:scale(1.025); }
+}
+@keyframes navCtaShine{
+  0%{ left:-60%; }
+  38%{ left:130%; }
+  100%{ left:130%; }
+}
+.site-nav-cta{
+  position:relative; overflow:hidden;
+  flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center;
+  padding:11px 22px; border:none; border-radius:999px; cursor:pointer;
+  background:var(--accent-signal); color:var(--bg-stage);
+  font-family:var(--font-guion); font-weight:400; font-size:.85rem; letter-spacing:.01em;
+  animation:navCtaGlow 2.6s ease-in-out infinite, navCtaPulse 3.8s ease-in-out infinite;
+}
+.site-nav-cta::after{
+  content:""; position:absolute; top:0; left:-60%; width:38%; height:100%;
+  background:linear-gradient(115deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.55) 50%, rgba(255,255,255,0) 100%);
+  transform:skewX(-18deg);
+  animation:navCtaShine 3.4s ease-in-out infinite;
+  pointer-events:none;
+}
+.site-nav-cta:hover{ filter:brightness(1.06); }
+.site-nav-cta:active{ transform:scale(.96); }
+.site-nav-cta:focus-visible{ outline:2px solid var(--text-primary); outline-offset:3px; }
+@media(prefers-reduced-motion: reduce){
+  .site-nav-cta{ animation:none; }
+  .site-nav-cta::after{ display:none; }
+}
+
+/* menú hamburguesa (solo visible en mobile) */
+.site-nav-toggle{
+  display:none; flex:0 0 auto; align-items:center; justify-content:center;
+  width:38px; height:38px; padding:0; border:none; border-radius:50%; cursor:pointer;
+  background:rgba(253,192,5,.12); color:var(--text-primary);
+}
+.site-nav-toggle svg{ width:19px; height:19px; }
+.site-nav-toggle .icon-close{ display:none; }
+.site-nav.is-open .site-nav-toggle .icon-burger{ display:none; }
+.site-nav.is-open .site-nav-toggle .icon-close{ display:block; }
+.site-nav-toggle:focus-visible{ outline:2px solid var(--text-primary); outline-offset:2px; }
+
+@media(max-width:860px){
+  .site-nav{ flex-wrap:wrap; }
+  .site-nav-toggle{ display:flex; margin-left:auto; }
+  .site-nav-links,
+  .site-nav-cta{
+    display:none;
+  }
+  .site-nav.is-open{ align-items:flex-start; }
+  .site-nav.is-open .site-nav-links{
+    display:flex; flex-direction:column; align-items:stretch;
+    order:3; flex:0 0 100%; width:100%; margin:10px 0 0; gap:2px;
+    max-height:60vh; overflow-y:auto;
+    border-top:1px solid rgba(253,192,5,.18); padding-top:10px;
+  }
+  .site-nav.is-open .site-nav-links a{
+    padding:11px 10px; gap:12px; font-size:.78rem;
+  }
+  .site-nav.is-open .site-nav-links a span{ display:inline; }
+  .site-nav.is-open .site-nav-links a img{ width:24px; height:24px; }
+  .site-nav.is-open .site-nav-cta{
+    display:inline-flex; order:4; flex:0 0 100%; width:100%;
+    justify-content:center; margin:8px 0 2px;
+  }
+}
+@media(max-width:520px){
+  .site-nav{ width:calc(100% - 16px); top:calc(10px + env(safe-area-inset-top,0px)); padding:6px 8px 6px 10px; gap:8px; }
+  .site-nav-logo img{ width:40px; height:30px; }
+}
+@media(prefers-reduced-motion: reduce){
+  .site-nav-cta{ animation:none; }
+}

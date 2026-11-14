@@ -165,9 +165,58 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 </head>
 <body>
 
-  <section class="hero">
+  <header class="site-nav" id="siteNav">
+    <a class="site-nav-logo" href="#top" aria-label="Monty Experience, inicio"><img src="assets/img/logo-monty.webp" alt="Monty Experience" width="50" height="38"></a>
+    <ul class="site-nav-links">
+      <li><a href="#paquetes"><img src="assets/img/nav-paquetes.webp" alt="" width="22" height="22" loading="lazy"><span>Paquetes</span></a></li>
+      <li><a href="#portafolio"><img src="assets/img/nav-book.webp" alt="" width="22" height="22" loading="lazy"><span>Book</span></a></li>
+      <li><a href="#sobre-mi"><img src="assets/img/nav-acerca.webp" alt="" width="22" height="22" loading="lazy"><span>Acerca de mí</span></a></li>
+      <li><a href="#faq"><img src="assets/img/nav-preguntas.webp" alt="" width="22" height="22" loading="lazy"><span>Preguntas</span></a></li>
+      <li><a href="blog/index.html"><img src="assets/img/nav-blog.webp" alt="" width="22" height="22" loading="lazy"><span>Blog</span></a></li>
+      <li><a href="#testimonios"><img src="assets/img/nav-testimonios.webp" alt="" width="22" height="22" loading="lazy"><span>Testimonios</span></a></li>
+    </ul>
+    <button type="button" class="site-nav-cta" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'>
+      <span>Agendar mi cafecito</span>
+    </button>
+    <button type="button" class="site-nav-toggle" id="siteNavToggle" aria-expanded="false" aria-controls="siteNav" aria-label="Abrir menú">
+      <svg class="icon-burger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </header>
+
+  <script>
+  (function(){
+    var nav = document.getElementById('siteNav');
+    var toggle = document.getElementById('siteNavToggle');
+    if(!nav || !toggle) return;
+    function closeMenu(){
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded','false');
+      toggle.setAttribute('aria-label','Abrir menú');
+    }
+    function openMenu(){
+      nav.classList.add('is-open');
+      toggle.setAttribute('aria-expanded','true');
+      toggle.setAttribute('aria-label','Cerrar menú');
+    }
+    toggle.addEventListener('click', function(){
+      if(nav.classList.contains('is-open')) closeMenu(); else openMenu();
+    });
+    nav.querySelectorAll('.site-nav-links a, .site-nav-cta').forEach(function(el){
+      el.addEventListener('click', closeMenu);
+    });
+    document.addEventListener('click', function(e){
+      if(nav.classList.contains('is-open') && !nav.contains(e.target)) closeMenu();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeMenu();
+    });
+  })();
+  </script>
+
+  <section class="hero" id="top">
     <div class="flash-overlay"></div>
-    <div class="hero-logo-secundario"><img src="assets/img/logo-ave.png" alt="" width="240" height="240"></div>
+    <div class="hero-logo-secundario"><img src="assets/img/logo-monty.webp" alt="" width="420" height="323"></div>
     <div class="scene">
 
       <div class="photo-row">
@@ -193,7 +242,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 
         <div class="crown-row sub-row">
           <div class="sub-photo sub-photo-left"><img src="assets/img/index-07d255b7.jpg" alt="ref — mirada de cerca" width="480" height="600"></div>
-          <p class="sub">Los directores de casting ya no buscan perfección.<br>Buscan <b>VERDAD</b>.</p>
+          <p class="sub">Los directores de casting<br>ya no buscan perfección.<br>Buscan <b>VERDAD</b>.</p>
           <div class="sub-photo sub-photo-right"><img src="assets/img/index-4453216d.jpg" alt="ref — actitud de cerca" width="480" height="600"></div>
         </div>
         <p class="stat">+80 actores retratados</p>
@@ -207,72 +256,16 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     </div>
   </section>
 
-  <section class="section-nav" id="sectionNav">
-    <div class="shimmer"></div>
-    <ul>
-      <li>
-        <a href="#paquetes">
-          <svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4-8 4-8-4Z"/><path d="M4 8v8l8 4 8-4V8"/><path d="M12 12v8"/></svg>
-          <span>Paquetes</span>
-        </a>
-      </li>
-      <li>
-        <a href="#portafolio">
-          <svg viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4V8Z"/><circle cx="12" cy="13" r="3.2"/></svg>
-          <span>Book</span>
-        </a>
-      </li>
-      <li>
-        <a href="#sobre-mi">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="8.2" r="3.4"/><path d="M5 20c0-4.2 3.1-6.4 7-6.4s7 2.2 7 6.4"/></svg>
-          <span>Acerca de mí</span>
-        </a>
-      </li>
-      <li>
-        <a href="#faq">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 1c0 1.6-2.3 1.8-2.3 3.4"/><circle cx="12.1" cy="16.7" r=".55" fill="var(--text-muted)" stroke="none"/></svg>
-          <span>Preguntas</span></a></li><li><a href="blog/index.html"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v4h4"/><path d="M9 8.5h3M9 12h6M9 15.5h6"/></svg><span>Blog</span></a></li><li><a href="#testimonios"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M10 8.3v7.4l6-3.7Z"/></svg><span>Testimonios</span>
-        </a>
-      </li>
-    </ul>
-  </section>
-
-  <script>
-  (function(){
-    try{
-      var nav = document.getElementById('sectionNav');
-      if(!nav) return;
-      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if(reduce){
-        nav.classList.add('is-visible');
-        return;
-      }
-      if('IntersectionObserver' in window){
-        var io = new IntersectionObserver(function(entries){
-          entries.forEach(function(e){
-            if(e.isIntersecting){
-              nav.classList.add('is-visible');
-              io.disconnect();
-            }
-          });
-        }, { threshold:.3 });
-        io.observe(nav);
-      } else {
-        nav.classList.add('is-visible');
-      }
-    }catch(e){
-      var navFallback = document.getElementById('sectionNav');
-      if(navFallback) navFallback.classList.add('is-visible');
-    }
-  })();
-  </script>
-
   <section class="problema">
     <div class="problema-stat problema-stat-top">
-      <div class="num">80%</div>
-      <p class="problema-lead-1">Se estima que el 80% de los actores en México no actualiza su book en más de dos años.</p>
-      <p class="problema-lead-2">Unos por no saber cómo y otros por no haberlo hecho nunca.</p>
-      <p class="problema-lead-3">El resultado es el mismo:</p>
+      <p class="problema-lead-intro">Se estima que el</p>
+      <div class="problema-num-row">
+        <span class="num">80%</span>
+        <span class="problema-num-suffix">de los actores</span>
+      </div>
+      <p class="problema-lead-1"><em>en México no actualiza su book en más de dos años.</em></p>
+      <p class="problema-lead-2">Unos por no saber cómo y otros por no haberlo hecho&nbsp;nunca.</p>
+      <p class="problema-lead-3">El resultado es el&nbsp;mismo:</p>
       <div class="problema-emphasis">ATORADO</div>
     </div>
     <div class="problema-cols">
@@ -312,14 +305,21 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       </div>
       <div class="entrega-block">
         <div class="entrega-mosaic">
-          <div class="m-photo m-1"><img src="assets/img/index-cefc8e42.jpg" alt="Retrato de actor — mosaico de posibilidades 1" loading="lazy" width="480" height="599"></div>
-          <div class="m-photo m-2"><img src="assets/img/index-fd719cd9.jpg" alt="Retrato de actor — mosaico de posibilidades 2" loading="lazy" width="480" height="600"></div>
+          <div class="m-photo m-1"><img src="assets/img/index-b70772d8.jpg" alt="Retrato de actriz — mosaico de posibilidades 1, fondo rosa de estudio" loading="lazy" width="480" height="600"></div>
+          <div class="m-photo m-2"><img src="assets/img/index-4453216d.jpg" alt="Retrato de actriz — mosaico de posibilidades 2, fondo naranja de estudio" loading="lazy" width="480" height="600"></div>
           <div class="m-photo m-3"><img src="assets/img/index-8e9ae6a1.jpg" alt="Retrato de actor — mosaico de posibilidades 3" loading="lazy" width="480" height="599"></div>
-          <div class="m-photo m-4"><img src="assets/img/index-8b1d444b.jpg" alt="Retrato de actor — mosaico de posibilidades 4" loading="lazy" width="480" height="599"></div>
+          <div class="m-photo m-4"><img src="assets/img/index-b2a4f91c.jpg" alt="Retrato de actriz — mosaico de posibilidades 4, luz azul de estudio" loading="lazy" width="480" height="600"></div>
           <div class="m-photo m-5"><img src="assets/img/index-dd390cb3.jpg" alt="Retrato de actor — mosaico de posibilidades 5" loading="lazy" width="480" height="599"></div>
         </div>
         <h3>Un mapa de posibilidades,<br>dibujado solo para ti.</h3>
-        <p>Cada actor sale con un resultado pensado desde su propia historia, <b>hecho a su medida</b>.</p>
+        <p>Cada actor sale con un resultado pensado desde su propia historia,<br><b>hecho a su medida</b>.</p>
+      </div>
+    </div>
+
+    <div class="mid-cta">
+      <div class="btn-wrap">
+        <span class="btn-icon">▸</span>
+        <button type="button" class="btn" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'>Quiero mi Monty Experience</button>
       </div>
     </div>
   </section>
@@ -327,6 +327,21 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     <div class="exp-backdrop" id="expBackdrop"></div>
   <div class="exp-modal" id="expModal" role="dialog" aria-modal="true" aria-hidden="true">
     <button type="button" class="exp-modal-close" id="expModalClose" aria-label="Cerrar">×</button>
+
+    <!-- Pop-up centrado: se llena con JS al dar clic en un punto del camino -->
+    <div class="road-popup-backdrop" id="roadPopupBackdrop"></div>
+    <div class="road-popup" id="roadPopup" role="dialog" aria-modal="true" aria-hidden="true">
+      <button type="button" class="road-popup-close" id="roadPopupClose" aria-label="Cerrar">×</button>
+      <span class="road-popup-num" id="roadPopupNum">01</span>
+      <h4 id="roadPopupTitle"></h4>
+      <p id="roadPopupText"></p>
+    </div>
+
+    <!-- Botón flotante: queda fijo dentro del modal, siempre visible aunque se haga scroll -->
+    <div class="exp-floating-cta" id="expFloatingCta">
+      <button type="button" class="exp-floating-cta-btn" id="expFloatingCtaBtn" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'>Quiero mi Classic</button>
+    </div>
+
     <div class="exp-modal-inner">
     <div class="exp-modal-panel exp-modal-classic" data-pkg="classic">
       <span class="exp-modal-eyebrow">Classic Experience</span>
@@ -342,34 +357,34 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
             <polygon class="road-arrow-progress" id="roadArrowProgressClassic" points="989,23 981,54 957,41" />
           </svg>
 
-          <div class="road-point u-2" data-index="0">
+          <div class="road-point u-2" data-index="0" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Cafecito y decisiones" data-step-text="Nos conocemos, platicamos tu momento actual como actor, y <span class=&quot;kw&quot;>decidimos juntos</span> cuál de las tres experiencias se ajusta a ti. Ninguna presión, ninguna talla única.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3c0 .8-.6 1-.6 1.8S8 6 8 6"/><path d="M12 3c0 .8-.6 1-.6 1.8S12 6 12 6"/></svg><span class="road-num">01</span></div>
-            <div class="road-label pos-dr"><h3>Cafecito y decisiones</h3><p>Nos conocemos, platicamos tu momento actual como actor, y <span class="kw">decidimos juntos</span> cuál de las tres experiencias se ajusta a ti. Ninguna presión, ninguna talla única.</p></div>
+            <span class="road-name">Cafecito y decisiones</span>
           </div>
 
-          <div class="road-point u-3" data-index="1">
+          <div class="road-point u-3" data-index="1" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Preparación" data-step-text="Junta de pre-sesión por Google Meet para hablar de tu historia, tu tipo actoral y definir juntos <span class=&quot;kw&quot;>qué ropa llevar</span>.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H8l-4 4V5Z"/><path d="M8 9h8M8 12h5"/></svg><span class="road-num">02</span></div>
-            <div class="road-label pos-ul"><h3>Preparación</h3><p>Junta de pre-sesión por Google Meet para hablar de tu historia, tu tipo actoral y definir juntos <span class="kw">qué ropa llevar</span>.</p></div>
+            <span class="road-name">Preparación</span>
           </div>
 
-          <div class="road-point u-4" data-index="2">
+          <div class="road-point u-4" data-index="2" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Tu sesión (1 hora)" data-step-text="Tres cambios de ropa, dirección emocional y conceptual pensada para mostrar <span class=&quot;kw&quot;>tu mejor versión actoral</span> en el tiempo justo.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4V8Z"/><circle cx="12" cy="13" r="3.2"/></svg><span class="road-num">03</span></div>
-            <div class="road-label pos-dr"><h3>Tu sesión <span style="font-size:.7rem;opacity:.75;font-weight:400;">1 hora</span></h3><p>Tres cambios de ropa, dirección emocional y conceptual pensada para mostrar <span class="kw">tu mejor versión actoral</span> en el tiempo justo.</p></div>
+            <span class="road-name">Tu sesión</span>
           </div>
 
-          <div class="road-point u-5" data-index="3">
+          <div class="road-point u-5" data-index="3" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Cafecito de Curación" data-step-text="Después de tu sesión, vemos las tomas juntos en un cafecito y <span class=&quot;kw&quot;>tú decides las definitivas</span>. Antes de irte, te llevas una sorpresa.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="13" rx="1.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 16l5-5 3 3 4-4 4 4"/></svg><span class="road-num">04</span></div>
-            <div class="road-label pos-ul"><h3>Cafecito de Curación</h3><p>Después de tu sesión, te invito yo el cafecito — vemos las tomas juntos y elegimos tus favoritas entre los dos. <span class="kw">Tú decides las definitivas</span>. Y antes de irte, te llevas una sorpresa que no te vamos a adelantar aquí.</p></div>
+            <span class="road-name">Cafecito de Curación</span>
           </div>
 
-          <div class="road-point u-6" data-index="4">
+          <div class="road-point u-6" data-index="4" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Entrega en galería privada" data-step-text="Tus fotos llegan optimizadas para cada plataforma en <span class=&quot;kw&quot;>máximo 2-3 días</span>, listas para redes o para un casting, sin perder calidad.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="10" rx="1"/><path d="M4 9h16M12 9v10"/><path d="M8 9c-1.5 0-2.5-1-2.5-2.2S6.5 4.5 8 5c1.2.4 2.6 1.8 4 4-1.4-2.2-2.8-3.6-4-4Zm8 0c1.5 0 2.5-1 2.5-2.2S17.5 4.5 16 5c-1.2.4-2.6 1.8-4 4 1.4-2.2 2.8-3.6 4-4Z"/></svg><span class="road-num">05</span></div>
-            <div class="road-label pos-dr"><h3>Entrega en galería privada</h3><p>Tus fotos llegan optimizadas para cada plataforma en <span class="kw">máximo 2-3 días</span> — listas para redes o para un casting, sin perder calidad.</p></div>
+            <span class="road-name">Entrega en galería</span>
           </div>
 
-          <div class="road-point u-7" data-index="5">
+          <div class="road-point u-7" data-index="5" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Lo que sigue" data-step-text="Este es <span class=&quot;kw&quot;>tu punto de partida</span>. El siguiente: que te encuentren. Pregúntame por tu Acting Link.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M14.8 9.2 13 13l-3.8 1.8L11 11l3.8-1.8Z"/></svg><span class="road-num">06</span></div>
-            <div class="road-label pos-ul"><h3>Lo que sigue</h3><p>Este es <span class="kw">tu punto de partida</span>. El siguiente: que te encuentren. Pregúntame por tu Acting Link.</p></div>
+            <span class="road-name">Lo que sigue</span>
           </div>
         </div>
 
@@ -392,7 +407,6 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         <div class="pkg-stats"><div class="pkg-stat"><span class="n">1 hr</span><span class="l">Sesión</span></div><div class="pkg-stat"><span class="n">18</span><span class="l">Fotos editadas</span></div><div class="pkg-stat"><span class="n">3</span><span class="l">Cambios de ropa</span></div></div>
         <ul class="pkg-includes"><li><span class="tick">✓</span><span>Junta de pre-sesión por Google Meet</span></li><li><span class="tick">✓</span><span>Sesión de 1 hora, 3 cambios de ropa</span></li><li><span class="tick">✓</span><span>18 fotos editadas</span></li><li><span class="tick">✓</span><span>Cafecito de Curación</span></li><li><span class="tick">✓</span><span>Entrega en galería privada — máximo 2-3 días</span></li><li><span class="tick">✓</span><span>Sin Acting Link</span></li></ul>
         <p class="exp-micro">Confirmamos en menos de 48 horas.</p>
-        <button type="button" class="pkg-cta" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'>Quiero mi Classic</button>
       </div>
     </div>
 
@@ -410,34 +424,34 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
             <polygon class="road-arrow-progress" id="roadArrowProgressElite" points="989,23 981,54 957,41" />
           </svg>
 
-          <div class="road-point u-2" data-index="0">
+          <div class="road-point u-2" data-index="0" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Cafecito y decisiones" data-step-text="Nos conocemos, platicamos tu momento actual como actor, y <span class=&quot;kw&quot;>decidimos juntos</span> cuál de las tres experiencias se ajusta a ti. Ninguna presión, ninguna talla única.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3c0 .8-.6 1-.6 1.8S8 6 8 6"/><path d="M12 3c0 .8-.6 1-.6 1.8S12 6 12 6"/></svg><span class="road-num">01</span></div>
-            <div class="road-label pos-dr"><h3>Cafecito y decisiones</h3><p>Nos conocemos, platicamos tu momento actual como actor, y <span class="kw">decidimos juntos</span> cuál de las tres experiencias se ajusta a ti. Ninguna presión, ninguna talla única.</p></div>
+            <span class="road-name">Cafecito y decisiones</span>
           </div>
 
-          <div class="road-point u-3" data-index="1">
+          <div class="road-point u-3" data-index="1" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Preparación" data-step-text="Tu junta de pre-sesión ya incluye a tu stylist y tu maquillista. Días después te mando el <span class=&quot;kw&quot;>moodboard por WhatsApp</span> para que lo confirmes.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H8l-4 4V5Z"/><path d="M8 9h8M8 12h5"/></svg><span class="road-num">02</span></div>
-            <div class="road-label pos-ul"><h3>Preparación</h3><p>Tu junta de pre-sesión ya incluye a tu stylist y tu maquillista. Dos o tres días después te mando el <span class="kw">moodboard por WhatsApp</span> para que lo confirmes.</p></div>
+            <span class="road-name">Preparación</span>
           </div>
 
-          <div class="road-point u-4" data-index="2">
+          <div class="road-point u-4" data-index="2" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Tu sesión (3 horas)" data-step-text="Tres cambios de ropa y dos fondos de color, con <span class=&quot;kw&quot;>stylist y maquillaje profesional</span> contigo todo el tiempo.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4V8Z"/><circle cx="12" cy="13" r="3.2"/></svg><span class="road-num">03</span></div>
-            <div class="road-label pos-dr"><h3>Tu sesión <span style="font-size:.7rem;opacity:.75;font-weight:400;">3 horas</span></h3><p>Tres cambios de ropa y dos fondos de color, con <span class="kw">stylist y maquillaje profesional</span> contigo todo el tiempo.</p></div>
+            <span class="road-name">Tu sesión</span>
           </div>
 
-          <div class="road-point u-5" data-index="3">
+          <div class="road-point u-5" data-index="3" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Cafecito de Curación" data-step-text="Después de tu sesión, vemos las tomas juntos en un cafecito y <span class=&quot;kw&quot;>tú decides las definitivas</span>. Antes de irte, te llevas una sorpresa.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="13" rx="1.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 16l5-5 3 3 4-4 4 4"/></svg><span class="road-num">04</span></div>
-            <div class="road-label pos-ul"><h3>Cafecito de Curación</h3><p>Después de tu sesión, te invito yo el cafecito — vemos las tomas juntos y elegimos tus favoritas entre los dos. <span class="kw">Tú decides las definitivas</span>. Y antes de irte, te llevas una sorpresa que no te vamos a adelantar aquí.</p></div>
+            <span class="road-name">Cafecito de Curación</span>
           </div>
 
-          <div class="road-point u-6" data-index="4">
+          <div class="road-point u-6" data-index="4" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Entrega: galería + Acting Link" data-step-text="En <span class=&quot;kw&quot;>máximo 5-7 días</span> recibes tu galería privada junto con tu Acting Link ya armado: tu trabajo, encontrable donde te busquen.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="10" rx="1"/><path d="M4 9h16M12 9v10"/><path d="M8 9c-1.5 0-2.5-1-2.5-2.2S6.5 4.5 8 5c1.2.4 2.6 1.8 4 4-1.4-2.2-2.8-3.6-4-4Zm8 0c1.5 0 2.5-1 2.5-2.2S17.5 4.5 16 5c-1.2.4-2.6 1.8-4 4 1.4-2.2 2.8-3.6 4-4Z"/></svg><span class="road-num">05</span></div>
-            <div class="road-label pos-dr"><h3>Entrega: galería + Acting Link</h3><p>En <span class="kw">máximo 5-7 días</span> recibes tu galería privada junto con tu Acting Link ya armado — tu trabajo, encontrable donde te busquen.</p></div>
+            <span class="road-name">Entrega + Acting Link</span>
           </div>
 
-          <div class="road-point u-7" data-index="5">
+          <div class="road-point u-7" data-index="5" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Lo que sigue" data-step-text="Terminada tu experiencia, puedes acceder a <span class=&quot;kw&quot;>METASTAR</span>: la sesión para cuando ya tienes tus fotos y tu Acting Link, y toca resolver el &ldquo;¿ahora qué?&rdquo;.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M14.8 9.2 13 13l-3.8 1.8L11 11l3.8-1.8Z"/></svg><span class="road-num">06</span></div>
-            <div class="road-label pos-ul"><h3>Lo que sigue</h3><p>Terminada tu experiencia, puedes acceder a <span class="kw">METASTAR</span> — pensado para cuando ya tienes tus fotos y tu Acting Link, y la pregunta pasa a ser "¿ahora qué?".</p></div>
+            <span class="road-name">Lo que sigue</span>
           </div>
         </div>
 
@@ -460,7 +474,6 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         <div class="pkg-stats"><div class="pkg-stat"><span class="n">3 hrs</span><span class="l">Sesión</span></div><div class="pkg-stat"><span class="n">24</span><span class="l">Fotos editadas</span></div><div class="pkg-stat"><span class="n">3</span><span class="l">Cambios de ropa</span></div></div>
         <ul class="pkg-includes"><li><span class="tick">✓</span><span>Junta de pre-sesión por Google Meet</span></li><li><span class="tick">✓</span><span>Sesión de 3 horas (real ~4h), 3 cambios + 2 fondos de color</span></li><li><span class="tick">✓</span><span>Moodboard personalizado</span></li><li><span class="tick">✓</span><span>Stylist (3 looks)</span></li><li><span class="tick">✓</span><span>Maquillaje profesional (un look)</span></li><li><span class="tick">✓</span><span>24 fotos editadas</span></li><li><span class="tick">✓</span><span>Acting Link — plantilla básica</span></li><li><span class="tick">✓</span><span>Cafecito de Curación</span></li><li><span class="tick">✓</span><span>Entrega en máximo 5-7 días</span></li></ul>
         <p class="exp-micro">Reserva con 2 semanas de antelación.</p>
-        <button type="button" class="pkg-cta" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'>Quiero mi Elite</button>
       </div>
     </div>
 
@@ -478,34 +491,34 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
             <polygon class="road-arrow-progress" id="roadArrowProgressFenix" points="989,23 981,54 957,41" />
           </svg>
 
-          <div class="road-point u-2" data-index="0">
+          <div class="road-point u-2" data-index="0" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Cafecito y decisiones" data-step-text="Nos conocemos, platicamos tu momento actual como actor, y <span class=&quot;kw&quot;>decidimos juntos</span> cuál de las tres experiencias se ajusta a ti. Ninguna presión, ninguna talla única.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3c0 .8-.6 1-.6 1.8S8 6 8 6"/><path d="M12 3c0 .8-.6 1-.6 1.8S12 6 12 6"/></svg><span class="road-num">01</span></div>
-            <div class="road-label pos-dr"><h3>Cafecito y decisiones</h3><p>Nos conocemos, platicamos tu momento actual como actor, y <span class="kw">decidimos juntos</span> cuál de las tres experiencias se ajusta a ti. Ninguna presión, ninguna talla única.</p></div>
+            <span class="road-name">Cafecito y decisiones</span>
           </div>
 
-          <div class="road-point u-3" data-index="1">
+          <div class="road-point u-3" data-index="1" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Preparación" data-step-text="Formulario de perfil de actor y junta de pre-sesión por Google Meet. Una semana antes nos vemos otra vez para <span class=&quot;kw&quot;>cerrar el moodboard en vivo</span>.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H8l-4 4V5Z"/><path d="M8 9h8M8 12h5"/></svg><span class="road-num">02</span></div>
-            <div class="road-label pos-ul"><h3>Preparación</h3><p>Empezamos con tu formulario de perfil de actor y la junta de pre-sesión por Google Meet. Una semana antes nos vemos otra vez, también por videollamada, para <span class="kw">cerrar el moodboard contigo en vivo</span>.</p></div>
+            <span class="road-name">Preparación</span>
           </div>
 
-          <div class="road-point u-4" data-index="2">
+          <div class="road-point u-4" data-index="2" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Tu sesión (5 horas)" data-step-text="De cuatro a seis cambios de ropa y hasta cuatro fondos de color, con <span class=&quot;kw&quot;>dos maquillajes profesionales</span> y tu stylist guiando cada look.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4V8Z"/><circle cx="12" cy="13" r="3.2"/></svg><span class="road-num">03</span></div>
-            <div class="road-label pos-dr"><h3>Tu sesión <span style="font-size:.7rem;opacity:.75;font-weight:400;">5 horas</span></h3><p>De cuatro a seis cambios de ropa y hasta cuatro fondos de color, con <span class="kw">dos maquillajes profesionales</span> y tu stylist guiando cada look.</p></div>
+            <span class="road-name">Tu sesión</span>
           </div>
 
-          <div class="road-point u-5" data-index="3">
+          <div class="road-point u-5" data-index="3" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Comida de Curación" data-step-text="Después de tu sesión, vemos las tomas juntos en una comida y <span class=&quot;kw&quot;>tú decides las definitivas</span>. Antes de irte, te llevas una sorpresa.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="13" rx="1.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 16l5-5 3 3 4-4 4 4"/></svg><span class="road-num">04</span></div>
-            <div class="road-label pos-ul"><h3>Comida de Curación</h3><p>Después de tu sesión, te invito yo la comida — vemos las tomas juntos y elegimos tus favoritas entre los dos. <span class="kw">Tú decides las definitivas</span>. Y antes de irte, te llevas una sorpresa que no te vamos a adelantar aquí.</p></div>
+            <span class="road-name">Comida de Curación</span>
           </div>
 
-          <div class="road-point u-6" data-index="4">
+          <div class="road-point u-6" data-index="4" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Sesión de Estrategia + Acting Link" data-step-text="Tus fotos están listas en ~7 días. El cierre llega con una <span class=&quot;kw&quot;>Sesión de Estrategia de 2.5 horas</span> donde te muestro tu Acting Link terminado.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="10" rx="1"/><path d="M4 9h16M12 9v10"/><path d="M8 9c-1.5 0-2.5-1-2.5-2.2S6.5 4.5 8 5c1.2.4 2.6 1.8 4 4-1.4-2.2-2.8-3.6-4-4Zm8 0c1.5 0 2.5-1 2.5-2.2S17.5 4.5 16 5c-1.2.4-2.6 1.8-4 4 1.4-2.2 2.8-3.6 4-4Z"/></svg><span class="road-num">05</span></div>
-            <div class="road-label pos-dr"><h3>Sesión de Estrategia + Acting Link</h3><p>Tus fotos están listas en ~7 días. El cierre llega con una <span class="kw">Sesión de Estrategia de 2.5 horas</span>, donde te muestro tu Acting Link terminado — todo resuelto en máximo 15 días.</p></div>
+            <span class="road-name">Sesión de Estrategia</span>
           </div>
 
-          <div class="road-point u-7" data-index="5">
+          <div class="road-point u-7" data-index="5" role="button" tabindex="0" aria-haspopup="dialog" data-step-title="Lo que sigue" data-step-text="Ya probaste una Sesión de Estrategia dentro de tu experiencia. Si quieres profundizar más, <span class=&quot;kw&quot;>METASTAR</span> es el siguiente paso.">
             <div class="road-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M14.8 9.2 13 13l-3.8 1.8L11 11l3.8-1.8Z"/></svg><span class="road-num">06</span></div>
-            <div class="road-label pos-ul"><h3>Lo que sigue</h3><p>Ya probaste una Sesión de Estrategia dentro de tu experiencia. Si quieres profundizar más, <span class="kw">METASTAR</span> está disponible como el siguiente paso.</p></div>
+            <span class="road-name">Lo que sigue</span>
           </div>
         </div>
 
@@ -528,7 +541,6 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         <div class="pkg-stats"><div class="pkg-stat"><span class="n">5 hrs</span><span class="l">Sesión</span></div><div class="pkg-stat"><span class="n">32</span><span class="l">Fotos editadas</span></div><div class="pkg-stat"><span class="n">4–6</span><span class="l">Cambios de ropa</span></div></div>
         <ul class="pkg-includes"><li><span class="tick">✓</span><span>Junta de pre-sesión por Google Meet</span></li><li><span class="tick">✓</span><span>Sesión de 5 horas, 4 a 6 cambios, hasta 4 fondos de color</span></li><li><span class="tick">✓</span><span>Moodboard personalizado</span></li><li><span class="tick">✓</span><span>Stylist (4-6 looks)</span></li><li><span class="tick">✓</span><span>2 maquillajes profesionales</span></li><li><span class="tick">✓</span><span>32 fotos editadas</span></li><li><span class="tick">✓</span><span>Acting Link — plantilla personalizable</span></li><li><span class="tick">✓</span><span>Comida de Curación</span></li><li><span class="tick">✓</span><span>Sesión de Estrategia (2.5h)</span></li><li><span class="tick">✓</span><span>Self-tape para castings</span></li><li><span class="tick">✓</span><span>Entrega total en máximo 15 días</span></li></ul>
         <p class="exp-micro">Reserva con 3 semanas de antelación.</p>
-        <button type="button" class="pkg-cta" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'>Quiero mi Fénix</button>
       </div>
     </div>
 
@@ -541,7 +553,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       <h2>Ninguna talla única</h2>
       <p>Aquí nada es de aparador. Cada experiencia se ajusta a dónde estás parado hoy en tu carrera — <b>como un traje a medida</b>.</p>
       <div class="paquetes-range">Rangos de $6,200 a $14,000 MXN</div>
-      <p class="paquetes-note">El precio exacto de tu experiencia se define en tu cafecito con Monty.</p>
+      <p class="paquetes-note">El precio exacto de tu experiencia se define en tu cafecito con&nbsp;Monty.</p>
     </div>
 
     <div class="pkg-grid">
@@ -578,14 +590,22 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       <span class="pkg-dot"></span>
     </div>
 
-    <p class="paquetes-extras">¿Buscas algo que no ves aquí? Lo más probable es que ya lo hayamos resuelto antes. <a href="#faq">Los extras están en el FAQ ↓</a></p>
+    <div class="mid-cta">
+      <div class="btn-wrap">
+        <span class="btn-icon">▸</span>
+        <button type="button" class="btn" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'>Quiero mi experiencia a mi medida</button>
+      </div>
+      <p class="mid-cta-caption">Cada sesión arranca con una plática que nunca se&nbsp;repite.</p>
+    </div>
+
+    <p class="paquetes-extras">¿Buscas algo que no ves aquí? Lo más probable es que ya lo hayamos resuelto&nbsp;antes. <a href="#faq">Los extras están en el&nbsp;FAQ ↓</a></p>
   </section>
 
 <section class="reflexion">
     <div class="reflexion-inner">
-      <p class="reflexion-line1">Un mes se convierte en seis.</p>
-      <p class="reflexion-line2">Seis se convierten en dos años.</p>
-      <div class="reflexion-question">¿Qué va a pasar cuando llegue el tercero?</div>
+      <p class="reflexion-line1">Un mes se convierte en&nbsp;seis.</p>
+      <p class="reflexion-line2">Seis se convierten en dos&nbsp;años.</p>
+      <div class="reflexion-question">¿Qué va a pasar cuando llegue el&nbsp;tercero?</div>
     </div>
   </section>
 
@@ -596,14 +616,14 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     </div>
     <div class="port-carousel-wrap">
       <div class="port-carousel" id="portCarousel">
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-f43ea234.jpg" alt="Retrato sobrio y directo de actor para casting corporativo" loading="lazy" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-6f0a3dc8.jpg" alt="Retrato cercano y expresivo de actor para casting, fondo claro de estudio" loading="lazy" width="700" height="875"></div></figure>
       <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-707199a9.jpg" alt="Retrato editorial de actriz para personal branding, fondo turquesa de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-3f56350c.jpg" alt="Retrato editorial dramático de actriz para personal branding, perfil con tatuaje" loading="lazy" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-d61bf3e7.jpg" alt="Retrato frontal sobrio de actriz para casting, fondo claro de estudio" loading="lazy" width="700" height="875"></div></figure>
       <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-22e08d14.jpg" alt="Retrato de actriz para book actoral, fondo rosa de estudio" loading="lazy" width="700" height="875"></div></figure>
       <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-c9d86763.jpg" alt="Retrato sensual y dramático de actriz para book fotográfico, encaje rojo" loading="lazy" width="700" height="875"></div></figure>
       <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-5f1495f4.jpg" alt="Retrato editorial de actriz para personal branding, fondo verde oliva de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-891a4a85.jpg" alt="Retrato de personaje y comedia para actor de reparto, look excéntrico" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-bcd0336f.jpg" alt="Retrato editorial de actriz para book actoral, fondo magenta de estudio" loading="lazy" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-9c247b6e.jpg" alt="Retrato sonriente de actor para casting, chamarra de mezclilla, fondo claro de estudio" loading="lazy" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-7a93fd12.jpg" alt="Retrato editorial de actriz para book actoral, vestido dorado con flores en el cabello" loading="lazy" width="700" height="875"></div></figure>
       <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-32519a1c.jpg" alt="Retrato sonriente de actriz para book actoral, fondo claro de estudio" loading="lazy" width="700" height="875"></div></figure>
       <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-c8f565a0.jpg" alt="Retrato editorial de actriz para personal branding, fondo azul de estudio" loading="lazy" width="700" height="875"></div></figure>
       <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-aff1acc0.jpg" alt="Retrato sobrio de actriz para casting, fondo claro de estudio" loading="lazy" width="700" height="875"></div></figure>
@@ -630,24 +650,33 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       <span class="port-dot"></span>
       </div>
     </div>
+
+    <div class="mid-cta">
+      <div class="btn-wrap">
+        <span class="btn-icon">▸</span>
+        <button type="button" class="btn" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'>Quiero salir así en mi book</button>
+      </div>
+      <p class="mid-cta-caption">Ya viste el carrusel: ningún resultado se parece a&nbsp;otro.</p>
+    </div>
   </section>
+
   <section class="sobre-mi" id="sobre-mi">
     <div class="sm-letter-wrap" id="smLetter">
-      <div class="sm-photo-mini"><img src="assets/img/index-6641dac4.jpg" alt="Monty, fotógrafo y director creativo de Monty Experience" loading="lazy" width="640" height="800"></div>
+      <div class="sm-photo-mini"><img src="assets/img/index-c48e2a91.jpg" alt="Monty, fotógrafo y director creativo de Monty Experience" loading="lazy" width="640" height="800"></div>
       <span class="eyebrow">Sobre mí</span>
       <div class="sm-intro">
         <span class="sm-firma">Soy Monty de Sant</span>
         <span class="sm-rol">Fotógrafo de actores y director creativo</span>
       </div>
-      <p class="sm-greeting">Para el actor que está leyendo esto:</p>
-      <p class="sm-line">Antes de ser fotógrafo de retrato para actores, dirigí actores en cine — incluso fui director de casting en la ópera prima de un amigo. Ahí noté algo que ningún director enseña: la mayoría actúa desde el &ldquo;<span class="hl-o">quiero tener la chamba</span>&rdquo;, sin pararse nunca a cuestionarse ni a voltear a verse a ellos mismos.</p>
-      <p class="sm-line sm-pull">Y no era falta de talento.</p>
+      <p class="sm-greeting">Para el actor que está leyendo&nbsp;esto:</p>
+      <p class="sm-line">Antes de ser fotógrafo de retrato para actores, dirigí actores en cine — incluso fui director de casting en la ópera prima de un amigo. Ahí noté algo que ningún director enseña: la mayoría actúa desde el &ldquo;<span class="sm-strong">quiero tener la chamba</span>&rdquo;, sin pararse nunca a cuestionarse ni a voltear a verse a ellos mismos.</p>
+      <p class="sm-line sm-pull">Y no era falta de&nbsp;talento.</p>
       <p class="sm-line">De esa grieta nació todo mi desmadre: <span class="hl-y">Monty Experience</span> — un proceso diseñado para actores dispuestos a reconectar consigo mismos.</p>
       <p class="sm-line--big">Sé lo que se siente ver tu book y no reconocerte en él. <span class="hl-o">Yo también pasé por ahí.</span></p>
       <div class="sm-more" id="smMore">
         <div class="sm-more-inner">
-          <p class="sm-line">Por eso no arrancamos con la sesión, arrancamos con una conversación honesta sobre qué hay detrás de lo que quieres lograr — y de ahí personalizamos tu sesión, <span class="hl-y">a tu medida</span>.</p>
-          <p class="sm-line">Y dirás: normalmente cuando renuevas tu book te queda la misma pregunta — <span class="hl-o">ya tengo mi book, ¿ahora qué chingados hago?</span> El proceso no se queda ahí: cada sesión cierra con un seguimiento, un asesoramiento para trazar la ruta.</p>
+          <p class="sm-line">Por eso no arrancamos con la sesión, arrancamos con una conversación honesta sobre qué hay detrás de lo que quieres lograr — y de ahí personalizamos tu sesión, <span class="sm-strong">a tu medida</span>.</p>
+          <p class="sm-line">Y dirás: normalmente cuando renuevas tu book te queda la misma pregunta — <span class="sm-strong">ya tengo mi book, ¿ahora qué chingados hago?</span> El proceso no se queda ahí: cada sesión cierra con un seguimiento, un asesoramiento para trazar la ruta.</p>
           <p class="sm-line--big">Actualmente acompaño a actores que sienten que <span class="hl-y">se quedaron fuera del juego</span>, a volver a competir con una imagen que <span class="hl-o">por fin los represente en cada casting.</span></p>
         </div>
       </div>
@@ -663,7 +692,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     <div class="testimonios-head">
       <span class="eyebrow">Testimonios</span>
       <h2>Pregúntales a ellos, no a mí.</h2>
-      <p>Dale play. Súbele al volumen. Esto no lo actué yo.</p>
+      <p>Dale play. Súbele al volumen. Esto no lo actué&nbsp;yo.</p>
     </div>
     <div class="testi-mosaic" id="testiMosaic">
       <div class="testi-cap tc-1" data-name="Bri Navarro" data-video="/videos/tes_bri_1626229384.mp4" data-poster="/videos/portada_bri.png">
@@ -710,35 +739,35 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     <div class="faq-list" id="faqList">
       <div class="faq-item">
         <button type="button" class="faq-trigger">¿Cuánto dura la sesión?<span class="faq-toggle">+</span></button>
-        <div class="faq-panel"><div class="faq-panel-inner"><p>Entre 2 y 6 horas, según la experiencia que elijas. La mayoría se relaja a la primera hora, y ahí es cuando <span class="hl-o">empieza lo bueno</span>.</p></div></div>
+        <div class="faq-panel"><div class="faq-panel-inner"><p>Entre 2 y 6 horas, según la experiencia que elijas. La mayoría se relaja a la primera hora, y ahí es cuando <span class="hl-o">empieza lo&nbsp;bueno</span>.</p></div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-trigger">¿Puedo llevar varios looks/outfits?<span class="faq-toggle">+</span></button>
-        <div class="faq-panel"><div class="faq-panel-inner"><p>Sí, de 3 a 6 cambios según tu experiencia. No eres una sola nota. <span class="hl-y">Tu book tampoco debería serlo</span>.</p></div></div>
+        <div class="faq-panel"><div class="faq-panel-inner"><p>Sí, de 3 a 6 cambios según tu experiencia. No eres una sola nota. <span class="hl-y">Tu book tampoco debería&nbsp;serlo</span>.</p></div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-trigger">¿Qué pasa si no me gustan las fotos?<span class="faq-toggle">+</span></button>
-        <div class="faq-panel"><div class="faq-panel-inner"><p>No llegas a ese susto: te ves en pantalla mientras tomamos las fotos. Si algo no es tuyo, lo cambiamos ahí, en caliente. A la selección llegas ya sabiendo que <span class="hl-o">sí eres tú</span>.</p></div></div>
+        <div class="faq-panel"><div class="faq-panel-inner"><p>No llegas a ese susto: te ves en pantalla mientras tomamos las fotos. Si algo no es tuyo, lo cambiamos ahí, en caliente. A la selección llegas ya sabiendo que <span class="hl-o">sí eres&nbsp;tú</span>.</p></div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-trigger">¿Qué pasa si no podemos hacer el Cafecito (o Comida) de Curación el mismo día?<span class="faq-toggle">+</span></button>
-        <div class="faq-panel"><div class="faq-panel-inner"><p>No pasa nada. Lo ideal es el mismo día de tu sesión, pero si no se acomoda, lo reagendamos uno o dos días después — ya quedó apartado desde antes. Y si de plano no se puede en persona, al día siguiente antes del mediodía te mando todas las tomas y los highlights con instrucciones para elegir; mandas tu selección a la galería y, si lo necesitas, seguimos la asesoría <span class="hl-y">por videollamada</span>.</p></div></div>
+        <div class="faq-panel"><div class="faq-panel-inner"><p>No pasa nada. Lo ideal es el mismo día de tu sesión, pero si no se acomoda, lo reagendamos uno o dos días después — ya quedó apartado desde antes. Y si de plano no se puede en persona, al día siguiente antes del mediodía te mando todas las tomas y los highlights con instrucciones para elegir; mandas tu selección a la galería y, si lo necesitas, seguimos la asesoría <span class="hl-y">por&nbsp;videollamada</span>.</p></div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-trigger">¿La asesoría METASTAR va incluida o es aparte?<span class="faq-toggle">+</span></button>
-        <div class="faq-panel"><div class="faq-panel-inner"><p>Es un extra, aparte de las tres experiencias — ninguna la incluye por default. METASTAR es para cuando ya pasaste por tu Elite o Fénix y la pregunta cambia de "cómo me veo" a "ahora qué hago con esto". Si te interesa, lo platicamos directo por WhatsApp una vez que <span class="hl-o">termines tu experiencia</span>.</p></div></div>
+        <div class="faq-panel"><div class="faq-panel-inner"><p>Es un extra, aparte de las tres experiencias — ninguna la incluye por default. METASTAR es para cuando ya pasaste por tu Elite o Fénix y la pregunta cambia de "cómo me veo" a "ahora qué hago con esto". Si te interesa, lo platicamos directo por WhatsApp una vez que <span class="hl-o">termines tu&nbsp;experiencia</span>.</p></div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-trigger">¿Por qué Elite necesita 2 semanas?<span class="faq-toggle">+</span></button>
-        <div class="faq-panel"><div class="faq-panel-inner"><p>Dos semanas no son demora, son preparación. Es el tiempo que toma reunir a tu stylist, tu maquillista y el estudio — para que el día de tu sesión <span class="hl-y">todo esté listo, sin improvisar</span>.</p></div></div>
+        <div class="faq-panel"><div class="faq-panel-inner"><p>Dos semanas no son demora, son preparación. Es el tiempo que toma reunir a tu stylist, tu maquillista y el estudio — para que el día de tu sesión <span class="hl-y">todo esté listo, sin&nbsp;improvisar</span>.</p></div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-trigger">¿Por qué Fénix necesita 3 semanas?<span class="faq-toggle">+</span></button>
-        <div class="faq-panel"><div class="faq-panel-inner"><p>No es que te hagamos esperar — es que armamos algo más grande. Tres semanas de anticipación aseguran que <span class="hl-o">cada parte de tu Fénix esté lista a tiempo</span>.</p></div></div>
+        <div class="faq-panel"><div class="faq-panel-inner"><p>No es que te hagamos esperar — es que armamos algo más grande. Tres semanas de anticipación aseguran que <span class="hl-o">cada parte de tu Fénix esté lista a&nbsp;tiempo</span>.</p></div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-trigger">¿Cuánto tarda la entrega?<span class="faq-toggle">+</span></button>
-        <div class="faq-panel"><div class="faq-panel-inner"><p>De 2 a 15 días hábiles, según la experiencia. ¿Traes prisa? Hay entrega al día siguiente con costo extra — <span class="hl-o">para cuando el casting no puede esperar</span>.</p></div></div>
+        <div class="faq-panel"><div class="faq-panel-inner"><p>De 2 a 15 días hábiles, según la experiencia. ¿Traes prisa? Hay entrega al día siguiente con costo extra — <span class="hl-o">para cuando el casting no puede&nbsp;esperar</span>.</p></div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-trigger">¿Qué hago si necesito algo que no está en las experiencias?<span class="faq-toggle">+</span></button>
@@ -752,7 +781,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
             <li class="faq-extras-tag">Landing 100% personalizada</li>
             <li class="faq-extras-tag">Demo reel</li>
           </ul>
-          <p class="faq-extras-legend">¿Te interesa alguno de estos servicios extra? Escríbeme por WhatsApp y armamos tu experiencia a la medida.</p>
+          <p class="faq-extras-legend">¿Te interesa alguno de estos servicios extra? Escríbeme por WhatsApp y armamos tu experiencia a la&nbsp;medida.</p>
           <div class="faq-extras-cta">
             <div class="btn-wrap btn-wrap-secundario">
               <span class="btn-icon btn-icon-secundario">▸</span>
@@ -767,14 +796,14 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 
   <section class="cta-final">
     <div class="cta-final-inner">
-      <p class="cta-final-mantra">&ldquo;No hay nada más caro que esforzarte tanto y que nunca sea suficiente.&rdquo;</p>
+      <p class="cta-final-mantra">&ldquo;No hay nada más caro que esforzarte tanto y que nunca sea&nbsp;suficiente.&rdquo;</p>
       <div class="cta-final-btns">
         <div class="btn-wrap">
           <span class="btn-icon">▸</span>
           <button type="button" class="btn" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'>Quiero Reencontrarme</button>
         </div>
       </div>
-      <p class="cta-final-cupos">Cupos limitados este mes: 8 disponibles.</p>
+      <p class="cta-final-cupos">Cupos limitados este mes: 8&nbsp;disponibles.</p>
       <div class="punch-wrap" aria-hidden="false">
         <p class="punch-text">Culo si no<br><span class="accent">te descubres.</span></p>
         <img class="punch-mini-monty" src="assets/img/index-ea321a01.webp" alt="Monty señalando con asombro" loading="lazy" width="520" height="626">
@@ -784,8 +813,8 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 
   <section class="free-cta">
     <div class="free-cta-inner">
-      <h3>¿Dudas, preguntas, chismes, noticias, amenazas?</h3>
-      <p>Mándame mensajito por WhatsApp.</p>
+      <h3>¿Dudas, preguntas, chismes, noticias,&nbsp;amenazas?</h3>
+      <p>Mándame mensajito por&nbsp;WhatsApp.</p>
       <div class="btn-wrap btn-wrap-secundario">
         <span class="btn-icon btn-icon-secundario">▸</span>
         <a class="btn btn-secundario" href="https://wa.me/525570533742?text=Wenas%20Monty%2C%20tengo%20dudas%20sobre%20mi%20Monty%20Experience" target="_blank" rel="noopener">Escríbeme por WhatsApp</a>
@@ -796,7 +825,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   <footer class="site-footer">
     <div class="site-footer-inner">
       <span class="footer-brand">
-        <img src="assets/img/logo-ave.png" alt="Monty Experience" width="240" height="240">
+        <img src="assets/img/logo-monty.webp" alt="Monty Experience" width="420" height="323">
         Monty Experience
       </span>
       <span class="footer-links">
@@ -1088,7 +1117,12 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         var itemWidth = items[0].offsetWidth || 260; // ancho real de layout, no el visual ya rotado/escalado
         var closestIdx = 0, closestDist = Infinity;
 
-        items.forEach(function(item, i){
+        // ---- 1) Pasada de LECTURA: todas las mediciones de layout primero,
+        // sin tocar ningún estilo todavía. Intercalar lectura y escritura
+        // por item (como antes) fuerza un reflow síncrono en cada iteración
+        // (layout thrashing), que es justo lo que se siente como un
+        // "temblor" al deslizar con 14 tarjetas ----
+        var computed = items.map(function(item, i){
           var r = item.getBoundingClientRect();
           var itemCenter = r.left + r.width / 2; // el centro geométrico no cambia al rotar/escalar desde el centro
           var pxDist = itemCenter - center;
@@ -1101,15 +1135,18 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
           var scale = Math.max(SCALE_MIN, SCALE_BASE - absOffset * SCALE_FALLOFF);
           var opacity = Math.max(OPACITY_MIN, 1 - absOffset * OPACITY_FALLOFF);
           var z = Math.max(1, Math.round(50 - absOffset * 10));
-
-          item.style.transform = 'rotate(' + rotation.toFixed(2) + 'deg) scale(' + scale.toFixed(3) + ')';
-          item.style.opacity = opacity.toFixed(3);
-          item.style.zIndex = String(z);
+          return { rotation:rotation, scale:scale, opacity:opacity, z:z };
         });
 
-        // solo la foto centrada (ya estática, "seleccionada") reacciona al
-        // pasar el cursor — las vecinas no deben saltar/crecer con el hover
+        // ---- 2) Pasada de ESCRITURA: ya con todas las medidas en mano,
+        // se aplican los estilos sin volver a leer layout en medio ----
         items.forEach(function(item, i){
+          var c = computed[i];
+          item.style.transform = 'rotate(' + c.rotation.toFixed(2) + 'deg) scale(' + c.scale.toFixed(3) + ')';
+          item.style.opacity = c.opacity.toFixed(3);
+          item.style.zIndex = String(c.z);
+          // solo la foto centrada (ya estática, "seleccionada") reacciona al
+          // pasar el cursor — las vecinas no deben saltar/crecer con el hover
           item.classList.toggle('is-centered', i === closestIdx);
         });
 
@@ -1261,6 +1298,102 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     var lastCard = null;
     var roadCleanup = null; // quita los listeners del camino activo al cambiar de paquete/cerrar
 
+    // ----- Pop-up anclado del camino (desktop): sale pegado al punto donde se dio
+    // clic, en el hueco libre más cercano a ese ícono (no al centro de la pantalla) -----
+    var roadPopup = document.getElementById('roadPopup');
+    var roadPopupBackdrop = document.getElementById('roadPopupBackdrop');
+    var roadPopupClose = document.getElementById('roadPopupClose');
+    var roadPopupNum = document.getElementById('roadPopupNum');
+    var roadPopupTitle = document.getElementById('roadPopupTitle');
+    var roadPopupText = document.getElementById('roadPopupText');
+
+    // Por índice de punto (01..06, mismo orden en los 3 paquetes): de qué lado del
+    // ícono sale el pop-up (arriba/abajo, según dónde haya hueco libre en el
+    // zigzag) y un empujón horizontal para acercarlo al hueco correcto, tal cual
+    // se acordó: 01 arriba-izq, 02 arriba, 03 arriba (hacia el hueco de 04),
+    // 04 abajo, 05 arriba (hacia el hueco de 06), 06 abajo.
+    var popupPlacements = [
+      { side:'above', shiftX:30 },
+      { side:'above', shiftX:0 },
+      { side:'above', shiftX:22 },
+      { side:'below', shiftX:0 },
+      { side:'above', shiftX:18 },
+      { side:'below', shiftX:-30 }
+    ];
+    var GAP_ABOVE = 20, GAP_BELOW = 48;
+
+    function positionRoadPopup(point){
+      var wrap = point.closest('.exp-road-wrap');
+      if (!wrap) return;
+      if (roadPopup.parentNode !== wrap) wrap.appendChild(roadPopup);
+
+      var idx = parseInt(point.getAttribute('data-index'), 10) || 0;
+      var placement = popupPlacements[idx] || popupPlacements[0];
+      var wrapRect = wrap.getBoundingClientRect();
+      var ptRect = point.getBoundingClientRect();
+      var ptCenterX = (ptRect.left + ptRect.width / 2) - wrapRect.left; // centro real del circuito, sin desplazar
+      var cx = ptCenterX + placement.shiftX;
+
+      roadPopup.classList.remove('pos-above', 'pos-below');
+      var top;
+      if (placement.side === 'above'){
+        roadPopup.classList.add('pos-above');
+        top = (ptRect.top - wrapRect.top) - GAP_ABOVE;
+      } else {
+        roadPopup.classList.add('pos-below');
+        top = (ptRect.bottom - wrapRect.top) + GAP_BELOW;
+      }
+
+      // clamp horizontal para que no se salga del ancho del camino
+      var boxWidth = roadPopup.offsetWidth || 220;
+      var halfWidth = boxWidth / 2;
+      cx = Math.max(halfWidth + 6, Math.min(wrapRect.width - halfWidth - 6, cx));
+
+      roadPopup.style.left = cx + 'px';
+      roadPopup.style.top = top + 'px';
+
+      // la colita siempre apunta al centro real del circuito, sin importar
+      // cuánto se haya movido la caja (shiftX/clamp) para no encimarse con
+      // la columna vecina — por eso su posición se calcula aparte de cx.
+      var tailX = (ptCenterX - cx) + halfWidth;
+      tailX = Math.max(12, Math.min(boxWidth - 12, tailX));
+      roadPopup.style.setProperty('--tail-x', tailX + 'px');
+    }
+
+    function openRoadPopup(point){
+      if (!roadPopup) return;
+      var num = point.querySelector('.road-num');
+      roadPopupNum.textContent = num ? num.textContent : '';
+      roadPopupTitle.textContent = point.getAttribute('data-step-title') || '';
+      roadPopupText.innerHTML = point.getAttribute('data-step-text') || '';
+      positionRoadPopup(point);
+      roadPopup.classList.add('is-open');
+      roadPopup.setAttribute('aria-hidden', 'false');
+      if (roadPopupBackdrop) roadPopupBackdrop.classList.add('is-open');
+    }
+    function closeRoadPopup(){
+      if (!roadPopup || !roadPopup.classList.contains('is-open')) return;
+      roadPopup.classList.remove('is-open');
+      roadPopup.setAttribute('aria-hidden', 'true');
+      if (roadPopupBackdrop) roadPopupBackdrop.classList.remove('is-open');
+    }
+    if (roadPopupClose) roadPopupClose.addEventListener('click', closeRoadPopup);
+    if (roadPopupBackdrop) roadPopupBackdrop.addEventListener('click', closeRoadPopup);
+
+    // ----- Botón flotante "Quiero mi [Paquete]": texto + color según el panel abierto -----
+    var expFloatingCta = document.getElementById('expFloatingCta');
+    var expFloatingCtaBtn = document.getElementById('expFloatingCtaBtn');
+    var floatingCtaLabels = { classic: 'Quiero mi Classic', elite: 'Quiero mi Elite', fenix: 'Quiero mi Fénix' };
+    function setFloatingCta(pkg){
+      if (!expFloatingCtaBtn) return;
+      // la clase is-classic/is-elite/is-fenix vive en el modal (no en .exp-floating-cta)
+      // para que el --pkg-accent le llegue también al pop-up del camino, que es hermano
+      // de .exp-floating-cta y no hijo suyo.
+      modal.classList.remove('is-classic', 'is-elite', 'is-fenix');
+      modal.classList.add('is-' + pkg);
+      expFloatingCtaBtn.textContent = floatingCtaLabels[pkg] || 'Quiero mi experiencia';
+    }
+
     function cardRectTransform(fromRect, toRect){
       var dx = (fromRect.left + fromRect.width / 2) - (toRect.left + toRect.width / 2);
       var dy = (fromRect.top + fromRect.height / 2) - (toRect.top + toRect.height / 2);
@@ -1304,8 +1437,34 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         var rect = road.getBoundingClientRect();
         setRoadProgress((clientX - rect.left) / rect.width);
       }
-      function onMove(e){ onRoadMove(e.clientX); }
-      function onLeave(){ setRoadProgress(0); }
+
+      // ---- Invitación a dar clic: solo el ícono más cercano al cursor trae el
+      // anillo (.is-near, ver CSS); independiente del progreso/is-lit de arriba.
+      // Lectura de los 6 rects primero, escritura de clases después (si no, cada
+      // toggle de clase fuerza un reflow que el siguiente getBoundingClientRect
+      // vuelve a pagar — el mismo problema que ya se resolvió en el carrusel). ----
+      var lastNearIdx = -1;
+      function updateNearPoint(clientX, clientY){
+        var nearestIdx = -1, nearestDist = Infinity;
+        roadPoints.forEach(function(pt, i){
+          var r = pt.getBoundingClientRect();
+          var dx = clientX - (r.left + r.width / 2);
+          var dy = clientY - (r.top + r.height / 2);
+          var d = dx * dx + dy * dy;
+          if (d < nearestDist){ nearestDist = d; nearestIdx = i; }
+        });
+        if (nearestIdx === lastNearIdx) return;
+        roadPoints.forEach(function(pt, i){ pt.classList.toggle('is-near', i === nearestIdx); });
+        lastNearIdx = nearestIdx;
+      }
+      function clearNearPoint(){
+        if (lastNearIdx === -1) return;
+        roadPoints.forEach(function(pt){ pt.classList.remove('is-near'); });
+        lastNearIdx = -1;
+      }
+
+      function onMove(e){ onRoadMove(e.clientX); updateNearPoint(e.clientX, e.clientY); }
+      function onLeave(){ setRoadProgress(0); clearNearPoint(); }
       function onTouch(e){ if (e.touches && e.touches.length) onRoadMove(e.touches[0].clientX); }
       function onResize(){
         if (!pathProgress) return;
@@ -1319,11 +1478,27 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       window.addEventListener('resize', onResize);
       setRoadProgress(0);
 
+      // clic (o Enter/Espacio, ya que son role="button") en un punto: abre el pop-up
+      // centrado con el nombre + copy de ese paso.
+      function onPointClick(e){ e.stopPropagation(); openRoadPopup(this); }
+      function onPointKey(e){
+        if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); e.stopPropagation(); openRoadPopup(this); }
+      }
+      roadPoints.forEach(function(pt){
+        pt.addEventListener('click', onPointClick);
+        pt.addEventListener('keydown', onPointKey);
+      });
+
       roadCleanup = function(){
         road.removeEventListener('mousemove', onMove);
         road.removeEventListener('mouseleave', onLeave);
         road.removeEventListener('touchmove', onTouch);
         window.removeEventListener('resize', onResize);
+        roadPoints.forEach(function(pt){
+          pt.removeEventListener('click', onPointClick);
+          pt.removeEventListener('keydown', onPointKey);
+        });
+        closeRoadPopup();
       };
     }
 
@@ -1373,6 +1548,12 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       // forzar reflow para que el navegador registre el estado inicial antes de animar
       void modal.offsetWidth;
 
+      // el transition:none de arriba (puesto para fijar el estado de arranque sin que
+      // se anime) se queda pegado como estilo inline si no se quita, y un inline style
+      // siempre gana sobre la regla de .is-animating — por eso el "crecimiento" nunca
+      // se veía: el salto final pasaba sin transición ninguna. Se limpia aquí, justo
+      // antes de animar al estado final, para que la clase sí pueda tomar el control.
+      modal.style.transition = '';
       modal.classList.add('is-animating');
       requestAnimationFrame(function(){
         modal.style.transform = 'translate(-50%,-50%)';
@@ -1382,6 +1563,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       modal.querySelector('.exp-modal-inner').scrollTop = 0;
       setupRoad(panel);
       setupMobileSteps(panel);
+      setFloatingCta(pkg);
     }
 
     function closeExpModal(){
@@ -1405,7 +1587,13 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     }
 
     closeBtn.addEventListener('click', closeExpModal);
-    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeExpModal(); });
+    document.addEventListener('keydown', function(e){
+      if (e.key !== 'Escape') return;
+      // si el pop-up del camino está abierto, Esc lo cierra a él primero —
+      // no todo el modal de "Tu experiencia" de un solo golpe.
+      if (roadPopup && roadPopup.classList.contains('is-open')) { closeRoadPopup(); return; }
+      closeExpModal();
+    });
 
     window.MX = window.MX || {};
     window.MX.openExpModal = openExpModal;

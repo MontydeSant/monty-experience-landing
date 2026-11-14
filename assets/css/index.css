@@ -14,13 +14,8 @@
   }
 
   .hero-logo-secundario{
-    position:absolute;
-    top:14px; left:14px;
-    width:36px; height:36px;
-    z-index:5;
-    opacity:.75;
-    pointer-events:none;
-    filter:drop-shadow(0 0 10px rgba(0,0,0,.4));
+    /* oculto: duplicaba el logo del nuevo header flotante (.site-nav) */
+    display:none;
   }
   .hero-logo-secundario img{ width:100%; height:100%; object-fit:contain; display:block; }
   @media(min-width:700px){
@@ -214,12 +209,13 @@
 
   /* ===== MOBILE: nota y paleta suben a flanquear el logo, no la pregunta ===== */
   @media(max-width:900px){
-    .hero{ padding:40px 4px 32px; min-height:auto; overflow-x:hidden; }
+    .hero{ padding:88px 4px 32px; min-height:auto; overflow-x:hidden; }
 
-    .photo-row{ gap:8px; margin-bottom:20px; justify-content:center; }
+    .photo-row{ gap:14px; margin-bottom:22px; justify-content:center; }
     .s-photo{ width:70px; height:88px; }
     .s-photo-2{ margin-bottom:6px; }
     .sub-photo{ width:70px; height:88px; }
+    .sub-row{ gap:16px; }
 
     .crown-row{ gap:20px; }
     .logo-row{ margin-bottom:10px; align-items:center; }
@@ -247,23 +243,23 @@
   /* ===== DESKTOP: elementos más grandes otra vez, pero distribuidos usando el ancho disponible
      (columna central más ancha, más separación horizontal) en vez de apretarlo todo al centro ===== */
   @media(min-width:901px){
-    .hero{ padding:24px 3vw; }
+    .hero{ padding:80px 3vw 24px; }
 
-    .photo-row{ gap:56px; margin-bottom:22px; }
-    .s-photo{ width:140px; height:175px; }
+    .photo-row{ gap:46px; margin-bottom:18px; }
+    .s-photo{ width:128px; height:160px; }
     .s-photo-1{ top:16px; left:6px; }
     .s-photo-2{ margin-bottom:10px; }
     .s-photo-3{ top:16px; left:-6px; }
 
     .crown-mid{ max-width:760px; }
-    .crown-row{ gap:40px; }
+    .crown-row{ gap:32px; }
     .logo-row{ margin-bottom:4px; }
-    .logo-wrap img{ width:250px; }
+    .logo-wrap img{ width:230px; }
 
     .headline-row{ margin-bottom:6px; }
     h1{ font-size:clamp(1.2rem, 1.8vw, 1.55rem); max-width:34ch; }
     .sub{ font-size:clamp(.9rem, .98vw, 1rem); max-width:52ch; }
-    .stat{ font-size:clamp(1.4rem, 1.5vw, 1.6rem); margin:0 0 30px; }
+    .stat{ font-size:clamp(1.4rem, 1.5vw, 1.6rem); margin:0 0 24px; }
 
     .side-note{ width:130px; font-size:.78rem; padding:10px 9px; left:-16px; }
     .side-swatch{ width:130px; left:16px; }
@@ -271,8 +267,8 @@
     .f-swatches span{ width:14px; height:14px; }
     .logo-swatch .f-label{ display:none; }
 
-    .sub-row{ margin-bottom:4px; gap:44px; }
-    .sub-photo{ width:140px; height:175px; }
+    .sub-row{ margin-bottom:4px; gap:36px; }
+    .sub-photo{ width:128px; height:160px; }
 
     .btn-icon{ width:54px; font-size:1.05rem; }
     .btn{ padding:16px 28px; font-size:1.05rem; }
@@ -321,10 +317,28 @@
     position:absolute; left:50%; bottom:-70px; transform:translateX(-50%);
     width:46px; height:2px; background:rgba(255,255,255,.15);
   }
+  .problema-lead-intro{
+    font-family:'Courier Prime', monospace; font-size:clamp(.98rem, 1.3vw, 1.12rem);
+    color:var(--text-muted); line-height:1.6; margin:0 0 26px;
+  }
+  .problema-num-row{
+    display:flex; align-items:baseline; justify-content:center;
+    flex-wrap:nowrap; white-space:nowrap;
+    gap:clamp(6px, 1.8vw, 16px); margin:0 0 44px;
+    max-width:100%;
+  }
+  .problema-num-suffix{
+    font-family:'Special Elite', cursive;
+    font-size:clamp(.85rem, 6.6vw, 3rem);
+    text-transform:uppercase; letter-spacing:.01em;
+    color:var(--yellow); text-shadow:0 0 40px rgba(253,192,5,.55);
+    line-height:1; white-space:nowrap;
+  }
   .problema-lead-1{
     font-family:'Courier Prime', monospace; font-size:clamp(.98rem, 1.3vw, 1.12rem);
     color:var(--text-muted); line-height:1.6; margin:0 0 64px;
   }
+  .problema-lead-1 em{ font-style:italic; }
   .problema-lead-2{
     font-family:'Courier Prime', monospace; font-size:clamp(.98rem, 1.3vw, 1.12rem);
     color:#fff; font-weight:600; line-height:1.6; margin:0 0 64px;
@@ -341,19 +355,20 @@
   }
   .problema-stat .num{
     font-family:'Special Elite', cursive;
-    font-size:clamp(3.2rem, 9vw, 5.4rem);
+    font-size:clamp(.85rem, 6.6vw, 3rem);
     color:var(--yellow); text-shadow:0 0 40px rgba(253,192,5,.55);
-    line-height:1; margin:0 0 44px;
+    line-height:1; margin:0; white-space:nowrap;
   }
 
   @media(max-width:900px){
-    .problema{ padding:64px 5vw 70px; }
+    .problema{ padding:46px 5vw 52px; }
     .problema-cols{ gap:20px; }
     .p-card{ padding:24px 20px; }
     .problema-stat{ margin-bottom:40px; }
     .problema-stat-top{ margin-bottom:90px; }
     .problema-stat-top::after{ bottom:-45px; }
-    .problema-stat .num{ margin-bottom:30px; }
+    .problema-num-row{ margin-bottom:30px; gap:10px; }
+    .problema-lead-intro{ margin-bottom:20px; }
     .problema-lead-1{ margin-bottom:40px; }
     .problema-lead-2{ margin-bottom:40px; }
     .problema-lead-3{ margin-bottom:14px; }
@@ -361,10 +376,11 @@
 
   /* ===== DESKTOP: el bloque del dato/ATORADO se reduce — las tarjetas son lo importante ===== */
   @media(min-width:901px){
-    .problema{ padding:70px 6vw 80px; }
+    .problema{ padding:50px 6vw 56px; }
     .problema-stat-top{ margin-bottom:64px; }
     .problema-stat-top::after{ bottom:-32px; }
-    .problema-stat .num{ font-size:clamp(2.2rem, 4.2vw, 3rem); margin-bottom:22px; }
+    .problema-num-row{ margin-bottom:22px; gap:12px; }
+    .problema-lead-intro{ font-size:.92rem; margin-bottom:18px; }
     .problema-lead-1{ font-size:.92rem; margin-bottom:26px; }
     .problema-lead-2{ font-size:.92rem; margin-bottom:26px; }
     .problema-lead-3{ font-size:.74rem; margin-bottom:8px; }
@@ -374,7 +390,7 @@
   /* ===================== SECCIÓN: LO QUE SE ENTREGA (entrada al Proceso) ===================== */
   .entrega{
     position:relative;
-    padding:90px 6vw 100px;
+    padding:62px 6vw 68px;
     background-color:#1a0e2a;
     background-image:var(--grain), radial-gradient(ellipse 90% 70% at 50% 100%, #2a1642 0%, #1a0e2a 45%, #0a0512 100%);
     background-size:180px 180px, cover;
@@ -400,7 +416,7 @@
   .entrega-block{ flex:1 1 380px; max-width:420px; text-align:center; }
 
   .entrega-photo-solo{
-    width:220px; height:270px; margin:0 auto 34px;
+    width:100%; max-width:300px; aspect-ratio:4/5; margin:0 auto 34px;
     border-radius:4px; overflow:hidden; flex:none;
     background:repeating-linear-gradient(135deg, rgba(255,255,255,.05) 0 14px, rgba(255,255,255,.02) 14px 28px);
     border:1px dashed rgba(255,255,255,.22);
@@ -409,6 +425,10 @@
     box-shadow:0 16px 34px rgba(0,0,0,.5);
     animation:floatCard1 4.7s ease-in-out infinite;
   }
+  @media(min-width:600px){ .entrega-photo-solo{ max-width:340px; } }
+  @media(min-width:900px){
+    .entrega-photo-solo{ width:auto; max-width:none; height:300px; aspect-ratio:4/5; }
+  }
   .entrega-photo-solo span{
     font-family:'Courier Prime', monospace; font-size:.72rem; color:var(--text-muted);
     text-transform:uppercase; letter-spacing:.06em; padding:0 20px; text-align:center; line-height:1.5;
@@ -416,13 +436,20 @@
   .entrega-photo-real{ border:none; background:none; }
   .entrega-photo-real img{ width:100%; height:100%; object-fit:cover; object-position:center 25%; display:block; }
 
-  .entrega-mosaic{ position:relative; width:100%; max-width:340px; height:250px; margin:0 auto 34px; }
+  /* el mosaico escala de forma fluida (ancho máximo por breakpoint + % en cada
+     foto) para que las proporciones se mantengan iguales en cualquier tamaño
+     de pantalla — así no se ven "recuadradas" ni separadas raro en celular. */
+  .entrega-mosaic{ position:relative; width:100%; max-width:335px; aspect-ratio:460/340; margin:0 auto 34px; }
+  @media(min-width:600px){ .entrega-mosaic{ max-width:380px; } }
+  @media(min-width:900px){
+    .entrega-mosaic{ width:auto; max-width:none; height:300px; aspect-ratio:460/340; }
+  }
   .entrega-mosaic .m-photo{
-    position:absolute; width:92px; height:115px; border-radius:4px; overflow:hidden;
+    position:absolute; width:27%; height:46%; border-radius:4px; overflow:hidden;
     box-shadow:0 14px 28px rgba(0,0,0,.5);
   }
   .entrega-mosaic .m-photo img{ width:100%; height:100%; object-fit:cover; object-position:center 18%; display:block; }
-  .entrega-mosaic .m-1{ top:0; left:6%; transform:rotate(-7deg); animation:floatCard1 4.5s ease-in-out infinite; }
+  .entrega-mosaic .m-1{ top:0; left:18%; transform:rotate(-7deg); animation:floatCard1 4.5s ease-in-out infinite; }
   .entrega-mosaic .m-2{ top:4%; left:56%; transform:rotate(5deg); animation:floatCardRight 4.9s ease-in-out infinite; animation-delay:-1.2s; }
   .entrega-mosaic .m-3{ top:44%; left:0; transform:rotate(4deg); animation:floatCardLeft 5.1s ease-in-out infinite; animation-delay:-2.4s; }
   .entrega-mosaic .m-4{ top:40%; left:36%; transform:rotate(-4deg); animation:floatCard2 4.6s ease-in-out infinite; animation-delay:-.6s; }
@@ -439,17 +466,14 @@
   .entrega-block p b{ color:var(--yellow); font-weight:700; text-shadow:0 0 24px rgba(253,192,5,.4); }
 
   @media(max-width:900px){
-    .entrega{ padding:64px 5vw 70px; }
+    .entrega{ padding:44px 5vw 48px; }
     .entrega-grid{ gap:52px; margin-top:52px; }
-    .entrega-photo-solo{ width:170px; height:210px; margin-bottom:26px; }
-    .entrega-mosaic{ height:210px; margin-bottom:26px; }
-    .entrega-mosaic .m-photo{ width:76px; height:96px; }
   }
 
   /* ===================== SECCIÓN: PROCESO — "TU VIAJE" (camino interactivo) ===================== */
   .proceso{
     position:relative;
-    padding:56px 6vw 130px;
+    padding:44px 6vw 90px;
     background-color:#150b22;
     background-image:var(--grain), radial-gradient(ellipse 90% 70% at 50% 0%, #241238 0%, #150b22 45%, #0a0512 100%);
     background-size:180px 180px, cover;
@@ -470,7 +494,8 @@
   .road-arrow-base{ fill:rgba(255,255,255,.18); }
   .road-arrow-progress{ fill:var(--pkg-accent, var(--yellow)); opacity:0; transition:opacity .4s ease; filter:drop-shadow(0 0 6px var(--pkg-accent-glow, rgba(253,192,5,.7))); }
 
-  .road-point{ position:absolute; transform:translate(-50%,-50%); }
+  .road-point{ position:absolute; transform:translate(-50%,-50%); cursor:pointer; }
+  .road-point:focus-visible .road-badge{ outline:2px solid var(--pkg-accent, var(--yellow)); outline-offset:3px; }
   .road-badge{
     position:relative; width:clamp(44px,4.4vw,56px); height:clamp(44px,4.4vw,56px); border-radius:50%;
     background:var(--bg-dark); border:2px solid rgba(255,255,255,.25);
@@ -489,16 +514,38 @@
   .road-point.is-lit .road-badge{ background:var(--pkg-accent, var(--yellow)); border-color:var(--pkg-accent, var(--yellow)); box-shadow:0 0 26px var(--pkg-accent-glow, rgba(253,192,5,.6)); transform:scale(1.1); }
   .road-point.is-lit .road-badge svg{ stroke:var(--bg-dark); }
   .road-point.is-lit .road-num{ background:var(--pkg-accent, var(--yellow)); border-color:var(--pkg-accent, var(--yellow)); color:var(--bg-dark); }
+  .road-point:hover .road-badge{ box-shadow:0 0 20px var(--pkg-accent-glow, rgba(253,192,5,.4)); }
 
-  .road-label{ position:absolute; width:clamp(148px,15vw,205px); opacity:.42; transition:opacity .4s ease; z-index:3; }
-  .road-label h3{ font-family:'Special Elite', cursive; font-weight:400; font-size:.9rem; margin:0 0 5px; color:#fff; }
-  .road-label p{ font-family:'Courier Prime', monospace; font-size:.74rem; line-height:1.4; color:var(--text-muted); margin:0; }
+  /* ---- Invitación a dar clic: nada más el ícono más cercano al cursor mientras
+     te mueves sobre el camino (independiente de is-lit/progreso) trae un anillo
+     que pulsa hacia afuera, como diciendo "este se puede picar". Se apaga en
+     cuanto el cursor se aleja de él y prende en el siguiente — lo calcula el JS
+     (ver setupRoad / onMove) comparando distancias, no es por hover de CSS solo,
+     porque solo debe haber UNO activo a la vez ---- */
+  .road-point.is-near .road-badge::after{
+    content:''; position:absolute; inset:-7px; border-radius:50%;
+    border:1.6px solid var(--pkg-accent, var(--yellow));
+    opacity:0; animation:roadInvitePing 1.4s ease-out infinite;
+  }
+  @keyframes roadInvitePing{
+    0%{ transform:scale(.82); opacity:.95; }
+    70%{ transform:scale(1.38); opacity:0; }
+    100%{ transform:scale(1.38); opacity:0; }
+  }
+  @media(prefers-reduced-motion: reduce){
+    .road-point.is-near .road-badge::after{ animation:none; display:none; }
+  }
+
+  /* nombre del paso: ahora siempre visible y chiquito debajo del ícono — el párrafo
+     completo ya no vive aquí, sale en el pop-up centrado al dar clic (ver .road-popup) */
+  .road-name{
+    position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%);
+    width:max-content; max-width:120px; text-align:center;
+    font-family:'Courier Prime', monospace; font-size:.68rem; line-height:1.3;
+    color:var(--text-muted); letter-spacing:.01em; transition:color .3s ease;
+  }
+  .road-point.is-lit .road-name{ color:#fff; }
   .kw{ color:var(--orange); font-weight:700; text-shadow:0 0 10px rgba(246,131,24,.6); }
-  .road-point.is-lit .road-label{ opacity:1; }
-
-  .road-label.pos-ul{ right:calc(100% + 20px); bottom:calc(100% + 14px); text-align:right; }
-  .road-label.pos-dr{ left:calc(100% + 20px); top:calc(100% + 14px); text-align:left; }
-  @media(max-width:900px){ }
 
   /* ===== Mobile: lista vertical, iconos + números, se ilumina al ir tocando cada uno ===== */
   .proceso-path-mobile{ display:none; }
@@ -513,7 +560,7 @@
   /* ===================== SECCIÓN: REFLEXIÓN — "¿Qué va a pasar cuando llegue el tercero?" ===================== */
   .reflexion{
     position:relative;
-    padding:100px 6vw 110px;
+    padding:64px 6vw 72px;
     background-color:#1a0e2a;
     background-image:var(--grain), radial-gradient(ellipse 90% 70% at 50% 50%, #2a1642 0%, #1a0e2a 45%, #0a0512 100%);
     background-size:180px 180px, cover;
@@ -537,7 +584,7 @@
     line-height:1.25; margin:0;
   }
   @media(max-width:900px){
-    .reflexion{ padding:64px 6vw 70px; }
+    .reflexion{ padding:46px 6vw 50px; }
     .reflexion-line1{ margin-bottom:14px; }
     .reflexion-line2{ margin-bottom:30px; }
   }
@@ -545,7 +592,7 @@
   /* ===================== SECCIÓN: TU EXPERIENCIA — "Ninguna talla única" ===================== */
   .paquetes{
     position:relative;
-    padding:100px 6vw 32px;
+    padding:64px 6vw 32px;
     background-color:#170b28;
     background-image:var(--grain), radial-gradient(ellipse 90% 70% at 50% 15%, #241238 0%, #170b28 45%, #0a0512 100%);
     background-size:180px 180px, cover;
@@ -594,6 +641,10 @@
     border-bottom:1px dashed rgba(255,255,255,.4);
   }
   .paquetes-extras a:hover{ color:var(--yellow); border-color:var(--yellow); }
+
+  @media(max-width:900px){
+    .paquetes{ padding:46px 6vw 28px; }
+  }
 
   .pkg-grid{
     display:grid; gap:20px; margin:56px auto 0; max-width:1180px;
@@ -731,7 +782,7 @@
      landing en vivo), fotos con la misma flotación suave que el mapa de posibilidades ===================== */
   .portafolio{
     position:relative;
-    padding:28px 6vw 50px;
+    padding:24px 6vw 40px;
     background-color:#170b28;
     background-image:var(--grain), radial-gradient(ellipse 90% 70% at 50% 85%, #241238 0%, #170b28 45%, #0a0512 100%);
     background-size:180px 180px, cover;
@@ -749,7 +800,7 @@
     font-size:clamp(1.5rem, 3.2vw, 2.2rem); line-height:1.32; margin:0;
   }
 
-  .port-carousel-wrap{ margin-top:48px; }
+  .port-carousel-wrap{ margin-top:10px; }
   .port-carousel{
     display:flex; gap:0; overflow-x:auto; scroll-snap-type:x mandatory;
     padding:40px calc(50% - 130px) 40px; cursor:grab; user-select:none;
@@ -812,6 +863,12 @@
   .port-img-float.port-offscreen{ animation-play-state:paused !important; }
   .port-carousel.is-scrolling .port-img-float{ animation-play-state:paused !important; }
 
+  /* mientras se desliza, el abanico se recalcula en cada frame de scroll;
+     si .port-item conserva su transition de transform, persigue un valor
+     que ya cambió de nuevo y tiembla. Se quita solo durante el scroll
+     activo; al soltar, vuelve para el acomodo final suave */
+  .port-carousel.is-scrolling .port-item{ transition:none; }
+
   @media (prefers-reduced-motion: reduce){
     .port-item{ transition:none; }
     .port-img-float{ animation:none !important; }
@@ -829,7 +886,7 @@
      el texto abajo como un mensaje personal, directo, al actor que lee ===================== */
   .sobre-mi{
     position:relative;
-    padding:56px 6vw 60px;
+    padding:40px 6vw 44px;
     background-color:#170b28;
     background-image:var(--grain), radial-gradient(ellipse 90% 60% at 50% 10%, #241238 0%, #170b28 45%, #0a0512 100%);
     background-size:180px 180px, cover;
@@ -846,11 +903,11 @@
   .sm-letter-wrap.is-visible{ opacity:1; transform:translateY(0); }
 
   .sm-photo-mini{
-    width:210px; margin:0 auto 30px; aspect-ratio:4 / 5;
+    width:232px; margin:0 auto 30px; aspect-ratio:4 / 5;
     border-radius:16px; overflow:hidden; box-shadow:0 26px 54px rgba(0,0,0,.55);
     animation:smLetterFloat 6.4s ease-in-out infinite;
   }
-  @media(min-width:600px){ .sm-photo-mini{ width:250px; } }
+  @media(min-width:600px){ .sm-photo-mini{ width:276px; } }
   .sm-photo-mini img{ width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
   @keyframes smLetterFloat{ 0%,100%{ transform:rotate(-4deg) translateY(0); } 50%{ transform:rotate(-4deg) translateY(-14px); } }
 
@@ -883,6 +940,7 @@
   .sm-line strong{ color:var(--cream); font-weight:600; }
   .sm-line .hl-o, .sm-line--big .hl-o{ color:var(--orange); font-weight:600; }
   .sm-line .hl-y, .sm-line--big .hl-y{ color:var(--yellow); font-weight:600; }
+  .sm-line .sm-strong, .sm-line--big .sm-strong{ color:inherit; font-weight:700; }
 
   .sm-line--big{
     font-family:'Special Elite', cursive; font-weight:400; color:var(--cream);
@@ -932,7 +990,7 @@
      en grande al centro ===================== */
   .testimonios{
     position:relative;
-    padding:70px 6vw 56px;
+    padding:48px 6vw 44px;
     background-color:#170b28;
     background-image:var(--grain), radial-gradient(ellipse 90% 60% at 50% 90%, #241238 0%, #170b28 45%, #0a0512 100%);
     background-size:180px 180px, cover;
@@ -1019,7 +1077,7 @@
 
   /* ---- modal: el testimonio tocado se abre en grande al centro ---- */
   .testi-modal{
-    position:fixed; inset:0; z-index:200; display:flex; align-items:center; justify-content:center;
+    position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center;
     padding:24px; background:rgba(10,5,18,.82); backdrop-filter:blur(6px);
     opacity:0; pointer-events:none; transition:opacity .3s ease;
   }
@@ -1042,8 +1100,9 @@
     background:linear-gradient(to top, rgba(0,0,0,.72) 0%, transparent 46%);
   }
   .testi-modal-name{
-    position:absolute; left:0; right:0; bottom:38px; z-index:1; text-align:center;
+    position:absolute; left:0; right:0; bottom:58px; z-index:1; text-align:center;
     font-family:'Special Elite', cursive; font-weight:400; font-size:1.05rem; color:#fff;
+    text-shadow:0 2px 8px rgba(0,0,0,.6); pointer-events:none;
   }
   .testi-modal-close{
     position:absolute; top:12px; right:12px; z-index:3;
@@ -1057,7 +1116,7 @@
      panel abierto a la vez, con la frase clave de cada respuesta resaltada ===================== */
   .faq{
     position:relative;
-    padding:50px 6vw 60px;
+    padding:40px 6vw 46px;
     background-color:#170b28;
     background-image:var(--grain), radial-gradient(ellipse 90% 60% at 50% 15%, #241238 0%, #170b28 45%, #0a0512 100%);
     background-size:180px 180px, cover;
@@ -1161,7 +1220,7 @@
   /* ===================== SECCIÓN: CIERRE — mantra + CTA final ===================== */
   .cta-final{
     position:relative;
-    padding:96px 6vw 90px;
+    padding:64px 6vw 64px;
     text-align:center;
     background-color:#170b28;
     background-image:var(--grain), radial-gradient(ellipse 90% 70% at 50% 30%, #2a1642 0%, #170b28 45%, #0a0512 100%);
@@ -1205,7 +1264,7 @@
   /* ===================== SECCIÓN: WHATSAPP ===================== */
   .free-cta{
     position:relative;
-    padding:54px 6vw 70px;
+    padding:40px 6vw 48px;
     text-align:center;
     background-color:#12081f;
     background-image:var(--grain);
@@ -1380,14 +1439,14 @@
      y desenfocado detrás, se cierra solo con la X. Adentro vive el camino curvo (recoloreado por
      paquete) en desktop, y un mini-carrusel de paradas en mobile, más el resumen debajo. ===================== */
   .exp-backdrop{
-    position:fixed; inset:0; z-index:200;
+    position:fixed; inset:0; z-index:300;
     background:rgba(5,3,10,.74); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
     opacity:0; pointer-events:none; transition:opacity .4s ease;
   }
   .exp-backdrop.is-open{ opacity:1; pointer-events:auto; }
 
   .exp-modal{
-    position:fixed; z-index:201; top:50%; left:50%;
+    position:fixed; z-index:301; top:50%; left:50%;
     width:min(1340px, 95vw); height:min(90vh, 980px);
     background-color:#170b28;
     background-image:var(--grain), radial-gradient(ellipse 90% 70% at 50% 10%, #241238 0%, #170b28 45%, #0a0512 100%);
@@ -1411,8 +1470,107 @@
   .exp-modal-fenix   .exp-modal-close{ border-color:#ffab6b; }
   /* el cierre va fuera de .exp-modal-panel (es el mismo para los 3) */
 
-  .exp-modal-inner{ position:absolute; inset:0; overflow-y:auto; padding:56px 44px 40px; }
-  @media(max-width:700px){ .exp-modal-inner{ padding:50px 18px 28px; } }
+  /* padding-bottom extra: deja aire debajo del resumen para que el botón flotante
+     (.exp-floating-cta, fijo dentro del modal) nunca tape el último texto al hacer scroll */
+  .exp-modal-inner{ position:absolute; inset:0; overflow-y:auto; padding:56px 44px 118px; }
+  @media(max-width:700px){ .exp-modal-inner{ padding:50px 18px 96px; } }
+
+  /* --- Botón flotante "Quiero mi [Paquete]": queda fijo dentro del modal (no dentro
+     del scroll de .exp-modal-inner), siempre visible aunque se baje/suba dentro de él --- */
+  .exp-floating-cta{
+    position:absolute; left:0; right:0; bottom:20px;
+    display:flex; justify-content:center; z-index:6; pointer-events:none;
+  }
+  .exp-floating-cta-btn{
+    pointer-events:auto; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:17px 40px; border-radius:999px;
+    background:rgba(23,11,40,.94);
+    -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px);
+    border:2px solid var(--pkg-accent, var(--accent-signal));
+    color:#fff; font-family:var(--font-guion); font-weight:400; font-size:1rem; letter-spacing:.01em;
+    box-shadow:0 16px 36px rgba(0,0,0,.55), 0 0 30px color-mix(in srgb, var(--pkg-accent, var(--accent-signal)) 45%, transparent);
+    transition:transform .25s ease, box-shadow .25s ease;
+    animation:ctaBreathe 2.6s ease-in-out infinite;
+  }
+  /* respiro sutil en loop: sube un poquito y el glow crece/baja, para que el botón
+     se sienta vivo y clicable aunque nadie le haya pasado el mouse todavía (clave en
+     mobile, donde no existe el hover). Al pasar el mouse se pausa el loop y manda el
+     :hover de siempre, para que no se peleen los dos efectos. */
+  @keyframes ctaBreathe{
+    0%,100%{ transform:translateY(0); box-shadow:0 16px 36px rgba(0,0,0,.55), 0 0 30px color-mix(in srgb, var(--pkg-accent, var(--accent-signal)) 45%, transparent); }
+    50%{ transform:translateY(-4px); box-shadow:0 20px 40px rgba(0,0,0,.55), 0 0 40px color-mix(in srgb, var(--pkg-accent, var(--accent-signal)) 68%, transparent); }
+  }
+  .exp-floating-cta-btn:hover{
+    animation-play-state:paused;
+    transform:translateY(-3px);
+    box-shadow:0 20px 42px rgba(0,0,0,.6), 0 0 36px color-mix(in srgb, var(--pkg-accent, var(--accent-signal)) 62%, transparent);
+  }
+  /* el color se define en .exp-modal.is-classic/elite/fenix (más arriba en el árbol,
+     la clase vive en el modal, no en .exp-floating-cta) para que tanto el botón
+     flotante como el pop-up del camino hereden el mismo --pkg-accent */
+  .exp-modal.is-classic{ --pkg-accent:#93a6e6; --pkg-accent-glow:rgba(147,166,230,.6); }
+  .exp-modal.is-elite  { --pkg-accent:#e6a0c4; --pkg-accent-glow:rgba(230,160,196,.6); }
+  .exp-modal.is-fenix  { --pkg-accent:#ffab6b; --pkg-accent-glow:rgba(255,171,107,.6); }
+  @media(max-width:700px){
+    .exp-floating-cta{ bottom:14px; }
+    .exp-floating-cta-btn{ padding:14px 30px; font-size:.92rem; }
+  }
+  @media(prefers-reduced-motion: reduce){
+    .exp-floating-cta-btn{ transition:none; animation:none; }
+  }
+
+  /* --- Pop-up anclado: sale pegado al punto del camino que diste clic (desktop),
+     en el hueco libre más cercano a ese ícono, en vez de taparte toda la pantalla.
+     Vive dentro de .exp-road-wrap (position:relative) y el JS (openRoadPopup) le
+     pone left/top en px según el punto, más la dirección arriba/abajo por índice
+     (ver popupPlacements). El backdrop ya no oscurece: solo sirve para cerrar al
+     dar clic fuera. --- */
+  .road-popup-backdrop{
+    position:fixed; inset:0; z-index:309;
+    background:transparent;
+    opacity:0; pointer-events:none;
+  }
+  .road-popup-backdrop.is-open{ opacity:1; pointer-events:auto; }
+  .road-popup{
+    position:absolute; top:0; left:0; z-index:310;
+    width:min(220px, 52%);
+    background-color:#1c0e2c;
+    background-image:radial-gradient(ellipse 90% 70% at 50% 0%, #2a1540 0%, #1c0e2c 60%);
+    border-radius:14px; border:1.5px solid var(--pkg-accent, var(--accent-signal));
+    box-shadow:0 16px 36px rgba(0,0,0,.55), 0 0 24px color-mix(in srgb, var(--pkg-accent, var(--accent-signal)) 32%, transparent);
+    padding:16px 15px 14px; text-align:center;
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .22s ease, transform .22s ease, visibility .22s;
+  }
+  .road-popup.pos-above{ transform:translate(-50%, calc(-100% - 10px)) scale(.92); }
+  .road-popup.pos-above.is-open{ transform:translate(-50%, calc(-100% - 10px)) scale(1); }
+  .road-popup.pos-below{ transform:translate(-50%, 10px) scale(.92); }
+  .road-popup.pos-below.is-open{ transform:translate(-50%, 10px) scale(1); }
+  .road-popup.is-open{ opacity:1; visibility:visible; pointer-events:auto; }
+  /* colita que apunta hacia el ícono del que salió */
+  .road-popup::before{
+    content:''; position:absolute; left:var(--tail-x, 50%); margin-left:-7px; width:14px; height:14px;
+    background:#241231; border:1.5px solid var(--pkg-accent, var(--accent-signal));
+    border-top:none; border-left:none;
+  }
+  .road-popup.pos-above::before{ bottom:-7.5px; transform:rotate(45deg); }
+  .road-popup.pos-below::before{ top:-7.5px; transform:rotate(225deg); }
+  .road-popup-close{
+    position:absolute; top:8px; right:8px; width:21px; height:21px; border-radius:50%;
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.25); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:.82rem; line-height:1; cursor:pointer;
+  }
+  .road-popup-num{
+    display:inline-flex; align-items:center; justify-content:center; width:21px; height:21px;
+    border-radius:50%; margin:0 auto 8px; background:var(--pkg-accent, var(--accent-signal)); color:var(--bg-dark);
+    font-family:'Special Elite', cursive; font-size:.62rem;
+  }
+  .road-popup h4{ font-family:'Special Elite', cursive; font-weight:400; font-size:.86rem; color:#fff; margin:0 0 8px; }
+  .road-popup p{ font-family:'Courier Prime', monospace; font-size:.68rem; line-height:1.5; color:var(--text-muted); margin:0; text-align:justify; text-align-last:left; text-justify:inter-word; }
+  @media(prefers-reduced-motion: reduce){
+    .road-popup, .road-popup-backdrop{ transition:none; }
+  }
 
   .exp-modal-panel{ display:none; }
   .exp-modal-panel.is-active{ display:block; }
@@ -1427,26 +1585,24 @@
     text-align:center; font-family:'Special Elite', cursive; font-weight:400;
     font-size:clamp(1.25rem,2.6vw,1.6rem); margin:0 0 30px; color:#fff;
   }
+  @media(min-width:901px){ .exp-modal-panel h3.exp-modal-title{ margin:0 0 10px; } }
 
   /* --- Desktop: mismo camino curvo de siempre, recoloreado por --pkg-accent --- */
   .exp-modal-classic{ --pkg-accent:#93a6e6; --pkg-accent-glow:rgba(147,166,230,.6); }
   .exp-modal-elite  { --pkg-accent:#e6a0c4; --pkg-accent-glow:rgba(230,160,196,.6); }
   .exp-modal-fenix  { --pkg-accent:#ffab6b; --pkg-accent-glow:rgba(255,171,107,.6); }
 
-  .exp-road-wrap{ position:relative; margin-top:42px; }
+  .exp-road-wrap{ position:relative; margin-top:76px; }
   @media(max-width:900px){ .exp-road-wrap{ margin-top:0; } }
-  /* el camino usa TODO el ancho del modal (antes tenía un tope de 1220px heredado
-     de la sección completa) y los textos/iconos bajan un poco de tamaño — con
-     más modal y menos texto, los 6 puntos dejan de sentirse amontonados */
-  .exp-road-wrap .proceso-road{ max-width:none; }
-  .exp-road-wrap .road-label{ width:clamp(140px,13vw,185px); }
-  .exp-road-wrap .road-label h3{ font-size:.84rem; }
-  .exp-road-wrap .road-label p{ font-size:.7rem; line-height:1.45; }
+  /* camino: antes muy angosto (620px), lo que apretaba mucho las 6 columnas entre
+     sí y dejaba poco hueco para anclar cada pop-up sin pisar al punto vecino.
+     Más ancho = más separación horizontal entre columnas */
+  .exp-road-wrap .proceso-road{ max-width:900px; margin:0 auto; }
   .exp-road-wrap .road-badge{ width:clamp(38px,3.6vw,48px); height:clamp(38px,3.6vw,48px); }
-  /* el mismo colchón que el camino original tenía antes de su botón (proceso-cta margin-top:104px) —
-     las etiquetas de los puntos sobresalen de su caja por ser position:absolute, así que sin este
-     espacio chocan con el resumen de abajo */
-  .exp-road-wrap .proceso-road{ margin-bottom:96px; }
+  .exp-road-wrap .road-name{ font-size:.66rem; max-width:96px; }
+  /* colchón para que .road-name (ahora chiquito, debajo de cada ícono) no choque
+     con el resumen de abajo — mucho menor que antes porque ya no hay párrafos */
+  .exp-road-wrap .proceso-road{ margin-bottom:72px; }
   @media(max-width:900px){ .exp-road-wrap .proceso-road{ margin-bottom:0; } }
   @media(min-width:901px){
     .exp-steps-mobile{ display:none; }
@@ -1469,7 +1625,7 @@
   }
   .exp-step-card .exp-step-badge{
     width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-    background:var(--bg-dark); border:2px solid var(--pkg-accent); margin-bottom:14px; position:relative;
+    background:var(--bg-dark); border:2px solid var(--pkg-accent); margin:0 auto 18px; position:relative;
   }
   .exp-step-card .exp-step-badge svg{ width:19px; height:19px; stroke:var(--pkg-accent); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
   .exp-step-card .exp-step-num{
@@ -1477,7 +1633,7 @@
     background:var(--pkg-accent); color:#0e0817; font-family:'Special Elite', cursive; font-size:.58rem;
     display:flex; align-items:center; justify-content:center;
   }
-  .exp-step-card h4{ font-family:'Special Elite', cursive; font-weight:400; font-size:.98rem; color:#fff; margin:0 0 8px; }
+  .exp-step-card h4{ font-family:'Special Elite', cursive; font-weight:400; font-size:.98rem; color:#fff; margin:0 0 14px; text-align:center; }
   .exp-step-card p{ font-family:'Courier Prime', monospace; font-size:.82rem; line-height:1.6; color:var(--text-muted); margin:0; text-align:justify; text-justify:inter-word; }
   .exp-steps-dots{ display:flex; justify-content:center; gap:7px; margin-top:4px; }
   .exp-steps-dots .dot{ width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.25); transition:background .3s ease, transform .3s ease; }
