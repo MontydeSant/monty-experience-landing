@@ -567,15 +567,40 @@
   object-fit:contain;
 }
 
-/* ===== Ubicación del estudio (mapa embebido) ===== */
+/* ===== Ubicación del estudio (mapa embebido) =====
+   El iframe de Maps empieza a cargar con bastante anticipación (ver script
+   junto al markup) y mientras tanto se ve este esqueleto en vez de un
+   recuadro vacío; al cargar, el iframe entra con fade y el esqueleto
+   desaparece. */
 .mb-map-frame{
+  position:relative;
   margin:34px auto 0; max-width:720px;
   border-radius:14px; overflow:hidden;
   border:1px solid rgba(255,255,255,.12);
   box-shadow:0 20px 46px rgba(0,0,0,.4);
   aspect-ratio:16/10;
+  background:#15101f;
 }
-.mb-map-frame iframe{ width:100%; height:100%; border:0; display:block; }
+.mb-map-frame iframe{
+  width:100%; height:100%; border:0; display:block;
+  position:relative; z-index:1;
+  opacity:0; transition:opacity .5s ease;
+}
+.mb-map-frame.is-loaded iframe{ opacity:1; }
+.mb-map-skeleton{
+  position:absolute; inset:0; z-index:0;
+  background:
+    linear-gradient(100deg, transparent 30%, rgba(255,255,255,.05) 50%, transparent 70%) #15101f;
+  background-size:200% 100%;
+  animation:mbMapSkeletonShine 1.6s ease-in-out infinite;
+}
+@keyframes mbMapSkeletonShine{
+  0%{ background-position:200% 0; }
+  100%{ background-position:-50% 0; }
+}
+@media(prefers-reduced-motion: reduce){
+  .mb-map-skeleton{ animation:none; }
+}
 @media(max-width:600px){
   .mb-map-frame{ aspect-ratio:4/5; }
 }

@@ -253,11 +253,42 @@
     <span class="mx-eyebrow">Dónde</span>
     <h2 class="mx-h2">Estamos en Durango 243, Roma Nte., a unos pasos del <span class="mx-accent">Palacio de Hierro de la Condesa</span></h2>
     <p class="mx-sub" style="max-width:46ch;">El estacionamiento junto al edificio se llena rápido. Llega diez minutos antes de tu sesión para encontrar lugar con calma.</p>
-    <div class="mb-map-frame">
-      <iframe src="https://www.google.com/maps?q=Durango+243,+Roma+Nte.,+Cuauhtemoc,+06700+Ciudad+de+Mexico,+CDMX&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Ubicación del estudio Monty Experience — Durango 243, Roma Nte., CDMX"></iframe>
+    <div class="mb-map-frame" id="mbMapFrame">
+      <div class="mb-map-skeleton" aria-hidden="true"></div>
+      <iframe data-src="https://www.google.com/maps?q=Durango+243,+Roma+Nte.,+Cuauhtemoc,+06700+Ciudad+de+Mexico,+CDMX&output=embed" referrerpolicy="no-referrer-when-downgrade" title="Ubicación del estudio Monty Experience — Durango 243, Roma Nte., CDMX"></iframe>
     </div>
   </div>
 </section>
+
+<script>
+  // El iframe de Maps tarda en cargar sus tiles — se empieza a cargar bastante
+  // antes de que la sección entre en pantalla (rootMargin grande) para que ya
+  // esté lista cuando el usuario llegue ahí haciendo scroll, y mientras tanto
+  // se ve un esqueleto en vez de un recuadro vacío/roto.
+  document.addEventListener('DOMContentLoaded', function(){
+    var frame = document.getElementById('mbMapFrame');
+    if (!frame) return;
+    var iframe = frame.querySelector('iframe');
+    var skeleton = frame.querySelector('.mb-map-skeleton');
+    function loadMap(){
+      if (!iframe.src) iframe.src = iframe.dataset.src;
+    }
+    iframe.addEventListener('load', function(){
+      frame.classList.add('is-loaded');
+      if (skeleton) setTimeout(function(){ skeleton.remove(); }, 400);
+    });
+    if ('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting){ loadMap(); io.disconnect(); }
+        });
+      }, { rootMargin:'800px 0px 800px 0px' });
+      io.observe(frame);
+    } else {
+      loadMap();
+    }
+  });
+</script>
 
 <script>
   // ===== Portafolio: carrusel "en abanico" (coverflow) — ídem al de montyexperience.com =====
