@@ -1,0 +1,568 @@
+/* ===================================================================
+   minibooks.css — SOLO estilos específicos de minibooks.html.
+   Todo lo reusable (mx-*, tipografías, tokens, .mx-steps/.mx-step, etc.)
+   vive en global.css. Aquí solo lo que es exclusivo de esta página
+   (prefijo "mb-").
+   =================================================================== */
+
+/* ===== Precio ===== */
+.mb-price-row{
+  display:flex; align-items:baseline; justify-content:center;
+  gap:14px; margin:18px 0 10px; flex-wrap:wrap;
+}
+.mb-price-now{
+  font-family:var(--font-guion); font-weight:400;
+  font-size:clamp(2.1rem, 5.5vw, 3rem);
+  color:var(--accent-signal);
+  text-shadow:0 0 26px rgba(253,192,5,.45);
+}
+.mb-price-old{
+  font-family:var(--font-bitacora); font-size:1.1rem;
+  color:var(--text-muted); text-decoration:line-through; opacity:.7;
+}
+
+/* ===== Cómo funciona: línea de tiempo vertical ===== */
+.mb-timeline{ max-width:420px; margin:40px auto 0; }
+/* aire entre la línea de tiempo y el botón de CTA que sigue en precio */
+.mb-timeline + .btn-wrap{ margin-top:38px; }
+.mb-timeline-step{ position:relative; display:flex; gap:18px; padding:0 0 30px; }
+.mb-timeline-step:last-child{ padding-bottom:0; }
+.mb-timeline-step::before{
+  content:''; position:absolute; left:17px; top:38px; bottom:0; width:2px;
+  background:rgba(253,192,5,.25);
+}
+.mb-timeline-step:last-child::before{ display:none; }
+.mb-timeline-num{
+  position:relative; z-index:1; flex:none; width:36px; height:36px; border-radius:50%;
+  background:var(--accent-signal); color:#150b22; font-family:var(--font-guion); font-size:.84rem;
+  display:flex; align-items:center; justify-content:center; box-shadow:0 0 16px rgba(253,192,5,.4);
+}
+.mb-timeline-text{ padding-top:6px; text-align:left; }
+.mb-timeline-text p{
+  margin:0; font-family:var(--font-bitacora); font-size:.85rem; line-height:1.6;
+  color:var(--text-muted); max-width:46ch; text-align:justify; text-justify:inter-word;
+}
+
+/* ===== Lo que incluye + fechas — todo va dentro de un .mx-panel (tarjeta con
+   el mismo glow naranja del diferenciador) ===== */
+.mb-includes-panel{ max-width:460px; margin:32px auto 0; }
+.mb-includes-panel .mb-includes--icon{ margin-top:0; }
+.mb-includes-panel .mb-schedule{ margin-bottom:0; }
+
+.mb-includes{
+  list-style:none; margin:30px auto 0; padding:0;
+  display:inline-flex; flex-direction:column; gap:11px; text-align:left;
+}
+.mb-includes li{
+  font-family:var(--font-bitacora); font-size:.92rem; color:var(--text-muted);
+  display:flex; align-items:flex-start; gap:10px;
+}
+.mb-includes li::before{ content:'✓'; color:var(--accent-signal); font-weight:700; flex:none; }
+.mb-includes li strong{ color:var(--text-primary); }
+
+.mb-delivery{
+  margin:28px auto 0; max-width:46ch; text-align:center;
+  font-family:var(--font-bitacora); font-size:.86rem; line-height:1.75; color:var(--text-muted);
+}
+.mb-delivery strong{ color:var(--text-primary); }
+
+.mb-schedule{
+  margin:-4px 0 10px;
+  font-family:var(--font-bitacora); font-size:.94rem; font-weight:700; font-style:italic;
+  color:var(--text-muted);
+}
+
+.mb-includes-panel + .mb-deadline{ margin-top:34px; display:block; }
+.mb-deadline{
+  display:inline-block; margin-top:2px;
+  font-family:var(--font-bitacora); font-size:.76rem; letter-spacing:.03em;
+  color:var(--accent-guide);
+}
+/* más aire e interlineado entre "Tu Acting Link se activa..." y el párrafo que lo explica */
+.mb-deadline + .mx-sub{ margin-top:16px; line-height:1.9; }
+
+/* aire entre la nota de entrega y el eyebrow de "Fechas de la dinámica" que le sigue */
+.mb-delivery + .mx-eyebrow{ margin-top:40px; display:block; }
+
+/* Lista con ícono circular — una debajo de otra, por jerarquía (no en fila),
+   centrada como grupo y con ancho suficiente para que ninguna línea se corte */
+.mb-includes--icon{
+  display:flex; flex-direction:column; align-items:center;
+  gap:16px; max-width:460px; margin:28px auto 0;
+}
+.mb-includes--icon li{ align-items:center; }
+@media(max-width:480px){
+  .mb-includes--icon{ max-width:300px; }
+}
+.mb-includes--icon li::before{
+  content:'✓'; width:24px; height:24px; border-radius:50%; flex:none;
+  border:1.5px solid var(--accent-signal); display:flex; align-items:center; justify-content:center;
+  font-size:.66rem; box-shadow:0 0 12px rgba(253,192,5,.3);
+}
+
+/* ===================== SECCIÓN: PORTAFOLIO — carrusel "en abanico" (coverflow),
+   portado tal cual del index real (mismo scroll-snap, drag, flotación,
+   recálculo de inclinación/escala/opacidad en cada frame) ===================== */
+.port-carousel-wrap{ margin-top:10px; }
+.port-carousel{
+  display:flex; gap:0; overflow-x:auto; scroll-snap-type:x mandatory;
+  padding:40px calc(50% - 130px) 40px; cursor:grab; user-select:none;
+  -webkit-overflow-scrolling:touch; scrollbar-width:none;
+}
+.port-carousel::-webkit-scrollbar{ display:none; }
+.port-carousel.dragging{ cursor:grabbing; scroll-snap-type:none; }
+@media(min-width:600px){ .port-carousel{ padding:40px calc(50% - 160px) 40px; } }
+@media(min-width:900px){ .port-carousel{ padding:40px calc(50% - 190px) 40px; } }
+
+.port-item{
+  position:relative; flex:0 0 auto; width:260px; aspect-ratio:4 / 5;
+  scroll-snap-align:center; will-change:transform, opacity;
+  transition:transform .12s ease-out, opacity .12s ease-out;
+  margin-right:-20px;
+}
+.port-item:last-child{ margin-right:0; }
+@media(min-width:600px){ .port-item{ width:320px; margin-right:-26px; } }
+@media(min-width:900px){ .port-item{ width:380px; margin-right:-30px; } }
+.port-item.is-centered:hover{ z-index:50 !important; }
+
+.port-img-float{
+  position:absolute; inset:0; overflow:hidden; border-radius:14px;
+  background:#0e0817; box-shadow:0 20px 46px rgba(0,0,0,.5);
+  will-change:transform; transition:transform .5s ease;
+}
+.port-img-float img{
+  width:100%; height:100%; object-fit:cover; object-position:center top; pointer-events:none;
+  display:block; transition:transform .5s ease;
+}
+
+@keyframes portFloat1{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-16px); } }
+@keyframes portFloat2{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-18px); } }
+@keyframes portFloat3{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-14px); } }
+@keyframes portFloatLeft{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-17px); } }
+@keyframes portFloatRight{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-15px); } }
+
+.port-item:nth-child(5n+1) .port-img-float{ animation:portFloat1 6.2s ease-in-out infinite; }
+.port-item:nth-child(5n+2) .port-img-float{ animation:portFloatRight 6.8s ease-in-out infinite; animation-delay:-1.6s; }
+.port-item:nth-child(5n+3) .port-img-float{ animation:portFloatLeft 7.1s ease-in-out infinite; animation-delay:-3.2s; }
+.port-item:nth-child(5n+4) .port-img-float{ animation:portFloat2 6.4s ease-in-out infinite; animation-delay:-.9s; }
+.port-item:nth-child(5n+5) .port-img-float{ animation:portFloat3 6.9s ease-in-out infinite; animation-delay:-4.1s; }
+
+.port-item.is-centered:hover .port-img-float{ animation-play-state:paused; }
+.port-item.is-centered:hover .port-img-float img{ transform:scale(1.08); }
+
+.port-img-float.port-offscreen{ animation-play-state:paused !important; }
+.port-carousel.is-scrolling .port-img-float{ animation-play-state:paused !important; }
+.port-carousel.is-scrolling .port-item{ transition:none; }
+
+@media (prefers-reduced-motion: reduce){
+  .port-item{ transition:none; }
+  .port-img-float{ animation:none !important; }
+}
+
+.port-dots{ display:flex; justify-content:center; align-items:center; gap:7px; margin-top:20px; }
+.port-dots .port-dot{
+  width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.25); cursor:pointer;
+  transition:background .3s ease, width .3s ease;
+}
+.port-dots .port-dot.is-active{ background:var(--yellow); width:18px; border-radius:3px; }
+
+/* ===================== SECCIÓN: SOBRE MÍ — formato carta/confesión, portado
+   tal cual del index real ===================== */
+.sobre-mi{
+  position:relative;
+  padding:40px 6vw 44px;
+  background-color:#170b28;
+  background-image:var(--grain), radial-gradient(ellipse 90% 60% at 50% 10%, #241238 0%, #170b28 45%, #0a0512 100%);
+  background-size:180px 180px, cover;
+  background-position:center, center;
+  background-repeat:repeat, no-repeat;
+  background-blend-mode:soft-light, normal;
+}
+
+.sm-letter-wrap{
+  max-width:600px; margin:0 auto; text-align:center;
+  opacity:0; transform:translateY(30px);
+  transition:opacity .9s ease, transform .9s ease;
+}
+.sm-letter-wrap.is-visible{ opacity:1; transform:translateY(0); }
+
+.sm-photo-mini{
+  width:232px; margin:0 auto 30px; aspect-ratio:4 / 5;
+  border-radius:16px; overflow:hidden; box-shadow:0 26px 54px rgba(0,0,0,.55);
+  animation:smLetterFloat 6.4s ease-in-out infinite;
+}
+@media(min-width:600px){ .sm-photo-mini{ width:276px; } }
+.sm-photo-mini img{ width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+@keyframes smLetterFloat{ 0%,100%{ transform:rotate(-4deg) translateY(0); } 50%{ transform:rotate(-4deg) translateY(-14px); } }
+
+.sm-letter-wrap .eyebrow{
+  display:block; font-family:'Courier Prime', monospace; font-size:.7rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--text-muted); margin:0 0 14px;
+}
+
+.sm-intro{ margin:0 0 24px; }
+.sm-intro .sm-firma{
+  font-family:'Special Elite', cursive; font-weight:400; font-style:italic;
+  font-size:clamp(1.5rem, 3.2vw, 1.9rem); color:var(--yellow); display:block; margin-bottom:8px;
+}
+.sm-intro .sm-rol{
+  font-family:'Courier Prime', monospace; font-size:.74rem; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--text-muted);
+}
+
+.sm-greeting{
+  font-family:'Special Elite', cursive; font-weight:400; color:var(--cream);
+  font-size:clamp(1.02rem, 2.1vw, 1.22rem); line-height:1.5; margin:0 0 24px;
+}
+
+.sm-line{
+  font-family:'Courier Prime', monospace; color:var(--text-muted);
+  font-size:.92rem; line-height:1.68; margin:0 0 22px; text-align:justify;
+}
+.sm-line strong{ color:var(--cream); font-weight:600; }
+.sm-line .hl-o, .sm-line--big .hl-o{ color:var(--orange); font-weight:600; }
+.sm-line .hl-y, .sm-line--big .hl-y{ color:var(--yellow); font-weight:600; }
+.sm-line .sm-strong, .sm-line--big .sm-strong{ color:inherit; font-weight:700; }
+
+.sm-line--big{
+  font-family:'Special Elite', cursive; font-weight:400; color:var(--cream);
+  font-size:clamp(1.1rem, 2.4vw, 1.4rem); line-height:1.45;
+  text-align:justify; margin:34px 0; padding:0 2vw;
+}
+
+.sm-pull{ text-align:center !important; font-style:italic; }
+
+.sm-more{
+  display:grid; grid-template-rows:0fr; overflow:hidden;
+  transition:grid-template-rows .5s ease;
+}
+.sm-more.is-open{ grid-template-rows:1fr; }
+.sm-more-inner{ min-height:0; overflow:hidden; }
+.sm-more-inner .sm-line:first-child{ margin-top:0; }
+.sm-more-inner .sm-line--big:last-child{ margin-bottom:0; }
+
+.sm-more-wrap{ text-align:center; margin-top:6px; }
+.sm-more-btn{
+  display:inline-flex; align-items:center; gap:10px;
+  background:none; border:1px solid rgba(255,255,255,.2); border-radius:999px;
+  padding:11px 22px 11px 26px; cursor:pointer;
+  font-family:'Courier Prime', monospace; font-size:.78rem; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--yellow);
+  transition:border-color .3s ease, background .3s ease;
+}
+.sm-more-btn:hover{ border-color:var(--yellow); background:rgba(253,192,5,.08); }
+.sm-more-btn .sm-more-icon{
+  flex:0 0 auto; width:22px; height:22px; border-radius:50%; background:rgba(253,192,5,.14);
+  display:flex; align-items:center; justify-content:center; color:var(--yellow);
+  font-family:'Courier Prime', monospace; font-size:1rem; line-height:1;
+  transition:transform .35s ease, background .35s ease, color .35s ease;
+}
+.sm-more-btn.is-open .sm-more-icon{
+  transform:rotate(135deg); background:var(--orange); color:#1c0e2c;
+}
+
+/* ===================== SECCIÓN: TESTIMONIOS — mosaico flotante de cápsulas,
+   portado tal cual del index real ===================== */
+.testimonios{
+  position:relative;
+  padding:48px 6vw 44px;
+  background-color:#170b28;
+  background-image:var(--grain), radial-gradient(ellipse 90% 60% at 50% 90%, #241238 0%, #170b28 45%, #0a0512 100%);
+  background-size:180px 180px, cover;
+  background-position:center, center;
+  background-repeat:repeat, no-repeat;
+  background-blend-mode:soft-light, normal;
+}
+.testimonios-head{ text-align:center; max-width:640px; margin:0 auto 56px; }
+.testimonios-head .eyebrow{
+  display:block; font-family:'Courier Prime', monospace; font-size:.72rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--text-muted); margin:0 0 12px;
+}
+.testimonios-head h2{
+  font-family:'Special Elite', cursive; font-weight:400;
+  font-size:clamp(1.5rem, 3.2vw, 2.2rem); line-height:1.32; margin:0 0 14px;
+}
+.testimonios-head p{
+  font-family:'Courier Prime', monospace; color:var(--text-muted);
+  font-size:.95rem; margin:0;
+}
+
+.testi-mosaic{
+  display:grid; grid-template-columns:repeat(2, 1fr); justify-items:center;
+  gap:36px 20px; max-width:360px; margin:0 auto;
+}
+@media(min-width:640px){
+  .testi-mosaic{ grid-template-columns:repeat(4, 1fr); max-width:900px; gap:26px; align-items:center; }
+}
+
+.testi-cap{
+  position:relative; width:140px; aspect-ratio:.5; cursor:pointer;
+  box-sizing:border-box; border-radius:26px; overflow:hidden;
+  background:#0e0817; box-shadow:0 22px 48px rgba(0,0,0,.55);
+  border:7px solid #0e0817; outline:1px solid rgba(255,255,255,.12);
+  transition:transform .4s ease, box-shadow .4s ease;
+}
+@media(min-width:640px){ .testi-cap{ width:150px; } }
+
+.testi-cap::before{
+  content:''; position:absolute; top:7px; left:50%; transform:translateX(-50%);
+  width:38%; height:14px; border-radius:8px; background:#0e0817; z-index:2;
+}
+
+.testi-cap.tc-1{ transform:rotate(-6deg); animation:testiFloat1 6.4s ease-in-out infinite; }
+.testi-cap.tc-2{ transform:rotate(5deg); animation:testiFloat2 6.9s ease-in-out infinite; animation-delay:-1.8s; }
+.testi-cap.tc-3{ transform:rotate(4deg); animation:testiFloat3 7.1s ease-in-out infinite; animation-delay:-3.4s; }
+.testi-cap.tc-4{ transform:rotate(-5deg); animation:testiFloat4 6.6s ease-in-out infinite; animation-delay:-.9s; }
+
+.testi-cap:hover{ transform:scale(1.05) rotate(0deg) !important; box-shadow:0 30px 60px rgba(0,0,0,.65); animation-play-state:paused; z-index:2; }
+
+@keyframes testiFloat1{ 0%,100%{ transform:rotate(-6deg) translateY(0); } 50%{ transform:rotate(-6deg) translateY(-15px); } }
+@keyframes testiFloat2{ 0%,100%{ transform:rotate(5deg) translateY(0); } 50%{ transform:rotate(5deg) translateY(-17px); } }
+@keyframes testiFloat3{ 0%,100%{ transform:rotate(4deg) translateY(0); } 50%{ transform:rotate(4deg) translateY(-13px); } }
+@keyframes testiFloat4{ 0%,100%{ transform:rotate(-5deg) translateY(0); } 50%{ transform:rotate(-5deg) translateY(-16px); } }
+
+.testi-cap img{ width:100%; height:100%; object-fit:cover; object-position:center top; display:block; pointer-events:none; }
+
+.testi-cap::after{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 42%);
+}
+.testi-cap .tc-play{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:34px; height:34px; border-radius:50%; z-index:1;
+  background:rgba(253,192,5,.92); box-shadow:0 0 20px rgba(253,192,5,.5);
+  display:flex; align-items:center; justify-content:center; pointer-events:none;
+}
+.testi-cap .tc-play::after{
+  content:''; margin-left:2px;
+  border-style:solid; border-width:6px 0 6px 10px;
+  border-color:transparent transparent transparent #1c0e2c;
+}
+.testi-cap .tc-name{
+  position:absolute; left:0; right:0; bottom:8px; z-index:1; text-align:center; pointer-events:none;
+  font-family:'Special Elite', cursive; font-weight:400; font-size:.72rem; color:#fff;
+}
+
+.testi-cta{ text-align:center; margin-top:88px; }
+
+.testi-modal{
+  position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center;
+  padding:24px; background:rgba(10,5,18,.82); backdrop-filter:blur(6px);
+  opacity:0; pointer-events:none; transition:opacity .3s ease;
+}
+.testi-modal.is-open{ opacity:1; pointer-events:auto; }
+.testi-modal-card{
+  position:relative; width:min(300px, 84vw); aspect-ratio:.5;
+  box-sizing:border-box; border-radius:34px; overflow:hidden; background:#0e0817;
+  box-shadow:0 40px 90px rgba(0,0,0,.6);
+  border:10px solid #0e0817; outline:1px solid rgba(255,255,255,.14);
+  transform:scale(.92); transition:transform .3s ease;
+}
+.testi-modal.is-open .testi-modal-card{ transform:scale(1); }
+.testi-modal-card::before{
+  content:''; position:absolute; top:10px; left:50%; transform:translateX(-50%);
+  width:34%; height:18px; border-radius:9px; background:#0e0817; z-index:2;
+}
+.testi-modal-card img, .testi-modal-card video{ width:100%; height:100%; object-fit:cover; object-position:center top; display:block; background:#000; }
+.testi-modal-card::after{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(to top, rgba(0,0,0,.72) 0%, transparent 46%);
+}
+.testi-modal-name{
+  position:absolute; left:0; right:0; bottom:58px; z-index:1; text-align:center;
+  font-family:'Special Elite', cursive; font-weight:400; font-size:1.05rem; color:#fff;
+  text-shadow:0 2px 8px rgba(0,0,0,.6); pointer-events:none;
+}
+.testi-modal-close{
+  position:absolute; top:12px; right:12px; z-index:3;
+  width:38px; height:38px; border-radius:50%; border:none; cursor:pointer;
+  background:var(--cream); color:#1c0e2c; font-size:1.3rem; line-height:1;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 18px rgba(0,0,0,.5);
+}
+
+/* ===================== SECCIÓN: FAQ (ported de index.css) ===================== */
+.faq{
+  position:relative;
+  padding:40px 6vw 46px;
+  background-color:#170b28;
+  background-image:var(--grain), radial-gradient(ellipse 90% 60% at 50% 15%, #241238 0%, #170b28 45%, #0a0512 100%);
+  background-size:180px 180px, cover;
+  background-position:center, center;
+  background-repeat:repeat, no-repeat;
+  background-blend-mode:soft-light, normal;
+}
+.faq-head{ text-align:center; max-width:640px; margin:0 auto 48px; }
+.faq-head .eyebrow{
+  display:block; font-family:'Courier Prime', monospace; font-size:.72rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--text-muted); margin:0 0 12px;
+}
+.faq-head h2{
+  font-family:'Special Elite', cursive; font-weight:400;
+  font-size:clamp(1.5rem, 3.2vw, 2.2rem); line-height:1.32; margin:0;
+}
+
+.faq-list{ max-width:680px; margin:0 auto; }
+.faq-item{
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.faq-item:first-child{ border-top:1px solid rgba(255,255,255,.12); }
+
+.faq-trigger{
+  width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px;
+  background:none; border:none; cursor:pointer; text-align:left;
+  padding:22px 4px; font-family:'Special Elite', cursive; font-weight:400;
+  font-size:clamp(.98rem, 2vw, 1.12rem); color:var(--cream);
+}
+.faq-toggle{
+  flex:0 0 auto; width:28px; height:28px; border-radius:50%;
+  background:rgba(253,192,5,.14); color:var(--yellow);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Courier Prime', monospace; font-size:1.1rem; line-height:1;
+  transition:transform .35s ease, background .35s ease, color .35s ease;
+}
+.faq-item.is-open .faq-toggle{
+  transform:rotate(135deg); background:var(--orange); color:#1c0e2c;
+}
+
+.faq-panel{
+  display:grid; grid-template-rows:0fr; overflow:hidden;
+  transition:grid-template-rows .4s ease;
+}
+.faq-item.is-open .faq-panel{ grid-template-rows:1fr; }
+.faq-panel-inner{ min-height:0; overflow:hidden; }
+.faq-panel p{
+  font-family:'Courier Prime', monospace; color:var(--text-muted);
+  font-size:.92rem; line-height:1.68; margin:0; padding:0 30px 26px 4px;
+  text-align:justify;
+}
+.faq-panel .hl-o{ color:var(--orange); font-weight:600; }
+.faq-panel .hl-y{ color:var(--yellow); font-weight:600; }
+
+/* ===================== SECCIÓN: CIERRE — mantra + CTA final (ported de index.css) ===================== */
+.cta-final{
+  position:relative;
+  padding:64px 6vw 64px;
+  text-align:center;
+  background-color:#170b28;
+  background-image:var(--grain), radial-gradient(ellipse 90% 70% at 50% 30%, #2a1642 0%, #170b28 45%, #0a0512 100%);
+  background-size:180px 180px, cover;
+  background-position:center, center;
+  background-repeat:repeat, no-repeat;
+  background-blend-mode:soft-light, normal;
+}
+.cta-final-inner{ max-width:760px; margin:0 auto; }
+.cta-final-mantra{
+  font-family:'Special Elite', cursive; font-weight:400;
+  font-size:clamp(1.5rem, 3.6vw, 2.5rem);
+  line-height:1.4; color:var(--cream); margin:0 0 40px;
+  text-shadow:0 0 40px rgba(253,192,5,.25);
+}
+.cta-final-btns{ margin-bottom:26px; }
+.cta-final-cupos{
+  font-family:'Courier Prime', monospace; font-size:.82rem;
+  letter-spacing:.03em; text-transform:uppercase;
+  color:var(--orange); font-weight:600; margin:0 0 6px;
+}
+@supports ((background-clip:text) or (-webkit-background-clip:text)){
+  .cta-final-cupos{
+    background:linear-gradient(90deg, var(--orange) 0%, var(--orange) 42%, var(--yellow) 50%, var(--orange) 58%, var(--orange) 100%);
+    background-size:240% 100%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:transparent;
+    animation:cuposShine 3.6s linear infinite;
+  }
+}
+@keyframes cuposShine{
+  0%{ background-position:200% 0; }
+  100%{ background-position:-200% 0; }
+}
+@media(prefers-reduced-motion: reduce){
+  .cta-final-cupos{ animation:none !important; }
+}
+
+/* ===================== SECCIÓN: WHATSAPP (ported de index.css) ===================== */
+.free-cta{
+  position:relative;
+  padding:40px 6vw 48px;
+  text-align:center;
+  background-color:#12081f;
+  background-image:var(--grain);
+  background-size:180px 180px;
+  background-blend-mode:soft-light;
+}
+.free-cta-inner{ max-width:560px; margin:0 auto; }
+.free-cta h3{
+  font-family:'Special Elite', cursive; font-weight:400;
+  font-size:clamp(1.1rem, 2.4vw, 1.4rem);
+  color:var(--cream); margin:0 0 10px; line-height:1.35;
+}
+.free-cta p{
+  font-family:'Courier Prime', monospace; font-size:.9rem;
+  color:var(--text-muted); margin:0 0 26px;
+}
+
+/* ===================== CIERRE: línea de marca resaltada (ported de index.css) ===================== */
+.punch-wrap{
+  text-align:center;
+  margin:64px 0 0;
+  padding:0;
+}
+@keyframes punchFloatUnit{
+  0%, 100%{ transform:rotate(-5deg) translateY(0); }
+  50%{ transform:rotate(-5deg) translateY(-12px); }
+}
+.punch-text{
+  display:inline-block;
+  margin:0;
+  font-family:'Special Elite', cursive; font-weight:400;
+  font-size:clamp(2.3rem, 7.5vw, 4.6rem);
+  line-height:1.16;
+  letter-spacing:.01em;
+  text-transform:uppercase;
+  color:var(--cream);
+  cursor:default;
+  user-select:none;
+  animation:punchFloatUnit 4s ease-in-out infinite;
+  will-change:transform;
+}
+@keyframes accentGlowPulse{
+  0%, 100%{ text-shadow:0 0 22px rgba(253,192,5,.45); }
+  50%{ text-shadow:0 0 46px rgba(253,192,5,.85); }
+}
+.punch-text .accent{
+  display:inline-block;
+  color:var(--yellow);
+  animation:accentGlowPulse 2.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce){
+  .punch-text{ animation:none !important; }
+  .punch-text .accent{ animation:none !important; text-shadow:0 0 30px rgba(253,192,5,.5); }
+}
+
+@keyframes punchMontyFloat{
+  0%, 100%{ transform:rotate(-4deg) translateY(0); }
+  50%{ transform:rotate(3deg) translateY(-10px); }
+}
+.punch-mini-monty{
+  display:block;
+  width:clamp(220px, 38vw, 380px);
+  height:auto;
+  margin:22px auto 0;
+  filter:drop-shadow(0 18px 30px rgba(0,0,0,.5));
+  animation:punchMontyFloat 4.6s ease-in-out infinite;
+  animation-delay:-1.2s;
+  will-change:transform;
+}
+@media (prefers-reduced-motion: reduce){
+  .punch-mini-monty{ animation:none !important; }
+}
+
+/* Footer: en minibooks solo mostramos el logo (sin la leyenda de texto), más grande para que se lea bien */
+.footer-brand-logo-only img{
+  width:auto;
+  height:46px;
+  object-fit:contain;
+}

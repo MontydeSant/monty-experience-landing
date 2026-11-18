@@ -60,6 +60,15 @@
     var t = e.target;
     if (t && t.closest && t.closest('[data-cal-link], a[href*="wa.me"], a[href*="whatsapp.com"]')) {
       loadLogo();
+      // Despierta el audio y adelanta la descarga/decodificación del aplauso en el
+      // primer indicio de intención (touchstart cuenta como gesto del usuario en
+      // iOS/Android). Así, cuando llegue el click real, el buffer ya está listo y
+      // el sonido suena a tiempo también en celular, no solo en escritorio.
+      var ctx = getAudioCtx();
+      if (ctx) {
+        if (ctx.state === 'suspended') { try { ctx.resume(); } catch (err) {} }
+        loadClapBuffer(ctx).catch(function () {});
+      }
       document.removeEventListener('pointerover', onIntent, true);
       document.removeEventListener('touchstart', onIntent, true);
     }

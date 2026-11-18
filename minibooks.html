@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Preview — Hero vía global.css (minibooks)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/global.css">
+<link rel="stylesheet" href="assets/css/minibooks.css">
+<link rel="preload" as="image" href="assets/img/minibooks-port-08.webp" fetchpriority="high">
+<script src="assets/js/claqueta.js" defer></script>
+</head>
+<body>
+
+<header class="site-nav" id="siteNav">
+  <a class="site-nav-logo" href="#top" aria-label="Monty Experience, inicio"><img src="assets/img/logo-monty-minibooks.webp" alt="Monty Experience — Diciembre Minibooks" width="50" height="36"></a>
+  <ul class="site-nav-links">
+    <li><a href="#precio"><img src="assets/img/nav-precio.webp" alt="" width="22" height="22" loading="lazy"><span>Precio</span></a></li>
+    <li><a href="#portafolio"><img src="assets/img/nav-book-cam.webp" alt="" width="22" height="22" loading="lazy"><span>Book</span></a></li>
+    <li><a href="#sobre-mi"><img src="assets/img/nav-acerca-new.webp" alt="" width="22" height="22" loading="lazy"><span>Acerca de mí</span></a></li>
+    <li><a href="#faq"><img src="assets/img/nav-preguntas-new.webp" alt="" width="22" height="22" loading="lazy"><span>Preguntas</span></a></li>
+    <li><a href="#testimonios"><img src="assets/img/nav-testimonios-new.webp" alt="" width="22" height="22" loading="lazy"><span>Testimonios</span></a></li>
+  </ul>
+  <button type="button" class="site-nav-cta" data-cal-link="montydesant/mini-books-dic-2026" data-cal-config='{"layout":"month_view"}'>
+    <span>Quiero apartar mi Minibook</span>
+  </button>
+  <button type="button" class="site-nav-toggle" id="siteNavToggle" aria-expanded="false" aria-controls="siteNav" aria-label="Abrir menú">
+    <svg class="icon-burger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+</header>
+
+<script>
+(function(){
+  var nav = document.getElementById('siteNav');
+  var toggle = document.getElementById('siteNavToggle');
+  if(!nav || !toggle) return;
+  function closeMenu(){
+    nav.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded','false');
+    toggle.setAttribute('aria-label','Abrir menú');
+  }
+  function openMenu(){
+    nav.classList.add('is-open');
+    toggle.setAttribute('aria-expanded','true');
+    toggle.setAttribute('aria-label','Cerrar menú');
+  }
+  toggle.addEventListener('click', function(){
+    if(nav.classList.contains('is-open')) closeMenu(); else openMenu();
+  });
+  nav.querySelectorAll('.site-nav-links a, .site-nav-cta').forEach(function(el){
+    el.addEventListener('click', closeMenu);
+  });
+  document.addEventListener('click', function(e){
+    if(nav.classList.contains('is-open') && !nav.contains(e.target)) closeMenu();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeMenu();
+  });
+})();
+</script>
+
+<section class="hero" id="top">
+  <div class="flash-overlay"></div>
+  <div class="scene">
+
+    <div class="photo-row">
+      <div class="s-photo s-photo-1"><img src="assets/img/minibooks-bri-1.webp" alt="Bri — retrato 1" width="480" height="600"></div>
+      <div class="s-photo s-photo-2"><img src="assets/img/minibooks-bri-2.webp" alt="Bri — retrato 2" width="480" height="600"></div>
+      <div class="s-photo s-photo-3"><img src="assets/img/minibooks-bri-3.webp" alt="Bri — retrato 3" width="480" height="600"></div>
+    </div>
+
+    <div class="crown-mid">
+
+      <div class="crown-row logo-row">
+        <div class="side-note mobile-flank-note">&quot;Me voy Liberada&quot;</div>
+        <a class="logo-wrap"><img src="assets/img/logo-monty-minibooks.webp" alt="Monty Experience — Diciembre Minibooks" width="820" height="584"></a>
+        <div class="side-swatch logo-swatch">
+          <div class="f-swatches"><span></span><span></span><span></span><span></span><span></span></div>
+          <span class="f-label">paleta de colores</span>
+        </div>
+      </div>
+
+      <div class="crown-row headline-row">
+        <h1>¿Qué tanto se parece tu book a la persona que eres <span class="accent">hoy</span>?</h1>
+      </div>
+
+      <div class="crown-row sub-row">
+        <div class="sub-photo sub-photo-left"><img src="assets/img/minibooks-bri-4.webp" alt="Bri — retrato 4" width="480" height="600"></div>
+        <p class="sub"><b>Diciembre de Minibooks</b><br>Una sesión corta para que tu imagen hable por ti solo en tus castings.</p>
+        <div class="sub-photo sub-photo-right"><img src="assets/img/minibooks-bri-5.webp" alt="Bri — retrato 5" width="480" height="600"></div>
+      </div>
+
+      <p class="stat">+80 actores retratados</p>
+
+      <div class="btn-wrap">
+        <span class="btn-icon">▸</span>
+        <button class="btn" type="button" data-cal-link="montydesant/mini-books-dic-2026" data-cal-config='{"layout":"month_view"}'>Quiero apartar mi lugar</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 2. DIFERENCIADOR -->
+<section class="mx-surface-a mx-section" id="diferenciador">
+  <div class="mx-container" style="max-width:860px;">
+    <h2 class="mx-h2">Es un ensayo general antes de la actuación que de verdad cuenta: el casting.</h2>
+    <div class="mx-steps">
+      <div class="mx-step">
+        <div class="mx-step-badge">
+          <img src="assets/img/minibooks-icon-llamada.png" alt="" loading="lazy">
+        </div>
+        <p><span class="mx-step-highlight">Pre-sesión</span>: platicamos en una junta para saber <strong>qué quieres mostrar, a quién y para qué</strong>.</p>
+      </div>
+      <div class="mx-step">
+        <div class="mx-step-badge">
+          <img src="assets/img/minibooks-icon-camara.png" alt="" loading="lazy">
+        </div>
+        <p><span class="mx-step-highlight">Tu Minibook</span>: una hora frente a la cámara, con dirección en cada toma para que sueltes el cuerpo y la mirada, hasta lograr <strong>dos versiones de ti con personalidades distintas</strong>.</p>
+      </div>
+      <div class="mx-step">
+        <div class="mx-step-badge">
+          <img src="assets/img/minibooks-icon-web.png" alt="" loading="lazy">
+        </div>
+        <p><span class="mx-step-highlight">Tu Acting Link</span>: el resultado se convierte en <strong>tu página web actoral</strong>, lista para que cualquier director de casting <strong>entienda quién eres en diez segundos</strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. PRECIO + CÓMO FUNCIONA -->
+<section class="mx-surface-b mx-section mx-center" id="precio">
+  <div class="mx-container">
+    <span class="mx-eyebrow">Precio</span>
+    <div class="mb-price-row">
+      <span class="mb-price-now">$3,200 MXN</span>
+      <span class="mb-price-old">$3,800</span>
+    </div>
+    <p class="mx-sub">30% de anticipo para asegurar tu lugar, el resto se liquida antes de tu sesión.</p>
+
+    <div class="mb-timeline">
+      <div class="mb-timeline-step"><span class="mb-timeline-num">01</span><div class="mb-timeline-text"><p>Preapartas tu cupo por WhatsApp — así reservamos tu lugar mientras confirmas.</p></div></div>
+      <div class="mb-timeline-step"><span class="mb-timeline-num">02</span><div class="mb-timeline-text"><p>Apartas tu lugar con el 30% de anticipo; en cuanto llega la transferencia, confirmamos por WhatsApp.</p></div></div>
+      <div class="mb-timeline-step"><span class="mb-timeline-num">03</span><div class="mb-timeline-text"><p>Agendamos tu junta de pre-sesión para afinar el enfoque antes de que prendamos cámara.</p></div></div>
+      <div class="mb-timeline-step"><span class="mb-timeline-num">04</span><div class="mb-timeline-text"><p>Tu día: una hora frente a cámara, dos cambios de ropa, sin pausas que te saquen del personaje.</p></div></div>
+      <div class="mb-timeline-step"><span class="mb-timeline-num">05</span><div class="mb-timeline-text"><p>Integramos tus fotos editadas y tu Acting Link a más tardar 5 días hábiles. Listas para tus próximos castings.</p></div></div>
+    </div>
+
+    <div class="btn-wrap">
+      <span class="btn-icon">▸</span>
+      <button class="btn" type="button" data-cal-link="montydesant/mini-books-dic-2026" data-cal-config='{"layout":"month_view"}'>Quiero apartar mi Minibook</button>
+    </div>
+  </div>
+</section>
+
+<!-- 4. QUÉ INCLUYE + FECHAS -->
+<section class="mx-surface-c mx-section mx-center" id="incluye">
+  <div class="mx-container">
+    <h2 class="mx-h2">Lo que incluye tu <span class="mx-accent">Minibook</span></h2>
+
+    <div class="mx-panel mb-includes-panel">
+      <ul class="mb-includes mb-includes--icon">
+        <li><span><strong>Junta previa</strong> para definir tu objetivo</span></li>
+        <li><span><strong>Una hora</strong> de sesión</span></li>
+        <li><span><strong>Dos cambios</strong> de ropa</span></li>
+        <li><span><strong>Diez fotos</strong> editadas</span></li>
+        <li><span><strong>Tu Acting Link</strong> incluido</span></li>
+      </ul>
+
+      <p class="mb-delivery">
+        <strong>Fotos editadas:</strong> en 2 a 5 días hábiles después de tu sesión.<br>
+        <strong>Tu Acting Link:</strong> listo en máximo 5 días.
+      </p>
+      <span class="mx-eyebrow">Fechas de la dinámica</span>
+      <p class="mx-stat">2 y 8 de diciembre</p>
+      <p class="mb-schedule">Horario: 10 am a 3 pm</p>
+    </div>
+
+    <span class="mb-deadline">Tu Acting Link se activa el 15 de diciembre</span>
+    <p class="mx-sub" style="max-width:46ch;">Ese día arranca la plataforma de Acting Links, y tu página queda visible y lista para compartir en tus próximos castings.</p>
+    <div class="btn-wrap">
+      <span class="btn-icon">▸</span>
+      <button class="btn" type="button" data-cal-link="montydesant/mini-books-dic-2026" data-cal-config='{"layout":"month_view"}'>Quiero apartar mi lugar</button>
+    </div>
+  </div>
+</section>
+
+<section class="mx-surface-a mx-section mx-center" id="portafolio">
+  <div class="mx-container">
+    <span class="mx-eyebrow">Portafolio</span>
+    <h2 class="mx-h2">Así se ven los <span class="mx-accent">Minibooks</span></h2>
+    <div class="port-carousel-wrap">
+      <div class="port-carousel" id="portCarousel">
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-01.webp" alt="Cuerpo completo de actriz para Minibook, pose dinámica, fondo claro de estudio" loading="lazy" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-02.webp" alt="Retrato cercano y sonriente de actor para Minibook, fondo claro de estudio" loading="lazy" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-03.webp" alt="Cuerpo completo de actriz para Minibook, vestido de cuadros, fondo claro de estudio" loading="lazy" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-04.webp" alt="Retrato cercano de actriz para Minibook, fondo claro de estudio" loading="lazy" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-05.webp" alt="Cuerpo completo de actriz para Minibook, look total negro, fondo claro de estudio" loading="lazy" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-06.webp" alt="Retrato cercano de actor para Minibook, fondo claro de estudio" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-07.webp" alt="Cuerpo completo de actriz para Minibook, sentada, fondo claro de estudio" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-08.webp" alt="Cuerpo completo de actriz para Minibook, sentada sobre un cubo, fondo claro de estudio" decoding="async" fetchpriority="high" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-09.webp" alt="Cuerpo completo de actor para Minibook, fondo claro de estudio" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-10.webp" alt="Retrato cercano de actriz para Minibook, fondo claro de estudio" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-11.webp" alt="Cuerpo completo de actriz para Minibook, fondo claro de estudio" loading="lazy" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-12.webp" alt="Retrato cercano de actriz para Minibook, fondo claro de estudio" loading="lazy" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-13.webp" alt="Cuerpo completo de actor para Minibook, fondo claro de estudio" loading="lazy" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-14.webp" alt="Retrato cercano de actor para Minibook, fondo claro de estudio" loading="lazy" decoding="async" width="760" height="950"></div></figure>
+        <figure class="port-item"><div class="port-img-float"><img src="assets/img/minibooks-port-15.webp" alt="Retrato cercano de actriz para Minibook, fondo claro de estudio" loading="lazy" decoding="async" width="760" height="950"></div></figure>
+      </div>
+      <div class="port-dots" id="portDots">
+        <span class="port-dot is-active"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+        <span class="port-dot"></span>
+      </div>
+    </div>
+
+    <div class="mid-cta">
+      <div class="btn-wrap">
+        <span class="btn-icon">▸</span>
+        <button type="button" class="btn" data-cal-link="montydesant/mini-books-dic-2026" data-cal-config='{"layout":"month_view"}'>Quiero salir así en mi book</button>
+      </div>
+      <p class="mid-cta-caption">¿Ya viste el carrusel? :<br><strong>Ningún resultado se parece a&nbsp;otro.</strong></p>
+    </div>
+  </div>
+</section>
+
+<script>
+  // ===== Portafolio: carrusel "en abanico" (coverflow) — ídem al de montyexperience.com =====
+  document.addEventListener('DOMContentLoaded', function(){
+    var carousel = document.getElementById('portCarousel');
+    if (!carousel) return;
+    var dots = document.querySelectorAll('.port-dot');
+    var items = Array.prototype.slice.call(carousel.querySelectorAll('.port-item'));
+
+    try{
+      if ('IntersectionObserver' in window){
+        var floatObs = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            var floatEl = entry.target.querySelector('.port-img-float');
+            if (!floatEl) return;
+            floatEl.classList.toggle('port-offscreen', !entry.isIntersecting);
+          });
+        }, { root:carousel, rootMargin:'0px 120px 0px 120px', threshold:0 });
+        items.forEach(function(item){ floatObs.observe(item); });
+      }
+    }catch(e){}
+
+    var scrollPauseTimer = null;
+    carousel.addEventListener('scroll', function(){
+      carousel.classList.add('is-scrolling');
+      if (scrollPauseTimer) clearTimeout(scrollPauseTimer);
+      scrollPauseTimer = setTimeout(function(){
+        carousel.classList.remove('is-scrolling');
+      }, 150);
+    }, { passive:true });
+
+    var isDown = false, startX = 0, startScroll = 0, moved = false;
+    carousel.addEventListener('pointerdown', function(e){
+      if (e.pointerType === 'touch') return;
+      isDown = true; moved = false;
+      startX = e.clientX; startScroll = carousel.scrollLeft;
+      carousel.classList.add('dragging');
+    });
+    carousel.addEventListener('pointermove', function(e){
+      if (!isDown) return;
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) moved = true;
+      carousel.scrollLeft = startScroll - dx;
+    });
+    function endDrag(){
+      isDown = false;
+      carousel.classList.remove('dragging');
+    }
+    carousel.addEventListener('pointerup', endDrag);
+    carousel.addEventListener('pointerleave', endDrag);
+
+    var updateFan = null;
+    if (items.length){
+      var ROTATION_STEP = 14, MAX_ROTATION = 22;
+      var SCALE_BASE = 1.08, SCALE_FALLOFF = 0.18, SCALE_MIN = 0.7;
+      var OPACITY_FALLOFF = 0.3, OPACITY_MIN = 0.4;
+      var ticking = false;
+
+      updateFan = function(){
+        ticking = false;
+        var rect = carousel.getBoundingClientRect();
+        var center = rect.left + rect.width / 2;
+        var itemWidth = items[0].offsetWidth || 260;
+        var closestIdx = 0, closestDist = Infinity;
+
+        var computed = items.map(function(item, i){
+          var r = item.getBoundingClientRect();
+          var itemCenter = r.left + r.width / 2;
+          var pxDist = itemCenter - center;
+          var dist = Math.abs(pxDist);
+          if (dist < closestDist){ closestDist = dist; closestIdx = i; }
+
+          var offset = pxDist / itemWidth;
+          var absOffset = Math.abs(offset);
+          var rotation = Math.max(-MAX_ROTATION, Math.min(MAX_ROTATION, -offset * ROTATION_STEP));
+          var scale = Math.max(SCALE_MIN, SCALE_BASE - absOffset * SCALE_FALLOFF);
+          var opacity = Math.max(OPACITY_MIN, 1 - absOffset * OPACITY_FALLOFF);
+          var z = Math.max(1, Math.round(50 - absOffset * 10));
+          return { rotation:rotation, scale:scale, opacity:opacity, z:z };
+        });
+
+        items.forEach(function(item, i){
+          var c = computed[i];
+          item.style.transform = 'rotate(' + c.rotation.toFixed(2) + 'deg) scale(' + c.scale.toFixed(3) + ')';
+          item.style.opacity = c.opacity.toFixed(3);
+          item.style.zIndex = String(c.z);
+          item.classList.toggle('is-centered', i === closestIdx);
+        });
+
+        if (dots.length){
+          dots.forEach(function(dot, i){ dot.classList.toggle('is-active', i === closestIdx); });
+        }
+      };
+
+      carousel.addEventListener('scroll', function(){
+        if (!ticking){ window.requestAnimationFrame(updateFan); ticking = true; }
+      }, { passive:true });
+      window.addEventListener('resize', updateFan);
+
+      if (items.length > 2){
+        var midIdx = Math.floor((items.length - 1) / 2);
+        var pitch = items[1].getBoundingClientRect().left - items[0].getBoundingClientRect().left;
+        if (pitch) carousel.scrollLeft = pitch * midIdx;
+      }
+
+      updateFan();
+    }
+  });
+</script>
+
+<section class="sobre-mi" id="sobre-mi">
+  <div class="sm-letter-wrap" id="smLetter">
+    <div class="sm-photo-mini"><img src="assets/img/index-c48e2a91.jpg" alt="Monty, fotógrafo y director creativo de Monty Experience" loading="lazy" width="640" height="800"></div>
+    <span class="eyebrow">Sobre mí</span>
+    <div class="sm-intro">
+      <span class="sm-firma">Soy Monty de Sant</span>
+      <span class="sm-rol">Fotógrafo de actores y director creativo</span>
+    </div>
+    <p class="sm-greeting">Para el actor que está leyendo&nbsp;esto:</p>
+    <p class="sm-line">Antes de ser fotógrafo de retrato para actores, dirigí actores en cine — incluso fui director de casting en la ópera prima de un amigo. Ahí noté algo que ningún director enseña: la mayoría actúa desde el &ldquo;<span class="sm-strong">quiero tener la chamba</span>&rdquo;, sin pararse nunca a cuestionarse ni a voltear a verse a ellos mismos.</p>
+    <p class="sm-line sm-pull">Y no era falta de&nbsp;talento.</p>
+    <p class="sm-line">De esa grieta nació todo mi desmadre: <span class="hl-y">Monty Experience</span> — un proceso diseñado para actores dispuestos a reconectar consigo mismos.</p>
+    <p class="sm-line--big">Sé lo que se siente ver tu book y no reconocerte en él. <span class="hl-o">Yo también pasé por ahí.</span></p>
+    <div class="sm-more" id="smMore">
+      <div class="sm-more-inner">
+        <p class="sm-line">Por eso no arrancamos con la sesión, arrancamos con una conversación honesta sobre qué hay detrás de lo que quieres lograr — y de ahí personalizamos tu sesión, <span class="sm-strong">a tu medida</span>.</p>
+        <p class="sm-line">Y dirás: normalmente cuando renuevas tu book te queda la misma pregunta — <span class="sm-strong">ya tengo mi book, ¿ahora qué chingados hago?</span> El proceso no se queda ahí: cada sesión cierra con un seguimiento, un asesoramiento para trazar la ruta.</p>
+        <p class="sm-line--big">Actualmente acompaño a actores que sienten que <span class="hl-y">se quedaron fuera del juego</span>, a volver a competir con una imagen que <span class="hl-o">por fin los represente en cada casting.</span></p>
+      </div>
+    </div>
+    <div class="sm-more-wrap">
+      <button type="button" class="sm-more-btn" id="smMoreBtn">
+        <span class="sm-more-label">Leer más</span>
+        <span class="sm-more-icon">+</span>
+      </button>
+    </div>
+  </div>
+</section>
+<section class="testimonios" id="testimonios">
+  <div class="testimonios-head">
+    <span class="eyebrow">Testimonios</span>
+    <h2>Pregúntales a ellos, no a mí.</h2>
+    <p>Dale play. Súbele al volumen. Esto no lo actué&nbsp;yo.</p>
+  </div>
+  <div class="testi-mosaic" id="testiMosaic">
+    <div class="testi-cap tc-1" data-name="Bri Navarro" data-video="/videos/tes_bri_1626229384_sm.mp4" data-poster="/videos/portada_bri.jpg">
+      <img src="assets/img/index-7cac632f.jpg" alt="Testimonio en video de Bri Navarro" loading="lazy" width="380" height="618">
+      <span class="tc-play"></span>
+      <span class="tc-name">Bri Navarro</span>
+    </div>
+    <div class="testi-cap tc-2" data-name="Leonardo Alonzo" data-video="/videos/tes_leo_1687867871_sm.mp4" data-poster="/videos/portada_leo.jpg">
+      <img src="assets/img/index-a9ce349a.jpg" alt="Testimonio en video de Leonardo Alonzo" loading="lazy" width="380" height="593">
+      <span class="tc-play"></span>
+      <span class="tc-name">Leonardo Alonzo</span>
+    </div>
+    <div class="testi-cap tc-3" data-name="Lupita Medina" data-video="/videos/tes_lupita_1790176296_final.mp4" data-poster="/videos/portada_lupita.jpg">
+      <img src="assets/img/index-f2b0b845.jpg" alt="Testimonio en video de Lupita Medina" loading="lazy" width="380" height="555">
+      <span class="tc-play"></span>
+      <span class="tc-name">Lupita Medina</span>
+    </div>
+    <div class="testi-cap tc-4" data-name="Paty Guzmán" data-video="/videos/tes_paty_992485667_sm.mp4" data-poster="/videos/Portada_paty.jpg">
+      <img src="assets/img/index-b5e07c0d.jpg" alt="Testimonio en video de Paty Guzmán" loading="lazy" width="380" height="557">
+      <span class="tc-play"></span>
+      <span class="tc-name">Paty Guzmán</span>
+    </div>
+  </div>
+  <div class="testi-cta">
+    <div class="btn-wrap">
+      <span class="btn-icon">▸</span>
+      <button type="button" class="btn" data-cal-link="montydesant/mini-books-dic-2026" data-cal-config='{"layout":"month_view"}'>Quiero Agendar mi Minibook</button>
+    </div>
+  </div>
+</section>
+
+<div class="testi-modal" id="testiModal">
+  <div class="testi-modal-card">
+    <button type="button" class="testi-modal-close" id="testiModalClose" aria-label="Cerrar">&times;</button>
+    <video id="testiModalVideo" playsinline controls preload="none"></video>
+    <span class="testi-modal-name" id="testiModalName"></span>
+  </div>
+</div>
+
+<section class="faq" id="faq">
+  <div class="faq-head">
+    <span class="eyebrow">Preguntas frecuentes</span>
+    <h2>Lo que preguntan antes de apartar su Minibook</h2>
+  </div>
+  <div class="faq-list" id="faqList">
+    <div class="faq-item">
+      <button type="button" class="faq-trigger">¿Qué es un Minibook?<span class="faq-toggle">+</span></button>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>No es una sesión completa ni un relanzamiento de marca. Es un cambio de outfit, una hora de cámara y material fresco para cerrar <span class="hl-o">tu año con fotos&nbsp;nuevas</span>.</p></div></div>
+    </div>
+    <div class="faq-item">
+      <button type="button" class="faq-trigger">¿Qué incluye?<span class="faq-toggle">+</span></button>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>Una hora frente a cámara con dos cambios de ropa, tus fotos editadas y tu Acting Link integrado — todo listo para que <span class="hl-y">salgas a castear con material&nbsp;actual</span>.</p></div></div>
+    </div>
+    <div class="faq-item">
+      <button type="button" class="faq-trigger">¿Qué fechas hay disponibles en diciembre?<span class="faq-toggle">+</span></button>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>Los lugares se van llenando según se van apartando. En el calendario de arriba puedes ver qué fechas quedan abiertas <span class="hl-o">al momento de reservar tu&nbsp;cupo</span>.</p></div></div>
+    </div>
+    <div class="faq-item">
+      <button type="button" class="faq-trigger">¿Qué es el Acting Link?<span class="faq-toggle">+</span></button>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>Es tu trabajo, encontrable donde te busquen: una página con tus fotos ya lista para compartir en castings, agencias o redes, sin que <span class="hl-y">tengas que armar nada&nbsp;tú</span>.</p></div></div>
+    </div>
+    <div class="faq-item">
+      <button type="button" class="faq-trigger">¿Cómo aparto mi lugar?<span class="faq-toggle">+</span></button>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>Primero confirmas tu cupo por WhatsApp. Después, con el 30% de anticipo tu lugar queda formalmente reservado — y en cuanto llega la transferencia, <span class="hl-o">lo confirmamos de nuevo por&nbsp;WhatsApp</span>.</p></div></div>
+    </div>
+    <div class="faq-item">
+      <button type="button" class="faq-trigger">¿Cuánto cuesta?<span class="faq-toggle">+</span></button>
+      <div class="faq-panel"><div class="faq-panel-inner"><p>$3,200 MXN (antes $3,800). El 30% asegura tu lugar y <span class="hl-y">el resto se liquida antes de tu&nbsp;sesión</span>.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // ===== FAQ: acordeón, un solo panel abierto a la vez =====
+  document.addEventListener('DOMContentLoaded', function(){
+    var list = document.getElementById('faqList');
+    if (!list) return;
+    var items = list.querySelectorAll('.faq-item');
+    items.forEach(function(item){
+      var trigger = item.querySelector('.faq-trigger');
+      trigger.addEventListener('click', function(){
+        var wasOpen = item.classList.contains('is-open');
+        items.forEach(function(i){ i.classList.remove('is-open'); });
+        if (!wasOpen) item.classList.add('is-open');
+      });
+    });
+  });
+</script>
+
+<section class="cta-final">
+  <div class="cta-final-inner">
+    <p class="cta-final-mantra">&ldquo;No hay nada más caro que perder un papel que tanto quieres por un book&nbsp;desactualizado.&rdquo;</p>
+    <div class="cta-final-btns">
+      <div class="btn-wrap">
+        <span class="btn-icon">▸</span>
+        <button type="button" class="btn" data-cal-link="montydesant/mini-books-dic-2026" data-cal-config='{"layout":"month_view"}'>Quiero apartar mi Minibook</button>
+      </div>
+    </div>
+    <p class="cta-final-cupos">Cupos limitados para esta dinámica: 8&nbsp;disponibles.</p>
+    <div class="punch-wrap" aria-hidden="false">
+      <p class="punch-text">Culo si no<br><span class="accent">te descubres.</span></p>
+      <img class="punch-mini-monty" src="assets/img/minibooks-punch-monty.webp" alt="Monty celebrando, estilo sticker" loading="lazy" width="420" height="526">
+    </div>
+  </div>
+</section>
+
+<section class="free-cta">
+  <div class="free-cta-inner">
+    <h3>¿Dudas, preguntas, chismes, noticias,&nbsp;amenazas?</h3>
+    <p>Mándame mensajito por&nbsp;WhatsApp.</p>
+    <div class="btn-wrap btn-wrap-secundario">
+      <span class="btn-icon btn-icon-secundario">▸</span>
+      <a class="btn btn-secundario" href="https://wa.me/525570533742?text=Wenas%20Monty%2C%20tengo%20dudas%20sobre%20mi%20Minibook%20de%20diciembre" target="_blank" rel="noopener">Escríbeme por WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span class="footer-brand footer-brand-logo-only">
+      <img src="assets/img/logo-monty.webp" alt="Monty Experience" width="420" height="323">
+    </span>
+    <span class="footer-links">
+      <a href="blog/index.html">Blog</a>
+      <a href="https://instagram.com/montydesant_fm" target="_blank" rel="noopener">Instagram</a>
+      <a href="privacidad.html">Política de Privacidad</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+  // ===== Sobre mí: la carta completa aparece con un fundido suave al
+  // llegar al viewport (la foto flota sola, por CSS) =====
+  document.addEventListener('DOMContentLoaded', function(){
+    var letter = document.getElementById('smLetter');
+    if (!letter) return;
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold:0.2, rootMargin:'0px 0px -60px 0px' });
+    obs.observe(letter);
+  });
+</script>
+
+<script>
+  // ===== Sobre mí: "leer más" — el resto de la carta se queda oculto
+  // hasta que se le da clic al botón =====
+  document.addEventListener('DOMContentLoaded', function(){
+    var moreBtn = document.getElementById('smMoreBtn');
+    var moreBlock = document.getElementById('smMore');
+    if (!moreBtn || !moreBlock) return;
+    moreBtn.addEventListener('click', function(){
+      var open = moreBlock.classList.toggle('is-open');
+      moreBtn.classList.toggle('is-open', open);
+      moreBtn.querySelector('.sm-more-label').textContent = open ? 'Leer menos' : 'Leer más';
+    });
+  });
+</script>
+
+<script>
+  // ===== Testimonios: mosaico flotante — al tocar una cápsula se abre en
+  // grande al centro (modal); cierra con la X o tocando el fondo =====
+  document.addEventListener('DOMContentLoaded', function(){
+    var caps = document.querySelectorAll('.testi-cap');
+    var modal = document.getElementById('testiModal');
+    if (!caps.length || !modal) return;
+    var modalVideo = document.getElementById('testiModalVideo');
+    var modalName = document.getElementById('testiModalName');
+    var closeBtn = document.getElementById('testiModalClose');
+
+    function openModal(cap){
+      var videoSrc = cap.getAttribute('data-video');
+      var poster = cap.getAttribute('data-poster');
+      if (poster) modalVideo.setAttribute('poster', poster);
+      if (videoSrc) modalVideo.setAttribute('src', videoSrc);
+      modalName.textContent = cap.getAttribute('data-name') || '';
+      modal.classList.add('is-open');
+      try { modalVideo.currentTime = 0; } catch(e){}
+      var playPromise = modalVideo.play();
+      if (playPromise && playPromise.catch) playPromise.catch(function(){});
+    }
+    function closeModal(){
+      modal.classList.remove('is-open');
+      modalVideo.pause();
+      modalVideo.removeAttribute('src');
+      modalVideo.load();
+    }
+
+    caps.forEach(function(cap){
+      cap.addEventListener('click', function(){ openModal(cap); });
+    });
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e){
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') closeModal();
+    });
+  });
+</script>
+
+<script>
+(function(){
+  var sessions = [
+    {
+      photos: ['assets/img/minibooks-bri-1.webp','assets/img/minibooks-bri-2.webp','assets/img/minibooks-bri-3.webp','assets/img/minibooks-bri-4.webp','assets/img/minibooks-bri-5.webp'],
+      note: '"Me voy Liberada"',
+      palette: ['#e3e2dd','#252125','#694c41','#d7b2a6','#a67d6e']
+    },
+    {
+      photos: ['assets/img/minibooks-lupita-1.webp','assets/img/minibooks-lupita-2.webp','assets/img/minibooks-lupita-3.webp','assets/img/minibooks-lupita-4.webp','assets/img/minibooks-lupita-5.webp'],
+      note: '"Estas fotos me representan"',
+      palette: ['#2d2020','#cba592','#d6d4d4','#965f53','#344c62']
+    },
+    {
+      photos: ['assets/img/minibooks-andrea-1.webp','assets/img/minibooks-andrea-2.webp','assets/img/minibooks-andrea-3.webp','assets/img/minibooks-andrea-4.webp','assets/img/minibooks-andrea-5.webp'],
+      note: '"Me voy conectada con mi esencia"',
+      palette: ['#d3d6d9','#211d1d','#c5b3a7','#a28574','#67473d']
+    },
+    {
+      photos: ['assets/img/minibooks-sareth-1.webp','assets/img/minibooks-sareth-2.webp','assets/img/minibooks-sareth-3.webp','assets/img/minibooks-sareth-4.webp','assets/img/minibooks-sareth-5.webp'],
+      note: '"Me voy con shot de autoestima"',
+      palette: ['#d5d4d5','#241b16','#c88c6e','#b6b0af','#7b513c']
+    },
+    {
+      photos: ['assets/img/minibooks-citlali-1.webp','assets/img/minibooks-citlali-2.webp','assets/img/minibooks-citlali-3.webp','assets/img/minibooks-citlali-4.webp','assets/img/minibooks-citlali-5.webp'],
+      note: '"Esta sí soy yo"',
+      palette: ['#d8d4d6','#261e1d','#cb9275','#785647','#f8c756']
+    }
+  ];
+  var current = 0;
+  var noteEl, swatchEls, swatchCard, logo, flashEl, topPhotos, subPhotos, busy = false;
+  var FLASH_MS = 500, SWAP_AT_MS = 65;
+  var AUTO_MS = 10000, DISSOLVE_MS = 550;
+  var autoTimer = null;
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Precarga TODAS las fotos de TODAS las sesiones desde ya, para que al picarle
+  // al logo (o en cada auto-rotación) el navegador ya las tenga en caché y el
+  // swap de src sea instantáneo — sin esto, el flash dispara pero la foto nueva
+  // tarda en llegar porque recién ahí empieza a descargarla.
+  var _preloaded = [];
+  sessions.forEach(function(s){
+    if (!s.photos) return;
+    s.photos.forEach(function(src){
+      var img = new Image();
+      img.src = src;
+      _preloaded.push(img);
+    });
+  });
+
+  function swapContent(s){
+    if (s.photos){
+      topPhotos[0].src = s.photos[0]; topPhotos[1].src = s.photos[1]; topPhotos[2].src = s.photos[2];
+      subPhotos[0].src = s.photos[3]; subPhotos[1].src = s.photos[4];
+    }
+    noteEl.textContent = s.note;
+    swatchEls.forEach(function(el,i){ el.style.backgroundColor = s.palette[i]; });
+  }
+  function applySession(s){
+    flashEl.classList.remove('flash-active');
+    void flashEl.offsetWidth;
+    flashEl.classList.add('flash-active');
+    setTimeout(function(){ swapContent(s); }, SWAP_AT_MS);
+    setTimeout(function(){ flashEl.classList.remove('flash-active'); busy = false; }, FLASH_MS);
+  }
+  function applySessionDissolve(s){
+    var allEls = topPhotos.concat(subPhotos).concat([noteEl, swatchCard]);
+    allEls.forEach(function(el){ el.style.transition = 'opacity ' + (DISSOLVE_MS/2) + 'ms ease'; el.style.opacity = 0; });
+    setTimeout(function(){ swapContent(s); allEls.forEach(function(el){ el.style.opacity = 1; }); }, DISSOLVE_MS/2);
+    setTimeout(function(){ busy = false; }, DISSOLVE_MS);
+  }
+  function scheduleAuto(){
+    if (reduceMotion) return;
+    clearTimeout(autoTimer);
+    autoTimer = setTimeout(autoAdvance, AUTO_MS);
+  }
+  function autoAdvance(){
+    if (busy){ scheduleAuto(); return; }
+    busy = true;
+    current = (current + 1) % sessions.length;
+    applySessionDissolve(sessions[current]);
+    scheduleAuto();
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    topPhotos = [
+      document.querySelector('.s-photo-1 img'),
+      document.querySelector('.s-photo-2 img'),
+      document.querySelector('.s-photo-3 img')
+    ];
+    subPhotos = [
+      document.querySelector('.sub-photo-left img'),
+      document.querySelector('.sub-photo-right img')
+    ];
+    noteEl = document.querySelector('.side-note');
+    swatchCard = document.querySelector('.side-swatch');
+    swatchEls = document.querySelectorAll('.f-swatches span');
+    logo = document.querySelector('.logo-wrap');
+    flashEl = document.querySelector('.flash-overlay');
+    swapContent(sessions[0]);
+
+    logo.addEventListener('click', function(e){
+      e.preventDefault();
+      if (busy) return;
+      busy = true;
+      current = (current + 1) % sessions.length;
+      applySession(sessions[current]);
+      scheduleAuto();
+    });
+    scheduleAuto();
+  });
+})();
+
+/* Cal.com embed real — para probar el popup de verdad */
+(function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+Cal("init", {origin:"https://cal.com"});
+Cal("ui", {"styles":{"branding":{"brandColor":"#f68318"}},"hideEventTypeDetails":false,"layout":"month_view"});
+
+/* Al terminar el agendado dentro del modal embebido, en vez de dejar que Cal.com
+   muestre su propia pantalla de confirmación, mandamos al visitante a nuestra
+   thank you page (sin necesidad del "Redirect on booking" de pago de Cal.com:
+   esto usa el evento del embed, que sí es gratis). */
+Cal("on", {
+  action: "bookingSuccessful",
+  callback: function () {
+    window.location.href = "gracias-minibook/";
+  }
+});
+</script>
+
+</body>
+</html>

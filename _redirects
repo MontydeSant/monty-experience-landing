@@ -1,2 +1,6 @@
 # URLs limpias del blog: /blog/mi-post abre /blog/mi-post.html (si el archivo existe, gana el archivo)
 /blog/:slug /blog/:slug.html 200
+
+# URL limpia de la promo de diciembre: montyexperience.com/minibooks
+/minibooks /minibooks.html 200
+/minibooks/ /minibooks.html 200

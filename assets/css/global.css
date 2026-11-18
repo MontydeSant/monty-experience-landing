@@ -155,6 +155,14 @@ a.btn{ display:inline-flex; align-items:center; justify-content:center; text-dec
 }
 .btn:focus-visible{ outline:2px solid var(--accent-signal); outline-offset:3px; }
 
+/* En escritorio el CTAButton crece un poco (afecta TODOS los .btn-wrap del sitio,
+   no solo el del hero — así se comportaba ya en index.html, antes vivía escondido
+   dentro de index.css). */
+@media(min-width:901px){
+  .btn-icon{ width:54px; font-size:1.05rem; }
+  .btn{ padding:16px 28px; font-size:1.05rem; }
+}
+
 /* CTAs intermedios: mismo botón del hero, insertados después de que cierra una sección,
    nunca pegados al texto. */
 .mid-cta{
@@ -295,13 +303,15 @@ a.btn{ display:inline-flex; align-items:center; justify-content:center; text-dec
 .mx-h2{
   font-family:var(--font-guion); font-weight:400;
   font-size:clamp(1.3rem, 2.8vw, 1.7rem); line-height:1.32;
-  margin:0 0 12px; color:var(--text-primary);
+  margin:0 auto 12px; color:var(--text-primary);
+  text-align:center; max-width:30ch;
 }
 /* una palabra puntual en accent-signal, con el resplandor del sistema (máx. una por título) */
 .mx-accent{ color:var(--accent-signal); text-shadow:0 0 30px rgba(253,192,5,.5); }
 .mx-sub{
   font-family:var(--font-bitacora); font-size:clamp(.82rem, 1vw, .92rem);
   line-height:1.6; color:var(--text-muted); margin:0 0 24px; max-width:46ch;
+  text-align:justify; text-justify:inter-word;
 }
 .mx-sub b{ color:var(--accent-signal); font-weight:700; text-shadow:0 0 30px rgba(253,192,5,.5); }
 .mx-stat{
@@ -310,6 +320,63 @@ a.btn{ display:inline-flex; align-items:center; justify-content:center; text-dec
 }
 .mx-center{ text-align:center; }
 .mx-center .mx-h1, .mx-center .mx-sub{ margin-left:auto; margin-right:auto; }
+
+/* ===== mx-steps: 3 (o más) pasos en píldora — ícono activo arriba, número, título centrado,
+   cuerpo justificado. Pensado para "diferenciador"/"proceso" en cualquier página del repo,
+   sin la complejidad del road+modal de index.html (ese es específico de la comparación de paquetes). ===== */
+.mx-steps{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:32px 24px;
+  margin-top:32px;
+}
+@media(max-width:700px){
+  .mx-steps{ grid-template-columns:1fr; gap:36px; max-width:340px; margin-left:auto; margin-right:auto; }
+}
+.mx-step{
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  background:var(--surface-card);
+  border:1px solid rgba(246,131,24,.3);
+  border-radius:var(--radius-card);
+  box-shadow:0 0 36px rgba(246,131,24,.16);
+  padding:36px 22px 30px;
+}
+.mx-step-badge{
+  position:relative;
+  width:84px; height:84px; flex:none;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:12px;
+}
+.mx-step-badge svg{ width:22px; height:22px; stroke:var(--accent-signal); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+.mx-step-badge img{ width:84px; height:84px; object-fit:contain; display:block; }
+/* mismo flotado de las 3 fotos del hero (floatCard1/2/3): cada ícono sube y baja
+   con su propio tiempo/retraso para que no se muevan sincronizados. */
+.mx-step:nth-child(1) .mx-step-badge{ animation:stepFloat1 4.5s ease-in-out infinite; }
+.mx-step:nth-child(2) .mx-step-badge{ animation:stepFloat2 5.2s ease-in-out infinite; animation-delay:-1.5s; }
+.mx-step:nth-child(3) .mx-step-badge{ animation:stepFloat3 4.8s ease-in-out infinite; animation-delay:-2.7s; }
+@keyframes stepFloat1{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-8px); } }
+@keyframes stepFloat2{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+@keyframes stepFloat3{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-7px); } }
+@media(prefers-reduced-motion: reduce){
+  .mx-step-badge{ animation:none !important; }
+}
+.mx-step-num{
+  display:block; font-family:var(--font-bitacora); font-size:.68rem;
+  letter-spacing:.14em; color:var(--text-muted); margin-bottom:10px;
+}
+/* más específico que el .mx-step .mx-step-num de "pasos numerados (bio de Instagram)"
+   más abajo en este archivo, para no tocar ese otro uso y solo agrandar el número aquí */
+.mx-steps .mx-step .mx-step-num{ font-size:1.1rem; }
+.mx-step h4{
+  font-family:var(--font-guion); font-weight:400; font-size:.98rem;
+  color:var(--text-primary); margin:0 0 10px; text-align:center;
+}
+.mx-step p{
+  font-family:var(--font-bitacora); font-size:.82rem; line-height:1.6;
+  color:var(--text-muted); margin:0; max-width:30ch;
+  text-align:justify; text-justify:inter-word;
+}
+/* nombre del paso resaltado en amarillo, inline en el texto — reemplaza al
+   número + <h4> que ya no llevan las tarjetas */
+.mx-step-highlight{ color:var(--accent-signal); font-weight:700; }
 
 /* insignia en píldora */
 .mx-badge{
@@ -326,6 +393,16 @@ a.btn{ display:inline-flex; align-items:center; justify-content:center; text-dec
   border-radius:var(--radius-card);
   padding:var(--space-card-padding);
   box-shadow:var(--shadow-tile);
+}
+
+/* tarjeta/recuadro con el mismo glow naranja de las tarjetas del diferenciador
+   (.mx-step), para enmarcar un bloque de contenido en cualquier sección */
+.mx-panel{
+  background:var(--surface-card);
+  border:1px solid rgba(246,131,24,.3);
+  border-radius:var(--radius-card);
+  box-shadow:0 0 36px rgba(246,131,24,.16);
+  padding:36px 26px 30px;
 }
 
 /* nota en "papel" (superficie clara: lleva su propio texto oscuro, sin grano) */
@@ -550,4 +627,278 @@ a.btn{ display:inline-flex; align-items:center; justify-content:center; text-dec
 }
 @media(prefers-reduced-motion: reduce){
   .site-nav-cta{ animation:none; }
+}
+
+/* ───────────── 12. HERO CORONA — componente compartido ─────────────
+   El hero "corona": logo grande al centro (dispara flash + rotación de
+   sesiones al clic), 3 fotos arriba, nota + paleta flanqueando el logo,
+   titular, 2 fotos flanqueando el subtítulo, estadística opcional y CTA.
+   Nació en index.html; vive aquí para que cualquier página del repo
+   (ej. minibooks.html) lo use con las mismas proporciones y breakpoints,
+   sin duplicar una sola línea. Cada página solo pone su propio HTML con
+   estas clases + su <script> de rotación de sesiones (igual al de
+   index.html, cambiando fotos/nota/paleta). */
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+  background-color:var(--bg-dark);
+  background-image:var(--grain), radial-gradient(ellipse 85% 65% at 50% 36%, #3a1f60 0%, #22123a 38%, #120a1e 66%, #05030a 100%);
+  background-size:180px 180px, cover;
+  background-position:center, center;
+  background-repeat:repeat, no-repeat;
+  background-blend-mode:soft-light, normal;
+  padding:48px 5vw;
+}
+
+.hero-logo-secundario{
+  /* oculto: duplicaba el logo del header flotante (.site-nav) */
+  display:none;
+}
+.hero-logo-secundario img{ width:100%; height:100%; object-fit:contain; display:block; }
+@media(min-width:700px){
+  .hero-logo-secundario{ top:20px; left:20px; width:48px; height:48px; }
+}
+
+/* ===== ESCENA "CORONA": logo enorme al centro, fotos grandes y separadas arriba, nota/paleta flanqueando cada nivel ===== */
+.scene{
+  width:100%;
+  max-width:1020px;
+  margin:0 auto;
+}
+
+.photo-row{
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  gap:34px;
+  margin-bottom:50px;
+}
+.s-photo{
+  width:148px; height:185px;
+  border-radius:4px; overflow:hidden;
+  box-shadow:var(--shadow-tile);
+  flex:none;
+}
+.s-photo img{ width:100%; height:100%; object-fit:cover; object-position:center 18%; display:block; }
+/* la del centro se queda arriba; las de los lados bajan un poco, con un empuje leve hacia
+   el centro que ya no las hace encimarse (separadas, como en la versión de mobile) */
+.s-photo-1{ transform:rotate(-5deg); position:relative; top:26px; left:8px; animation:floatCard1 4.5s ease-in-out infinite; }
+.s-photo-2{ transform:rotate(3deg); margin-bottom:16px; animation:floatCard2 5.2s ease-in-out infinite; animation-delay:-1.5s; }
+.s-photo-3{ transform:rotate(-2deg); position:relative; top:26px; left:-8px; animation:floatCard3 4.8s ease-in-out infinite; animation-delay:-2.7s; }
+
+/* ===== flotación suave: cada foto sube/baja un poco, con tiempos distintos para que no se muevan sincronizadas ===== */
+@keyframes floatCard1{ 0%,100%{ transform:rotate(-5deg) translateY(0); } 50%{ transform:rotate(-5deg) translateY(-7px); } }
+@keyframes floatCard2{ 0%,100%{ transform:rotate(3deg) translateY(0); } 50%{ transform:rotate(3deg) translateY(-9px); } }
+@keyframes floatCard3{ 0%,100%{ transform:rotate(-2deg) translateY(0); } 50%{ transform:rotate(-2deg) translateY(-6px); } }
+@keyframes floatCardLeft{ 0%,100%{ transform:rotate(-6deg) translateY(0); } 50%{ transform:rotate(-6deg) translateY(-8px); } }
+@keyframes floatCardRight{ 0%,100%{ transform:rotate(6deg) translateY(0); } 50%{ transform:rotate(6deg) translateY(-6px); } }
+
+.crown-mid{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  max-width:600px;
+  margin:0 auto;
+}
+
+.crown-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:22px;
+}
+
+.logo-row{ margin-bottom:6px; }
+
+@keyframes montyPulse{
+  0%, 100%{ transform:scale(1); }
+  50%{ transform:scale(1.045); }
+}
+.logo-wrap{
+  display:block;
+  cursor:pointer;
+  flex:none;
+  animation:montyPulse 3.4s ease-in-out infinite;
+}
+.logo-wrap:hover{
+  animation-play-state:paused;
+}
+.logo-wrap img{
+  width:308px;
+  display:block;
+  filter:drop-shadow(var(--shadow-logo));
+  transition:transform .4s cubic-bezier(.2,.8,.2,1), filter .4s ease;
+}
+.logo-wrap:hover img{
+  transform:scale(1.1) rotate(-1deg);
+  filter:drop-shadow(0 22px 50px rgba(0,0,0,.65)) drop-shadow(0 0 50px rgba(246,131,24,.35));
+}
+
+.headline-row{ margin-bottom:14px; }
+
+.hero h1{
+  font-family:var(--font-guion);
+  font-weight:400; font-style:normal;
+  line-height:1.22; letter-spacing:0;
+  margin:0;
+  font-size:clamp(1.22rem, 2.05vw, 1.58rem);
+  max-width:23ch;
+  flex:none;
+}
+.hero h1 .accent{
+  color:var(--yellow);
+  text-shadow:0 0 30px rgba(253,192,5,.5);
+}
+.hero .sub{
+  font-family:var(--font-bitacora);
+  font-size:clamp(.76rem, .9vw, .84rem);
+  max-width:40ch;
+  margin:0 0 14px;
+  line-height:1.5;
+  color:var(--text-muted);
+}
+.hero .sub b{ color:var(--yellow); font-weight:700; text-shadow:0 0 30px rgba(253,192,5,.5); }
+.hero .stat{
+  font-family:var(--font-guion);
+  font-size:clamp(.95rem, 1.05vw, 1.05rem);
+  margin:0 0 18px;
+  color:var(--yellow);
+  text-shadow:0 0 30px rgba(253,192,5,.5);
+}
+/* ===== transición de sesión: un solo flash de cámara fotográfica ===== */
+.flash-overlay{
+  position:absolute;
+  inset:0;
+  background:#fff;
+  opacity:0;
+  pointer-events:none;
+  z-index:60;
+}
+@keyframes cameraFlash{
+  0%   { opacity:0; }
+  8%   { opacity:1; }
+  100% { opacity:0; }
+}
+.flash-overlay.flash-active{
+  animation:cameraFlash .5s cubic-bezier(.15,.7,.3,1);
+}
+@media(prefers-reduced-motion: reduce){
+  .hero .logo-wrap{ animation:none !important; }
+  .flash-overlay.flash-active{ animation:none !important; opacity:0 !important; }
+  .s-photo-1, .s-photo-2, .s-photo-3, .sub-photo-left, .sub-photo-right{ animation:none !important; }
+  .side-note, .side-swatch{ animation:none !important; }
+}
+
+/* ===== dos fotos que flanquean el subtítulo ===== */
+.sub-row{ margin-bottom:6px; gap:56px; }
+.sub-row .sub{ margin:0; }
+.sub-photo{
+  width:148px; height:185px;
+  border-radius:4px; overflow:hidden; flex:none;
+  box-shadow:var(--shadow-tile);
+}
+.sub-photo img{ width:100%; height:100%; object-fit:cover; object-position:center 18%; display:block; }
+.sub-photo-left{ transform:rotate(-6deg); animation:floatCardLeft 5s ease-in-out infinite; animation-delay:-0.8s; }
+.sub-photo-right{ transform:rotate(6deg); animation:floatCardRight 4.6s ease-in-out infinite; animation-delay:-3.2s; }
+
+/* ===== acentos laterales: paleta a la altura del logo, nota a la altura de la pregunta ===== */
+.side-note{
+  flex:none; width:148px; padding:12px 11px;
+  background:var(--cream); color:var(--bg-dark);
+  border-radius:var(--radius-xs);
+  font-family:var(--font-guion);
+  font-size:.86rem; line-height:1.28;
+  box-shadow:var(--shadow-note);
+  transform:rotate(-4deg);
+  text-align:center;
+  position:relative; left:-42px;
+  animation:floatNote 5s ease-in-out infinite; animation-delay:-1.2s;
+}
+
+.side-swatch{ flex:none; width:148px; text-align:center; position:relative; left:42px; animation:floatSwatch 4.7s ease-in-out infinite; animation-delay:-2.4s; }
+@keyframes floatNote{ 0%,100%{ transform:rotate(-4deg) translateY(0); } 50%{ transform:rotate(-4deg) translateY(-8px); } }
+@keyframes floatSwatch{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-8px); } }
+.f-swatches{
+  display:flex; gap:8px;
+  background:var(--cream); padding:12px; border-radius:var(--radius-xs);
+  box-shadow:var(--shadow-note);
+  transform:rotate(4deg);
+  justify-content:center;
+  width:fit-content;
+  margin:0 auto;
+}
+.f-swatches span{ width:19px; height:19px; border-radius:2px; display:block; }
+.f-label{
+  display:block; margin-top:8px;
+  font-family:var(--font-bitacora);
+  font-size:.6rem; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--text-muted);
+}
+
+/* ===== MOBILE: nota y paleta suben a flanquear el logo, no la pregunta ===== */
+@media(max-width:900px){
+  .hero{ padding:88px 10px 32px; min-height:auto; overflow-x:hidden; }
+
+  .photo-row{ gap:22px; margin-bottom:22px; justify-content:center; }
+  .s-photo{ width:70px; height:88px; }
+  .s-photo-2{ margin-bottom:6px; }
+  .sub-photo{ width:70px; height:88px; }
+  .sub-row{ gap:2px; }
+
+  .crown-row{ gap:20px; }
+  .logo-row{ margin-bottom:10px; align-items:center; }
+  .crown-row.logo-row{ gap:8px; }
+  .headline-row{ margin-bottom:10px; }
+
+  .logo-wrap img{ width:140px; }
+
+  .mobile-flank-note{
+    display:block;
+    width:62px; padding:6px 5px;
+    font-size:.56rem; line-height:1.18;
+    left:0; transform:rotate(-2deg);
+  }
+  .logo-swatch{ width:62px; left:0; }
+  .logo-swatch .f-swatches{ padding:5px; gap:3px; transform:rotate(2deg); }
+  .logo-swatch .f-swatches span{ width:8px; height:8px; }
+  .logo-swatch .f-label{ display:none; }
+
+  .hero h1{ font-size:.96rem; line-height:1.3; max-width:34ch; }
+  .hero .sub{ font-size:.82rem; }
+  .hero .stat{ font-size:.96rem; }
+}
+
+/* ===== DESKTOP: elementos más grandes otra vez, pero distribuidos usando el ancho disponible
+   (columna central más ancha, más separación horizontal) en vez de apretarlo todo al centro ===== */
+@media(min-width:901px){
+  .hero{ padding:80px 3vw 24px; }
+
+  .photo-row{ gap:46px; margin-bottom:18px; }
+  .s-photo{ width:128px; height:160px; }
+  .s-photo-1{ top:16px; left:6px; }
+  .s-photo-2{ margin-bottom:10px; }
+  .s-photo-3{ top:16px; left:-6px; }
+
+  .crown-mid{ max-width:760px; }
+  .crown-row{ gap:32px; }
+  .logo-row{ margin-bottom:4px; }
+  .logo-wrap img{ width:230px; }
+
+  .headline-row{ margin-bottom:6px; }
+  .hero h1{ font-size:clamp(1.2rem, 1.8vw, 1.55rem); max-width:34ch; }
+  .hero .sub{ font-size:clamp(.9rem, .98vw, 1rem); max-width:52ch; }
+  .hero .stat{ font-size:clamp(1.4rem, 1.5vw, 1.6rem); margin:0 0 24px; }
+
+  .side-note{ width:130px; font-size:.78rem; padding:10px 9px; left:-16px; }
+  .side-swatch{ width:130px; left:16px; }
+  .f-swatches{ gap:6px; padding:9px; }
+  .f-swatches span{ width:14px; height:14px; }
+  .logo-swatch .f-label{ display:none; }
+
+  .sub-row{ margin-bottom:4px; gap:36px; }
+  .sub-photo{ width:128px; height:160px; }
 }
