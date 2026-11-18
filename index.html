@@ -156,7 +156,8 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
 </style>
 <link rel="stylesheet" href="assets/css/global.css">
 <link rel="stylesheet" href="assets/css/index.css">
@@ -168,12 +169,12 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
   <header class="site-nav" id="siteNav">
     <a class="site-nav-logo" href="#top" aria-label="Monty Experience, inicio"><img src="assets/img/logo-monty.webp" alt="Monty Experience" width="50" height="38"></a>
     <ul class="site-nav-links">
-      <li><a href="#paquetes"><img src="assets/img/nav-paquetes.webp" alt="" width="22" height="22" loading="lazy"><span>Paquetes</span></a></li>
-      <li><a href="#portafolio"><img src="assets/img/nav-book.webp" alt="" width="22" height="22" loading="lazy"><span>Book</span></a></li>
-      <li><a href="#sobre-mi"><img src="assets/img/nav-acerca.webp" alt="" width="22" height="22" loading="lazy"><span>Acerca de mí</span></a></li>
-      <li><a href="#faq"><img src="assets/img/nav-preguntas.webp" alt="" width="22" height="22" loading="lazy"><span>Preguntas</span></a></li>
-      <li><a href="blog/index.html"><img src="assets/img/nav-blog.webp" alt="" width="22" height="22" loading="lazy"><span>Blog</span></a></li>
-      <li><a href="#testimonios"><img src="assets/img/nav-testimonios.webp" alt="" width="22" height="22" loading="lazy"><span>Testimonios</span></a></li>
+      <li><a href="#paquetes"><img src="assets/img/nav-paquetes.webp" alt="" width="22" height="22" loading="lazy" decoding="async"><span>Paquetes</span></a></li>
+      <li><a href="#portafolio"><img src="assets/img/nav-book.webp" alt="" width="22" height="22" loading="lazy" decoding="async"><span>Book</span></a></li>
+      <li><a href="#sobre-mi"><img src="assets/img/nav-acerca.webp" alt="" width="22" height="22" loading="lazy" decoding="async"><span>Acerca de mí</span></a></li>
+      <li><a href="#faq"><img src="assets/img/nav-preguntas.webp" alt="" width="22" height="22" loading="lazy" decoding="async"><span>Preguntas</span></a></li>
+      <li><a href="blog/index.html"><img src="assets/img/nav-blog.webp" alt="" width="22" height="22" loading="lazy" decoding="async"><span>Blog</span></a></li>
+      <li><a href="#testimonios"><img src="assets/img/nav-testimonios.webp" alt="" width="22" height="22" loading="lazy" decoding="async"><span>Testimonios</span></a></li>
     </ul>
     <button type="button" class="site-nav-cta" data-cal-link="montydesant/30min" data-cal-config='{"layout":"month_view"}'>
       <span>Agendar mi cafecito</span>
@@ -220,16 +221,16 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     <div class="scene">
 
       <div class="photo-row">
-        <div class="s-photo s-photo-1"><img src="assets/img/index-2dc1b8de.jpg" alt="ref — mirada" width="480" height="559"></div>
-        <div class="s-photo s-photo-2"><img src="assets/img/index-6ba10319.jpg" alt="ref — actitud" width="480" height="600"></div>
-        <div class="s-photo s-photo-3"><img src="assets/img/index-dfc45e88.jpg" alt="ref — contexto" width="480" height="600"></div>
+        <div class="s-photo s-photo-1"><img src="assets/img/index-2dc1b8de.jpg" alt="ref — mirada" fetchpriority="high" decoding="async" width="480" height="559"></div>
+        <div class="s-photo s-photo-2"><img src="assets/img/index-6ba10319.jpg" alt="ref — actitud" fetchpriority="high" decoding="async" width="480" height="600"></div>
+        <div class="s-photo s-photo-3"><img src="assets/img/index-dfc45e88.jpg" alt="ref — contexto" fetchpriority="high" decoding="async" width="480" height="600"></div>
       </div>
 
       <div class="crown-mid">
 
         <div class="crown-row logo-row">
           <div class="side-note mobile-flank-note">"se siente mi esencia"</div>
-          <a class="logo-wrap"><img src="assets/img/logo-monty.webp" alt="Monty Experience" width="420" height="323"></a>
+          <a class="logo-wrap"><img src="assets/img/logo-monty.webp" alt="Monty Experience" fetchpriority="high" decoding="async" width="420" height="323"></a>
           <div class="side-swatch logo-swatch">
             <div class="f-swatches"><span></span><span></span><span></span><span></span><span></span></div>
             <span class="f-label">paleta de colores</span>
@@ -241,9 +242,9 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         </div>
 
         <div class="crown-row sub-row">
-          <div class="sub-photo sub-photo-left"><img src="assets/img/index-07d255b7.jpg" alt="ref — mirada de cerca" width="480" height="600"></div>
+          <div class="sub-photo sub-photo-left"><img src="assets/img/index-07d255b7.jpg" alt="ref — mirada de cerca" fetchpriority="high" decoding="async" width="480" height="600"></div>
           <p class="sub">Los directores de casting<br>ya no buscan perfección.<br>Buscan <b>VERDAD</b>.</p>
-          <div class="sub-photo sub-photo-right"><img src="assets/img/index-4453216d.jpg" alt="ref — actitud de cerca" width="480" height="600"></div>
+          <div class="sub-photo sub-photo-right"><img src="assets/img/index-4453216d.jpg" alt="ref — actitud de cerca" fetchpriority="high" decoding="async" width="480" height="600"></div>
         </div>
         <p class="stat">+80 actores retratados</p>
         <div class="btn-wrap">
@@ -299,17 +300,17 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     </div>
     <div class="entrega-grid">
       <div class="entrega-block">
-        <div class="entrega-photo-solo entrega-photo-real"><img src="assets/img/index-a1070002.jpg" alt="Actor en sesión con Monty Experience" loading="lazy" width="480" height="600"></div>
+        <div class="entrega-photo-solo entrega-photo-real"><img src="assets/img/index-a1070002.jpg" alt="Actor en sesión con Monty Experience" loading="lazy" decoding="async" width="480" height="600"></div>
         <h3>No estás solo en cuadro.</h3>
         <p>Detrás de cada sesión hay un equipo completo enfocado en una sola cosa: que tú te veas y te sientas como <b>el protagonista que ya eres</b>.</p>
       </div>
       <div class="entrega-block">
         <div class="entrega-mosaic">
-          <div class="m-photo m-1"><img src="assets/img/index-b70772d8.jpg" alt="Retrato de actriz — mosaico de posibilidades 1, fondo rosa de estudio" loading="lazy" width="480" height="600"></div>
-          <div class="m-photo m-2"><img src="assets/img/index-4453216d.jpg" alt="Retrato de actriz — mosaico de posibilidades 2, fondo naranja de estudio" loading="lazy" width="480" height="600"></div>
-          <div class="m-photo m-3"><img src="assets/img/index-8e9ae6a1.jpg" alt="Retrato de actor — mosaico de posibilidades 3" loading="lazy" width="480" height="599"></div>
-          <div class="m-photo m-4"><img src="assets/img/index-b2a4f91c.jpg" alt="Retrato de actriz — mosaico de posibilidades 4, luz azul de estudio" loading="lazy" width="480" height="600"></div>
-          <div class="m-photo m-5"><img src="assets/img/index-dd390cb3.jpg" alt="Retrato de actor — mosaico de posibilidades 5" loading="lazy" width="480" height="599"></div>
+          <div class="m-photo m-1"><img src="assets/img/index-b70772d8.jpg" alt="Retrato de actriz — mosaico de posibilidades 1, fondo rosa de estudio" loading="lazy" decoding="async" width="480" height="600"></div>
+          <div class="m-photo m-2"><img src="assets/img/index-4453216d.jpg" alt="Retrato de actriz — mosaico de posibilidades 2, fondo naranja de estudio" loading="lazy" decoding="async" width="480" height="600"></div>
+          <div class="m-photo m-3"><img src="assets/img/index-8e9ae6a1.jpg" alt="Retrato de actor — mosaico de posibilidades 3" loading="lazy" decoding="async" width="480" height="599"></div>
+          <div class="m-photo m-4"><img src="assets/img/index-b2a4f91c.jpg" alt="Retrato de actriz — mosaico de posibilidades 4, luz azul de estudio" loading="lazy" decoding="async" width="480" height="600"></div>
+          <div class="m-photo m-5"><img src="assets/img/index-dd390cb3.jpg" alt="Retrato de actor — mosaico de posibilidades 5" loading="lazy" decoding="async" width="480" height="599"></div>
         </div>
         <h3>Un mapa de posibilidades,<br>dibujado solo para ti.</h3>
         <p>Cada actor sale con un resultado pensado desde su propia historia,<br><b>hecho a su medida</b>.</p>
@@ -559,7 +560,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     <div class="pkg-grid">
 
       <div class="pkg-card pkg-classic" data-pkg="classic">
-        <div class="pkg-photo"><img src="assets/img/index-ff2cf1a9.jpg" alt="Classic Experience" width="640" height="800"></div>
+        <div class="pkg-photo"><img src="assets/img/index-ff2cf1a9.jpg" alt="Classic Experience" width="640" height="800" loading="lazy" decoding="async"></div>
         <div class="pkg-caption">
           <h3>Classic Experience</h3>
           <span class="pkg-toggle">+</span>
@@ -567,7 +568,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         </div>
 
       <div class="pkg-card pkg-elite" data-pkg="elite">
-        <div class="pkg-photo"><img src="assets/img/index-2e50e40a.jpg" alt="Elite Experience" width="640" height="799"></div>
+        <div class="pkg-photo"><img src="assets/img/index-2e50e40a.jpg" alt="Elite Experience" width="640" height="799" loading="lazy" decoding="async"></div>
         <div class="pkg-caption">
           <h3>Elite Experience</h3>
           <span class="pkg-toggle">+</span>
@@ -575,7 +576,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         </div>
 
       <div class="pkg-card pkg-fenix" data-pkg="fenix">
-        <div class="pkg-photo"><img src="assets/img/index-91d9e57a.jpg" alt="Fénix Experience" width="640" height="800"></div>
+        <div class="pkg-photo"><img src="assets/img/index-91d9e57a.jpg" alt="Fénix Experience" width="640" height="800" loading="lazy" decoding="async"></div>
         <div class="pkg-caption">
           <h3>Fénix Experience</h3>
           <span class="pkg-toggle">+</span>
@@ -616,21 +617,21 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     </div>
     <div class="port-carousel-wrap">
       <div class="port-carousel" id="portCarousel">
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-6f0a3dc8.jpg" alt="Retrato cercano y expresivo de actor para casting, fondo claro de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-707199a9.jpg" alt="Retrato editorial de actriz para personal branding, fondo turquesa de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-d61bf3e7.jpg" alt="Retrato frontal sobrio de actriz para casting, fondo claro de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-22e08d14.jpg" alt="Retrato de actriz para book actoral, fondo rosa de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-c9d86763.jpg" alt="Retrato sensual y dramático de actriz para book fotográfico, encaje rojo" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-5f1495f4.jpg" alt="Retrato editorial de actriz para personal branding, fondo verde oliva de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-9c247b6e.jpg" alt="Retrato sonriente de actor para casting, chamarra de mezclilla, fondo claro de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-7a93fd12.jpg" alt="Retrato editorial de actriz para book actoral, vestido dorado con flores en el cabello" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-32519a1c.jpg" alt="Retrato sonriente de actriz para book actoral, fondo claro de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-c8f565a0.jpg" alt="Retrato editorial de actriz para personal branding, fondo azul de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-aff1acc0.jpg" alt="Retrato sobrio de actriz para casting, fondo claro de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-75c8cacc.jpg" alt="Retrato de actriz para book actoral, fondo rosa de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-de520791.jpg" alt="Retrato sonriente de actriz para book actoral, collar dorado" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-a552ccac.jpg" alt="Retrato sonriente de actor para casting, fondo naranja de estudio" loading="lazy" width="700" height="875"></div></figure>
-      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-e4512581.jpg" alt="Retrato editorial de actriz para personal branding, fondo claro de estudio" loading="lazy" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-6f0a3dc8.jpg" alt="Retrato cercano y expresivo de actor para casting, fondo claro de estudio" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-707199a9.jpg" alt="Retrato editorial de actriz para personal branding, fondo turquesa de estudio" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-d61bf3e7.jpg" alt="Retrato frontal sobrio de actriz para casting, fondo claro de estudio" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-22e08d14.jpg" alt="Retrato de actriz para book actoral, fondo rosa de estudio" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-c9d86763.jpg" alt="Retrato sensual y dramático de actriz para book fotográfico, encaje rojo" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-5f1495f4.jpg" alt="Retrato editorial de actriz para personal branding, fondo verde oliva de estudio" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-9c247b6e.jpg" alt="Retrato sonriente de actor para casting, chamarra de mezclilla, fondo claro de estudio" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-7a93fd12.jpg" alt="Retrato editorial de actriz para book actoral, vestido dorado con flores en el cabello" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-32519a1c.jpg" alt="Retrato sonriente de actriz para book actoral, fondo claro de estudio" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-c8f565a0.jpg" alt="Retrato editorial de actriz para personal branding, fondo azul de estudio" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-aff1acc0.jpg" alt="Retrato sobrio de actriz para casting, fondo claro de estudio" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-75c8cacc.jpg" alt="Retrato de actriz para book actoral, fondo rosa de estudio" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-de520791.jpg" alt="Retrato sonriente de actriz para book actoral, collar dorado" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-a552ccac.jpg" alt="Retrato sonriente de actor para casting, fondo naranja de estudio" loading="lazy" decoding="async" width="700" height="875"></div></figure>
+      <figure class="port-item"><div class="port-img-float"><img src="assets/img/index-e4512581.jpg" alt="Retrato editorial de actriz para personal branding, fondo claro de estudio" loading="lazy" decoding="async" width="700" height="875"></div></figure>
       </div>
       <div class="port-dots" id="portDots">
       <span class="port-dot is-active"></span>
@@ -662,7 +663,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 
   <section class="sobre-mi" id="sobre-mi">
     <div class="sm-letter-wrap" id="smLetter">
-      <div class="sm-photo-mini"><img src="assets/img/index-c48e2a91.jpg" alt="Monty, fotógrafo y director creativo de Monty Experience" loading="lazy" width="640" height="800"></div>
+      <div class="sm-photo-mini"><img src="assets/img/index-c48e2a91.jpg" alt="Monty, fotógrafo y director creativo de Monty Experience" loading="lazy" decoding="async" width="640" height="800"></div>
       <span class="eyebrow">Sobre mí</span>
       <div class="sm-intro">
         <span class="sm-firma">Soy Monty de Sant</span>
@@ -695,23 +696,23 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       <p>Dale play. Súbele al volumen. Esto no lo actué&nbsp;yo.</p>
     </div>
     <div class="testi-mosaic" id="testiMosaic">
-      <div class="testi-cap tc-1" data-name="Bri Navarro" data-video="/videos/tes_bri_1626229384.mp4" data-poster="/videos/portada_bri.png">
-        <img src="assets/img/index-7cac632f.jpg" alt="Testimonio en video de Bri Navarro" loading="lazy" width="380" height="618">
+      <div class="testi-cap tc-1" data-name="Bri Navarro" data-video="/videos/tes_bri_1626229384.mp4" data-poster="/videos/portada_bri.webp">
+        <img src="assets/img/index-7cac632f.jpg" alt="Testimonio en video de Bri Navarro" loading="lazy" decoding="async" width="380" height="618">
         <span class="tc-play"></span>
         <span class="tc-name">Bri Navarro</span>
       </div>
-      <div class="testi-cap tc-2" data-name="Leonardo Alonzo" data-video="/videos/tes_leo_1687867871.mp4" data-poster="/videos/portada_leo.png">
-        <img src="assets/img/index-a9ce349a.jpg" alt="Testimonio en video de Leonardo Alonzo" loading="lazy" width="380" height="593">
+      <div class="testi-cap tc-2" data-name="Leonardo Alonzo" data-video="/videos/tes_leo_1687867871.mp4" data-poster="/videos/portada_leo.webp">
+        <img src="assets/img/index-a9ce349a.jpg" alt="Testimonio en video de Leonardo Alonzo" loading="lazy" decoding="async" width="380" height="593">
         <span class="tc-play"></span>
         <span class="tc-name">Leonardo Alonzo</span>
       </div>
-      <div class="testi-cap tc-3" data-name="Lupita Medina" data-video="/videos/tes_lupita_1790176296_final.mp4" data-poster="/videos/portada_lupita.png">
-        <img src="assets/img/index-f2b0b845.jpg" alt="Testimonio en video de Lupita Medina" loading="lazy" width="380" height="555">
+      <div class="testi-cap tc-3" data-name="Lupita Medina" data-video="/videos/tes_lupita_1790176296_final.mp4" data-poster="/videos/portada_lupita.webp">
+        <img src="assets/img/index-f2b0b845.jpg" alt="Testimonio en video de Lupita Medina" loading="lazy" decoding="async" width="380" height="555">
         <span class="tc-play"></span>
         <span class="tc-name">Lupita Medina</span>
       </div>
-      <div class="testi-cap tc-4" data-name="Paty Guzmán" data-video="/videos/tes_paty_992485667.mp4" data-poster="/videos/Portada_paty.png">
-        <img src="assets/img/index-b5e07c0d.jpg" alt="Testimonio en video de Paty Guzmán" loading="lazy" width="380" height="557">
+      <div class="testi-cap tc-4" data-name="Paty Guzmán" data-video="/videos/tes_paty_992485667.mp4" data-poster="/videos/Portada_paty.webp">
+        <img src="assets/img/index-b5e07c0d.jpg" alt="Testimonio en video de Paty Guzmán" loading="lazy" decoding="async" width="380" height="557">
         <span class="tc-play"></span>
         <span class="tc-name">Paty Guzmán</span>
       </div>
@@ -806,7 +807,7 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       <p class="cta-final-cupos">Cupos limitados este mes: 8&nbsp;disponibles.</p>
       <div class="punch-wrap" aria-hidden="false">
         <p class="punch-text">Culo si no<br><span class="accent">te descubres.</span></p>
-        <img class="punch-mini-monty" src="assets/img/index-ea321a01.webp" alt="Monty señalando con asombro" loading="lazy" width="520" height="626">
+        <img class="punch-mini-monty" src="assets/img/index-ea321a01.webp" alt="Monty señalando con asombro" loading="lazy" decoding="async" width="520" height="626">
       </div>
     </div>
   </section>
@@ -1274,8 +1275,21 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
 <!-- CAL.COM EMBED — pop-up al hacer clic -->
 <script type="text/javascript">
   (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
-  Cal("init", {origin:"https://cal.com"});
-  Cal("ui", {"styles":{"branding":{"brandColor":"#f68318"}},"hideEventTypeDetails":false,"layout":"month_view"});
+  // Cal se carga cuando el navegador está libre (o al primer toque/scroll), no en la carga inicial.
+  // claqueta.js llama a montyCalBoot() antes de abrir el pop-up, así que un clic temprano también funciona.
+  window.montyCalBoot = function () {
+    if (window.__montyCalBooted) return;
+    window.__montyCalBooted = true;
+    Cal("init", {origin:"https://cal.com"});
+    Cal("ui", {"styles":{"branding":{"brandColor":"#f68318"}},"hideEventTypeDetails":false,"layout":"month_view"});
+  };
+  (function () {
+    var go = function () { window.montyCalBoot(); };
+    ['pointerdown','touchstart','keydown','scroll'].forEach(function (ev) { window.addEventListener(ev, go, { once: true, passive: true }); });
+    window.addEventListener('load', function () {
+      if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 4000 }); else setTimeout(go, 3000);
+    });
+  })();
 </script>
 
 

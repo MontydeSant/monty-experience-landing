@@ -144,6 +144,7 @@
       var calLink = calBtn.getAttribute('data-cal-link');
       var calConfig = {};
       try { calConfig = JSON.parse(calBtn.getAttribute('data-cal-config') || '{}'); } catch (err) {}
+      if (typeof window.montyCalBoot === 'function') window.montyCalBoot();
       if (typeof Cal === 'function') {
         try { Cal('preload', { calLink: calLink, type: 'modal' }); } catch (err) {}
       }
