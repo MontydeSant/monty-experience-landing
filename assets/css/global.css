@@ -289,6 +289,12 @@ a.btn{ display:inline-flex; align-items:center; justify-content:center; text-dec
 .mx-section{ padding:var(--space-section-y-mobile) var(--space-section-x); }
 @media(min-width:900px){ .mx-section{ padding-top:var(--space-section-y-desktop); padding-bottom:var(--space-section-y-desktop); } }
 
+/* cuando dos .mx-section van seguidas, sus paddings se suman (bottom de la
+   primera + top de la segunda) y el espacio entre ellas se siente excesivo
+   y rompe la lectura — se recorta solo el padding-top de la que sigue */
+.mx-section + .mx-section{ padding-top:calc(var(--space-section-y-mobile) * 0.45); }
+@media(min-width:900px){ .mx-section + .mx-section{ padding-top:calc(var(--space-section-y-desktop) * 0.45); } }
+
 /* SectionHeading / HeroText */
 .mx-eyebrow{
   display:block; margin:0 0 14px;

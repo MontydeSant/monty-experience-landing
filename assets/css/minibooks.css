@@ -566,3 +566,41 @@
   height:46px;
   object-fit:contain;
 }
+
+/* ===== Ubicación del estudio (mapa embebido) ===== */
+.mb-map-frame{
+  margin:34px auto 0; max-width:720px;
+  border-radius:14px; overflow:hidden;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 20px 46px rgba(0,0,0,.4);
+  aspect-ratio:16/10;
+}
+.mb-map-frame iframe{ width:100%; height:100%; border:0; display:block; }
+@media(max-width:600px){
+  .mb-map-frame{ aspect-ratio:4/5; }
+}
+
+/* ===== Rendimiento: backdrop-filter del nav fijo =====
+   El .site-nav es position:fixed con backdrop-filter — está comprobado
+   (bugs de Mozilla/Chromium sobre Twitter, YouTube Mobile, Mastodon) que
+   un blur sobre un elemento fijo encima de contenido que hace scroll
+   obliga al navegador a recalcular el desenfoque en cada frame, porque
+   no puede cachear esa capa aparte del contenido scrolleable. En celular
+   es el principal responsable de que el scroll se sienta "entrecortado".
+   Aquí se quita en celular (se compensa con más opacidad, se ve igual de
+   sólido) y se reduce a la mitad en escritorio. Solo afecta minibooks.html,
+   porque index.html no carga este archivo. */
+@media(max-width:900px){
+  .site-nav{
+    background:rgba(17,9,28,.94);
+    -webkit-backdrop-filter:none; backdrop-filter:none;
+  }
+  .site-nav.is-open{
+    background:rgba(13,7,20,.98);
+    -webkit-backdrop-filter:none; backdrop-filter:none;
+  }
+}
+@media(min-width:901px){
+  .site-nav{ -webkit-backdrop-filter:blur(10px) saturate(140%); backdrop-filter:blur(10px) saturate(140%); }
+  .site-nav.is-open{ -webkit-backdrop-filter:blur(13px) saturate(140%); backdrop-filter:blur(13px) saturate(140%); }
+}
