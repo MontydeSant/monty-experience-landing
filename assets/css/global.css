@@ -908,3 +908,6 @@ a.btn{ display:inline-flex; align-items:center; justify-content:center; text-dec
   .sub-row{ margin-bottom:4px; gap:36px; }
   .sub-photo{ width:128px; height:160px; }
 }
+
+/* Rendimiento: assets/js/perf.js marca con .perf-off lo que está fuera de pantalla */
+.perf-off, .perf-off::before, .perf-off::after{ animation-play-state:paused !important; }
