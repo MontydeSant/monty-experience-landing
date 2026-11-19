@@ -1,0 +1,220 @@
+/* ==========================================================================
+   vsl.css — Sección VSL (video de ventas) de Monty Experience.
+   Solo la carga vsl.html. Estructura y animación tomadas del hero de
+   marketographers.com (escenario con perspectiva 3D, video con inclinación al
+   cursor, destello que sigue al mouse, chips flotantes, botón de play), pero
+   con los colores, tipografías y botón de Monty Experience (global.css):
+   · Special Elite = titulares  · Courier Prime = apoyo
+   · Naranja (accent-guide) SEÑALA  · Amarillo (accent-signal) CONFIRMA
+   ========================================================================== */
+
+.vsl{
+  --vsl-radius:28px;                 /* ← esquinas del video (Pablo usa 28px) */
+  --vsl-ease:cubic-bezier(.22,1,.36,1);
+  --vsl-glass:rgba(255,255,255,.07);
+  --vsl-glass-b:rgba(255,255,255,.14);
+  --vsl-halo:176,108,255;            /* ← halo morado que sigue al cursor (rgb) */
+  --vsl-deep:10,5,18;                /* rgb de --gradient-deep, para los degradados */
+  position:relative;
+  margin:0 auto 140px;
+  text-align:center;
+}
+/* misma línea separadora que tenía el bloque de ATORADO antes de las pestañitas */
+.vsl::after{
+  content:"";
+  position:absolute; left:50%; bottom:-70px; transform:translateX(-50%);
+  width:46px; height:2px; background:rgba(255,255,255,.15);
+}
+/* en esta versión el separador pasa de ATORADO al final del VSL */
+.vsl-page .problema-stat-top{ margin-bottom:64px; }
+.vsl-page .problema-stat-top::after{ display:none; }
+
+.vsl-lead{
+  font-family:var(--font-bitacora);
+  font-size:clamp(.98rem,1.3vw,1.12rem);
+  color:var(--text-muted);
+  line-height:1.6;
+  max-width:46ch;
+  margin:0 auto;
+}
+
+/* ---------- escenario 3D ---------- */
+.vsl-stage{
+  perspective:1400px;
+  margin:clamp(30px,5vw,56px) auto 0;
+  width:min(980px,100%);
+  position:relative;
+}
+.vsl-tilt{
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+.vsl-video{
+  position:relative; display:block; width:100%;
+  aspect-ratio:16/9;
+  padding:0; font:inherit; color:inherit; text-align:left;
+  border-radius:var(--vsl-radius);
+  overflow:hidden;
+  border:1px solid var(--vsl-glass-b);
+  background:#000;
+  box-shadow:0 50px 110px -30px rgba(0,0,0,.9);
+  cursor:pointer;
+}
+.vsl-video img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  filter:saturate(.85) contrast(1.05);
+  transition:transform .8s var(--vsl-ease);
+}
+.vsl-video:hover img{ transform:scale(1.03); }
+.vsl-video iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+/* destello que sigue al cursor */
+.vsl-video::after{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(520px circle at var(--mx,50%) var(--my,50%), rgba(var(--vsl-halo),.34), transparent 62%);
+  pointer-events:none; opacity:0; transition:opacity .3s;
+}
+.vsl-video:hover::after{ opacity:1; }
+.vsl-video.is-playing::after, .vsl-video.is-playing .vsl-play, .vsl-video.is-playing .vsl-poster{ display:none; }
+
+/* título sobre el video (texto HTML, no parte de la miniatura) */
+.vsl-poster{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; justify-content:flex-start; align-items:flex-start; gap:10px;
+  padding:clamp(18px,4.2vw,56px);
+  padding-right:clamp(18px,54%,760px);
+  text-align:left;
+  background:
+    linear-gradient(90deg, rgba(var(--vsl-deep),.9) 0%, rgba(var(--vsl-deep),.62) 36%, rgba(var(--vsl-deep),0) 62%),
+    linear-gradient(180deg, rgba(var(--vsl-deep),0) 60%, rgba(var(--vsl-deep),.55) 100%);
+}
+.vsl-poster small{
+  font-family:var(--font-bitacora);
+  font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; font-weight:700;
+  color:var(--accent-guide);
+}
+.vsl-poster b{
+  font-family:var(--font-guion); font-weight:400;
+  font-size:clamp(1.35rem,3.3vw,2.7rem);
+  line-height:1.12; letter-spacing:-.01em;
+  max-width:14ch;
+  color:#fff;
+}
+.vsl-poster mark{ background:none; color:var(--accent-signal); text-shadow:0 0 30px rgba(253,192,5,.5); }
+
+/* botón de play (abajo a la derecha, como en el de Pablo) */
+.vsl-play{
+  position:absolute;
+  right:clamp(16px,3vw,36px); bottom:clamp(16px,3vw,36px);
+  width:clamp(64px,8vw,88px); height:clamp(64px,8vw,88px);
+  border-radius:50%;
+  display:grid; place-items:center;
+  background:var(--accent-signal); color:var(--bg-stage);
+  box-shadow:0 0 0 0 rgba(253,192,5,.55);
+  transition:transform .35s var(--vsl-ease);
+  animation:vslPlayPulse 2.6s ease-in-out infinite;
+}
+.vsl-play svg{ width:30px; height:30px; margin-left:4px; fill:currentColor; }
+.vsl-video:hover .vsl-play{ transform:scale(1.08); }
+.vsl-video:active .vsl-play{ transform:scale(.94); transition-duration:.06s; }
+@keyframes vslPlayPulse{
+  0%,100%{ box-shadow:0 0 0 0 rgba(253,192,5,.45); }
+  50%{ box-shadow:0 0 0 14px rgba(253,192,5,0); }
+}
+
+/* chips flotantes con cristal (+80 actores, etc.) */
+.vsl-chip{
+  position:absolute; z-index:3;
+  padding:10px 16px; border-radius:999px;
+  font-family:var(--font-bitacora); font-size:.82rem; font-weight:700;
+  color:#fff;
+  background:rgba(22,22,22,.55);
+  border:1px solid var(--vsl-glass-b);
+  backdrop-filter:blur(16px) saturate(160%); -webkit-backdrop-filter:blur(16px) saturate(160%);
+  transform:translateZ(80px);
+  white-space:nowrap;
+  box-shadow:0 20px 40px -16px rgba(0,0,0,.7);
+}
+.vsl-chip b{ color:var(--accent-signal); font-weight:700; }
+.vsl-chip-a{ top:-18px; left:-2%; }
+.vsl-chip-b{ bottom:-18px; right:-2%; }
+
+.vsl-cap{
+  font-family:var(--font-bitacora);
+  color:var(--text-muted); font-size:.9rem;
+  margin:34px 0 0;
+}
+.vsl-cta{ margin-top:26px; }
+
+/* ---------- entrada suave al hacer scroll (solo si hay JS) ---------- */
+.vsl.vsl-armed .vsl-rv{
+  opacity:0; transform:translateY(28px);
+  transition:opacity .8s var(--vsl-ease), transform .8s var(--vsl-ease);
+  transition-delay:calc(var(--i,0)*60ms);
+}
+.vsl.vsl-armed .vsl-rv.in{ opacity:1; transform:none; }
+
+/* video aún sin ID de YouTube: aviso de reemplazo (solo en preview) */
+.vsl-soon{
+  position:absolute; inset:0; display:grid; place-items:center;
+  background:rgba(var(--vsl-deep),.88);
+  font-family:var(--font-bitacora); color:var(--text-muted); text-align:center; padding:24px;
+}
+
+/* ---------- celular y tablet: sin 3D, chips debajo del video ---------- */
+@media(max-width:900px){
+  .vsl{ margin-bottom:90px; }
+  .vsl::after{ bottom:-45px; }
+  .vsl-page .problema-stat-top{ margin-bottom:40px; }
+  .vsl-tilt{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }  /* el 3D sigue activo con mouse hasta 560px */
+  .vsl-video{ flex:0 0 100%; }
+  .vsl-chip{
+    position:static; transform:none;
+    font-size:.8rem; padding:8px 14px;
+    backdrop-filter:none; -webkit-backdrop-filter:none;
+    background:rgba(22,22,22,.9); box-shadow:none;
+  }
+}
+@media(max-width:560px){ .vsl-tilt{ transform:none; } }
+@media(max-width:640px){
+  .vsl-poster{
+    justify-content:flex-end; padding:18px; padding-right:96px;
+    background:linear-gradient(180deg, rgba(var(--vsl-deep),0) 28%, rgba(var(--vsl-deep),.92) 100%);
+  }
+  .vsl-poster b{ font-size:clamp(1.05rem,5vw,1.4rem); max-width:none; }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .vsl-tilt{ transform:none !important; }
+  .vsl-play{ animation:none; }
+  .vsl-video img, .vsl-video:hover img{ transition:none; transform:none; }
+  .vsl.vsl-armed .vsl-rv{ opacity:1; transform:none; transition:none; }
+}
+
+/* ==========================================================================
+   Tarjetas de paquetes (Classic, Elite, Fénix): misma inclinación 3D y halo que
+   sigue al cursor del VSL, pero con el color de cada paquete. Cerradas reaccionan
+   al mouse; al abrirse (pop-up) se quedan fijas. Solo en escritorio con mouse.
+   ========================================================================== */
+.vsl-page .pkg-classic{ --pkg-accent:#93a6e6; }
+.vsl-page .pkg-elite  { --pkg-accent:#e6a0c4; }
+.vsl-page .pkg-fenix  { --pkg-accent:#ffab6b; }
+
+@media(min-width:901px) and (hover:hover) and (pointer:fine){
+  .vsl-page .pkg-card{
+    transform:perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+    will-change:transform;
+  }
+  .vsl-page .pkg-card::after{
+    content:""; position:absolute; inset:0; z-index:1;
+    border-radius:inherit; pointer-events:none;
+    background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),
+      color-mix(in srgb, var(--pkg-accent) 55%, transparent), transparent 62%);
+    opacity:0; transition:opacity .3s;
+  }
+  .vsl-page .pkg-card:hover::after{ opacity:1; }
+}
+@media(prefers-reduced-motion:reduce){
+  .vsl-page .pkg-card{ transform:none !important; }
+  .vsl-page .pkg-card::after{ display:none; }
+}
