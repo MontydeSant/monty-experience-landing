@@ -1447,3 +1447,6 @@
 }
 .problema-question span{display:block;white-space:nowrap}
 @media(max-width:900px){ .problema-question{ margin-top:22px; max-width:none; font-size:clamp(1.15rem,5.6vw,2rem); } }
+
+.problema-cta{ margin:34px auto 0; text-align:center; }
+@media(max-width:900px){ .problema-cta{ margin-top:26px; } }
