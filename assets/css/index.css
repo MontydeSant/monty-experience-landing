@@ -1420,3 +1420,30 @@
   @media(prefers-reduced-motion: reduce){
     .exp-backdrop, .exp-modal, .exp-modal.is-animating{ transition:opacity .15s ease !important; }
   }
+
+
+/* ---------- intro y cierre de las dos tarjetas (Book desactualizado / Nunca ha tenido un book) ---------- */
+.problema-intro-title{
+  font-family:var(--font-guion); font-weight:400;
+  font-size:clamp(1.3rem,2.6vw,1.9rem); line-height:1.25;
+  color:#fff; text-align:center;
+  max-width:26ch; margin:0 auto 38px;
+}
+.problema-bridge{
+  font-family:var(--font-bitacora);
+  font-size:clamp(.98rem,1.3vw,1.12rem); line-height:1.7;
+  color:var(--text-muted); text-align:center;
+  max-width:46ch; margin:64px auto 0;
+}
+.problema-bridge-accent{ color:var(--accent-signal); text-shadow:0 0 30px rgba(253,192,5,.5); }
+@media(max-width:900px){ .problema-bridge{ margin-top:44px; } .problema-intro-title{ margin-bottom:28px; } }
+
+/* pregunta de cierre: ocupa el lugar de la frase final y deja al lector pensando antes de "Lo que se entrega" */
+.problema-question{
+  font-family:var(--font-guion); font-weight:400;
+  font-size:clamp(1.45rem,3.2vw,2.3rem); line-height:1.25;
+  color:#fff; text-align:center;
+  max-width:22ch; margin:30px auto 0;
+}
+.problema-question span{display:block;white-space:nowrap}
+@media(max-width:900px){ .problema-question{ margin-top:22px; max-width:none; font-size:clamp(1.15rem,5.6vw,2rem); } }
