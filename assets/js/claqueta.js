@@ -15,9 +15,10 @@
 (function () {
   'use strict';
 
-  // Línea de tiempo (~0.85 s): entra .2s → claquetazo a los .30s → a los .62s se ejecuta la acción
+  // Línea de tiempo (~0.7 s): el sonido arranca EN el clic; el aplauso cae a los ~.31 s del archivo y
+  // el brazo de la claqueta pega en ese mismo instante (global.css). A los .5 s se ejecuta la acción
   // (abre Cal / WhatsApp) y la claqueta se desvanece ENCIMA, sin hacer esperar a nadie.
-  var HOLD_MS = 620, FADE_MS = 220, CLAP_DELAY_S = 0.30, CLAP_SOUND_OFFSET_S = 0.32;
+  var HOLD_MS = 500, FADE_MS = 220;
   // Rutas relativas a ESTE archivo (assets/js/): funcionan en cualquier página,
   // a cualquier profundidad, y también abriendo el HTML con doble clic.
   var BASE = (function () {
@@ -25,7 +26,8 @@
     var src = (el && el.src) || '';
     return src ? src.replace(/js\/claqueta\.js(\?.*)?$/, '') : 'assets/';
   })();
-  var AUDIO_URL = BASE + 'audio/claqueta.wav';
+  // Archivo normalizado (más fuerte, para bocinas de celular). Nombre nuevo porque el anterior queda en caché 1 año.
+  var AUDIO_URL = BASE + 'audio/claqueta-fuerte.wav';
   var LOGO_URL = BASE + 'img/logo-claqueta.webp';
 
   function ensureOverlay() {
@@ -62,21 +64,16 @@
     var t = e.target;
     if (t && t.closest && t.closest('[data-cal-link], a[href*="wa.me"], a[href*="whatsapp.com"]')) {
       loadLogo();
-      // Despierta el audio y adelanta la descarga/decodificación del aplauso en el
-      // primer indicio de intención (touchstart cuenta como gesto del usuario en
-      // iOS/Android). Así, cuando llegue el click real, el buffer ya está listo y
-      // el sonido suena a tiempo también en celular, no solo en escritorio.
-      var ctx = getAudioCtx();
-      if (ctx) {
-        if (ctx.state === 'suspended') { try { ctx.resume(); } catch (err) {} }
-        loadClapBuffer(ctx).catch(function () {});
-      }
+      prefetchClap();
       document.removeEventListener('pointerover', onIntent, true);
       document.removeEventListener('touchstart', onIntent, true);
     }
   }
 
-  var overlay, board, playing = false, audioCtx = null, clapBuffer = null, clapPromise = null;
+  var overlay, board, playing = false, audioCtx = null, clapBuffer = null, clapPromise = null, clapEl = null, primed = false, clapAsked = false;
+
+  // iOS: que el audio web suene aunque el switch de silencio esté activado (iOS 16.4+).
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
 
   function getAudioCtx() {
     if (!audioCtx) {
@@ -86,7 +83,7 @@
   }
 
   // Los bytes del aplauso se descargan en reposo (prefetchClap); la decodificación
-  // necesita el AudioContext y se hace en la primera señal de intención.
+  // necesita el AudioContext y se hace en el primer gesto del visitante.
   var clapBytes = null;
   function prefetchClap() {
     if (clapBytes) return clapBytes;
@@ -105,21 +102,65 @@
     return clapPromise;
   }
 
-  function scheduleClapSound(delaySeconds) {
+  // Elemento <audio> de respaldo: en celular es la vía más fiable (no depende de que el
+  // AudioContext haya despertado y, en iOS, suena por el canal de medios).
+  function getClapEl() {
+    if (!clapEl) {
+      try { clapEl = new Audio(AUDIO_URL); clapEl.preload = 'auto'; clapEl.volume = 1; } catch (e) { clapEl = null; }
+    }
+    return clapEl;
+  }
+
+  // "Desbloqueo" de audio: se hace en el PRIMER gesto real del visitante en cualquier parte de
+  // la página (tap, clic, tecla). En iOS/Android un sonido solo puede arrancar después de un
+  // gesto, y un touchstart sobre el botón no basta (de ahí que en celular no sonara).
+  var CTA_SEL = '[data-cal-link], a[href*="wa.me"], a[href*="whatsapp.com"]';
+  function primeAudio(e) {
+    if (primed) return;
+    var onCta = !!(e && e.target && e.target.closest && e.target.closest(CTA_SEL));
     var ctx = getAudioCtx();
-    if (!ctx) return;
-    if (ctx.state === 'suspended') ctx.resume();
-    var startAt = ctx.currentTime + Math.max(0, delaySeconds - CLAP_SOUND_OFFSET_S);
-    loadClapBuffer(ctx).then(function (buffer) {
+    if (ctx) {
+      try { ctx.resume(); } catch (e) {}
+      loadClapBuffer(ctx).catch(function () {});
+      try { // buffer silencioso: abre el canal de audio en iOS
+        var b = ctx.createBuffer(1, 1, 22050), src = ctx.createBufferSource();
+        src.buffer = b; src.connect(ctx.destination); src.start(0);
+      } catch (e) {}
+    }
+    var el = onCta ? null : getClapEl();   // si el primer gesto ya es el botón, su propio play() desbloquea
+    if (el) {
+      try {
+        el.muted = true;
+        var pr = el.play();
+        var back = function () { if (clapAsked) return; try { el.pause(); el.currentTime = 0; el.muted = false; } catch (e) {} };
+        if (pr && pr.then) pr.then(back, function () { el.muted = false; }); else back();
+      } catch (e) {}
+    }
+    primed = true;
+    ['pointerup', 'touchend', 'click', 'keydown'].forEach(function (ev) { document.removeEventListener(ev, primeAudio, true); });
+  }
+
+  // Suena el aplauso YA (se llama dentro del clic, que es un gesto válido). El brazo de la claqueta
+  // pega a los ~.31 s, justo cuando cae el aplauso del archivo.
+  function playClapNow() {
+    clapAsked = true;
+    var ctx = audioCtx;
+    try { if (ctx && ctx.state === 'suspended') ctx.resume(); } catch (e) {}
+    if (ctx && clapBuffer && ctx.state === 'running') {
       try {
         var src = ctx.createBufferSource();
-        src.buffer = buffer;
+        src.buffer = clapBuffer;
         var gain = ctx.createGain();
-        gain.gain.value = 0.9;
+        gain.gain.value = 1;
         src.connect(gain).connect(ctx.destination);
-        src.start(startAt);
+        src.start(0);
+        return;
       } catch (e) {}
-    }).catch(function () {});
+    }
+    var el = getClapEl();
+    if (el) {
+      try { el.muted = false; el.currentTime = 0; var pr = el.play(); if (pr && pr.catch) pr.catch(function () {}); } catch (e) {}
+    }
   }
 
   function playClaqueta(onDone) {
@@ -130,7 +171,8 @@
     void overlay.offsetWidth;
     overlay.classList.add('show');
     board.classList.add('playing');
-    scheduleClapSound(CLAP_DELAY_S);
+    playClapNow();
+    setTimeout(function () { clapAsked = false; }, 1500);
     setTimeout(function () {
       overlay.classList.remove('show');
       overlay.classList.add('hide');
@@ -203,6 +245,7 @@
     scheduleWarmUp();
     board = document.getElementById('claquetaBoard');
     if (!board) return;
+    ['pointerup', 'touchend', 'click', 'keydown'].forEach(function (ev) { document.addEventListener(ev, primeAudio, true); });
     document.addEventListener('click', onClick, true);
     document.addEventListener('pointerover', onIntent, true);
     document.addEventListener('touchstart', onIntent, true);
