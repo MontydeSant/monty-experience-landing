@@ -15,7 +15,9 @@
 (function () {
   'use strict';
 
-  var HOLD_MS = 1100, FADE_MS = 220, CLAP_DELAY_S = 0.55, CLAP_SOUND_OFFSET_S = 0.32;
+  // Línea de tiempo (~0.85 s): entra .2s → claquetazo a los .30s → a los .62s se ejecuta la acción
+  // (abre Cal / WhatsApp) y la claqueta se desvanece ENCIMA, sin hacer esperar a nadie.
+  var HOLD_MS = 620, FADE_MS = 220, CLAP_DELAY_S = 0.30, CLAP_SOUND_OFFSET_S = 0.32;
   // Rutas relativas a ESTE archivo (assets/js/): funcionan en cualquier página,
   // a cualquier profundidad, y también abriendo el HTML con doble clic.
   var BASE = (function () {
@@ -83,13 +85,22 @@
     return audioCtx;
   }
 
+  // Los bytes del aplauso se descargan en reposo (prefetchClap); la decodificación
+  // necesita el AudioContext y se hace en la primera señal de intención.
+  var clapBytes = null;
+  function prefetchClap() {
+    if (clapBytes) return clapBytes;
+    clapBytes = fetch(AUDIO_URL).then(function (r) { return r.arrayBuffer(); });
+    clapBytes.catch(function () { clapBytes = null; });
+    return clapBytes;
+  }
   function loadClapBuffer(ctx) {
     if (clapBuffer) return Promise.resolve(clapBuffer);
     if (!clapPromise) {
-      clapPromise = fetch(AUDIO_URL)
-        .then(function (r) { return r.arrayBuffer(); })
+      clapPromise = prefetchClap()
         .then(function (ab) { return ctx.decodeAudioData(ab); })
         .then(function (buf) { clapBuffer = buf; return buf; });
+      clapPromise.catch(function () { clapPromise = null; });
     }
     return clapPromise;
   }
@@ -123,12 +134,12 @@
     setTimeout(function () {
       overlay.classList.remove('show');
       overlay.classList.add('hide');
+      onDone();                       // la acción arranca ya; la claqueta se disuelve encima
       setTimeout(function () {
         overlay.hidden = true;
         overlay.classList.remove('hide');
         board.classList.remove('playing');
         playing = false;
-        onDone();
       }, FADE_MS);
     }, HOLD_MS);
   }
@@ -144,10 +155,9 @@
       var calLink = calBtn.getAttribute('data-cal-link');
       var calConfig = {};
       try { calConfig = JSON.parse(calBtn.getAttribute('data-cal-config') || '{}'); } catch (err) {}
+      // Cal ya se inició y precargó en reposo (warmUp). Aquí solo se garantiza el init
+      // por si el clic llegó antes; nada pesado durante la animación.
       if (typeof window.montyCalBoot === 'function') window.montyCalBoot();
-      if (typeof Cal === 'function') {
-        try { Cal('preload', { calLink: calLink, type: 'modal' }); } catch (err) {}
-      }
       playClaqueta(function () {
         if (typeof Cal === 'function') Cal('modal', { calLink: calLink, config: calConfig });
         else window.open('https://cal.com/' + calLink, '_blank', 'noopener');
@@ -168,8 +178,29 @@
     }
   }
 
+  // Precalentamiento en reposo (el navegador libre, nunca en el clic):
+  // logo, bytes del aplauso y precarga de Cal para el primer botón de agenda.
+  function warmUp() {
+    loadLogo();
+    prefetchClap();
+    try {
+      if (typeof window.montyCalBoot === 'function') window.montyCalBoot();
+      var first = document.querySelector('[data-cal-link]');
+      if (first && typeof Cal === 'function') Cal('preload', { calLink: first.getAttribute('data-cal-link'), type: 'modal' });
+    } catch (err) {}
+  }
+  function scheduleWarmUp() {
+    var go = function () {
+      if ('requestIdleCallback' in window) requestIdleCallback(warmUp, { timeout: 3000 });
+      else setTimeout(warmUp, 1500);
+    };
+    if (document.readyState === 'complete') setTimeout(go, 800);
+    else window.addEventListener('load', function () { setTimeout(go, 800); });
+  }
+
   function init() {
     overlay = ensureOverlay();
+    scheduleWarmUp();
     board = document.getElementById('claquetaBoard');
     if (!board) return;
     document.addEventListener('click', onClick, true);

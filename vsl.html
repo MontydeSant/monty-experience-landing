@@ -947,19 +947,71 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
       swatchEls.forEach(function(el,i){ el.style.backgroundColor = s.palette[i]; });
     }
 
-    function applySession(s){
+    // ---- Precarga: las fotos de TODAS las sesiones se descargan y decodifican en reposo,
+    // para que al tocar el logo el cambio sea instantáneo y de golpe (aunque la red sea lenta,
+    // como en el navegador interno de Pinterest). ----
+    var preloaded = {}, readyDone = {}, keepImgs = {};
+    function preloadSession(i){
+      if (preloaded[i]) return preloaded[i];
+      var list = sessions[i].photos || [];
+      keepImgs[i] = [];
+      preloaded[i] = Promise.all(list.map(function(src){
+        return new Promise(function(res){
+          var im = new Image();
+          try { im.fetchPriority = 'low'; } catch(e){}
+          im.decoding = 'async';
+          im.onload = function(){ (im.decode ? im.decode() : Promise.resolve()).then(res, res); };
+          im.onerror = res;
+          im.src = src;
+          keepImgs[i].push(im); // se retienen para que el navegador no las suelte
+        });
+      })).then(function(){ readyDone[i] = true; });
+      return preloaded[i];
+    }
+    function preloadAllIdle(){
+      var i = 1, n = sessions.length, from = current;
+      (function next(){
+        if (i >= n) return;
+        var idx = (from + i) % n; i++;
+        preloadSession(idx).then(function(){
+          if ('requestIdleCallback' in window) requestIdleCallback(next, { timeout: 1500 }); else setTimeout(next, 200);
+        });
+      })();
+    }
+
+    function endFlash(){
+      flashEl.classList.remove('flash-active', 'flash-hold', 'flash-out');
+      busy = false;
+    }
+
+    function applySession(s, idx){
       // Flash de cámara (clic manual en el logo): un solo destello blanco cubre toda la
-      // escena y, justo en su pico, se cambia el contenido (fotos, nota, paleta) escondido tras el blanco.
-      flashEl.classList.remove('flash-active');
+      // escena y el contenido (fotos, nota, paleta) se cambia escondido tras el blanco.
+      flashEl.classList.remove('flash-active', 'flash-hold', 'flash-out');
       void flashEl.offsetWidth; // reinicia la animación aunque se repita la clase
-      flashEl.classList.add('flash-active');
 
-      setTimeout(function(){ swapContent(s); }, SWAP_AT_MS);
-
-      setTimeout(function(){
-        flashEl.classList.remove('flash-active');
-        busy = false;
-      }, FLASH_MS);
+      if (readyDone[idx]){
+        // Fotos listas: el destello de siempre y el cambio justo en su pico.
+        flashEl.classList.add('flash-active');
+        setTimeout(function(){ swapContent(s); }, SWAP_AT_MS);
+        setTimeout(endFlash, FLASH_MS);
+        return;
+      }
+      // Fotos aún en camino (red lenta): el blanco se sostiene hasta que estén decodificadas
+      // y entonces todo cambia de golpe y el destello se desvanece. Tope de 1.5 s por si la red falla.
+      flashEl.classList.add('flash-hold');
+      var done = false;
+      function go(){
+        if (done) return; done = true;
+        swapContent(s);
+        requestAnimationFrame(function(){
+          flashEl.classList.remove('flash-hold');
+          flashEl.classList.add('flash-out');
+          setTimeout(endFlash, 460);
+        });
+      }
+      preloadSession(idx).then(go);
+      setTimeout(go, 1500);
     }
 
     function applySessionDissolve(s){
@@ -982,9 +1034,10 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
     }
 
     function autoAdvance(){
-      if (busy){ scheduleAuto(); return; }
+      var nextIdx = (current + 1) % sessions.length;
+      if (busy || !readyDone[nextIdx]){ preloadSession(nextIdx); clearTimeout(autoTimer); autoTimer = setTimeout(autoAdvance, busy ? AUTO_MS : 3000); return; }
       busy = true;
-      current = (current + 1) % sessions.length;
+      current = nextIdx;
       applySessionDissolve(sessions[current]);
       scheduleAuto();
     }
@@ -1009,16 +1062,25 @@ src="https://www.facebook.com/tr?id=1527954495275305&ev=PageView&noscript=1"
         topImgs[0].src, topImgs[1].src, topImgs[2].src, subImgs[0].src, subImgs[1].src
       ];
 
+      // Al primer toque (antes del clic) se adelanta la descarga de la siguiente sesión.
+      logo.addEventListener('pointerdown', function(){ preloadSession((current + 1) % sessions.length); }, { passive:true });
+
       logo.addEventListener('click', function(e){
         e.preventDefault();
         if (busy) return;
         busy = true;
         current = (current + 1) % sessions.length;
-        applySession(sessions[current]);
+        applySession(sessions[current], current);
         scheduleAuto(); // un clic manual reinicia el conteo de 10s para la rotación automática
       });
 
       scheduleAuto(); // arranca la rotación automática por disolvencia si nadie toca el logo
+
+      // Precarga en reposo, después de que la página terminó de cargar.
+      var startPreload = function(){
+        if ('requestIdleCallback' in window) requestIdleCallback(preloadAllIdle, { timeout: 4000 }); else setTimeout(preloadAllIdle, 1500);
+      };
+      if (document.readyState === 'complete') startPreload(); else window.addEventListener('load', startPreload);
     });
   })();
 

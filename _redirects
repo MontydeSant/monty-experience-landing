@@ -4,3 +4,9 @@
 # URL limpia de la promo de diciembre: montyexperience.com/minibooks
 /minibooks /minibooks.html 200
 /minibooks/ /minibooks.html 200
+
+# URL corta de la versión VSL: montyexperience.com/VSL (sin importar mayúsculas)
+/VSL /vsl.html 200
+/vsl /vsl.html 200
+/VSL/ /VSL 301
+/vsl/ /VSL 301
