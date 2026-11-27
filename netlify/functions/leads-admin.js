@@ -11,6 +11,9 @@
 // - ADMIN_PASSWORD             -> contraseña del panel (secreta)
 // - GOOGLE_SERVICE_ACCOUNT_KEY -> misma cuenta de servicio que cal-webhook.js
 // - GOOGLE_SHEET_ID_LEADS      -> ID del Sheet "Leads - Cafecitos"
+//
+// (Redeploy sin cambios de lógica: para que esta función recoja el valor de
+// ADMIN_PASSWORD agregado después del deploy anterior.)
 
 const crypto = require('crypto');
 
