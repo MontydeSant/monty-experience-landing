@@ -5,81 +5,116 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Panel de leads — Monty Experience</title>
 <meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="../assets/img/logo-ave.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/global.css">
 <style>
-  :root{
-    --bg:#0d0d0d; --panel:#161616; --border:#2a2a2a; --text:#e8e8e8; --muted:#9a9a9a;
-    --accent:#7c5cbf; --accent-light:#c9a7ff; --ok:#6fb98f; --warn:#d9a441; --danger:#d97a7a;
-  }
+  /* --- Solo lo específico de este panel: el resto (color, tipografía,
+     botones, grano) sale de global.css, la misma fuente que usa la landing. --- */
   *{box-sizing:border-box;}
-  body{
-    margin:0; background:var(--bg); color:var(--text);
-    font-family:Inter, system-ui, -apple-system, sans-serif;
-    min-height:100vh;
-  }
-  .wrap{max-width:1100px;margin:0 auto;padding:40px 20px 80px;}
-  h1{font-size:22px;margin:0 0 4px;}
-  .sub{color:var(--muted);font-size:13px;margin:0 0 32px;}
+  body{min-height:100vh;}
+  .admin-wrap{max-width:1100px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:1;}
+
+  .admin-logo{display:block;}
+  .admin-title{font-family:var(--font-guion);font-weight:400;font-size:1.4rem;margin:0 0 6px;color:var(--text-primary);}
+  .admin-sub{font-family:var(--font-bitacora);color:var(--text-muted);font-size:.82rem;line-height:1.5;margin:0 0 28px;}
 
   /* --- Login --- */
-  #login{max-width:360px;margin:80px auto;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:32px;}
-  #login p{color:var(--muted);font-size:13px;margin:0 0 20px;}
-  #login input{width:100%;padding:12px 14px;background:#0d0d0d;border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;margin-bottom:12px;}
-  #login button, .btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:12px 18px;font-size:14px;cursor:pointer;}
-  #login button:hover, .btn:hover{opacity:.9;}
-  #loginError{color:var(--danger);font-size:13px;margin-top:4px;display:none;}
+  #login{
+    max-width:360px;margin:9vh auto 0;text-align:center;
+    background:var(--surface-card);border:1px solid rgba(253,192,5,.18);
+    border-radius:var(--radius-card);padding:36px 32px 32px;box-shadow:var(--shadow-tile);
+  }
+  #login .admin-logo{width:150px;height:auto;margin:0 auto 18px;}
+  #login .admin-sub{margin-bottom:24px;}
+  #login input{
+    width:100%;padding:13px 14px;background:var(--gradient-deep);
+    border:1px solid rgba(255,255,255,.14);border-radius:var(--radius-sm);
+    color:var(--text-primary);font-family:var(--font-cuerpo);font-size:14px;margin-bottom:16px;
+  }
+  #login input::placeholder{color:var(--text-muted);}
+  #login input:focus{outline:2px solid var(--accent-signal);outline-offset:1px;}
+  #loginError{color:#e2777a;font-family:var(--font-bitacora);font-size:12px;margin-top:10px;display:none;}
 
   /* --- App --- */
   #app{display:none;}
-  .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:20px;}
-  .toolbar input[type=text]{flex:1;min-width:200px;padding:10px 12px;background:var(--panel);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;}
-  .toolbar select{padding:10px 12px;background:var(--panel);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;}
-  .summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
-  .chip{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--muted);}
-  .chip b{color:var(--text);}
+  .admin-header{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:28px;}
+  .admin-header .admin-logo{width:62px;height:auto;flex-shrink:0;}
+  .admin-header .admin-headings{flex:1;min-width:220px;}
+  .admin-header .admin-title{margin-bottom:2px;}
+  .admin-header .admin-sub{margin:0;}
+  .admin-header .cta-btn.admin-refresh{margin-left:auto;padding:10px 18px 10px 48px;font-size:.78rem;}
+  .admin-header .cta-btn.admin-refresh::before{width:34px;}
 
-  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-  thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:12px 14px;border-bottom:1px solid var(--border);}
-  tbody td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:top;}
+  .summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
+  .chip{
+    background:rgba(255,255,255,.04);border:1px solid rgba(253,192,5,.22);
+    border-radius:var(--radius-pill);padding:6px 14px;font-family:var(--font-bitacora);
+    font-size:.72rem;color:var(--text-muted);
+  }
+  .chip b{color:var(--accent-signal);font-weight:700;}
+
+  .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:22px;}
+  .toolbar input[type=text],.toolbar select{
+    padding:11px 13px;background:var(--surface-card);border:1px solid rgba(255,255,255,.12);
+    border-radius:var(--radius-sm);color:var(--text-primary);font-family:var(--font-cuerpo);font-size:13.5px;
+  }
+  .toolbar input[type=text]{flex:1;min-width:200px;}
+  .toolbar input::placeholder{color:var(--text-muted);}
+
+  .table-scroll{overflow-x:auto;border-radius:var(--radius-card);box-shadow:var(--shadow-tile);}
+  table{width:100%;border-collapse:collapse;background:var(--surface-card);border:1px solid rgba(255,255,255,.08);min-width:720px;}
+  thead th{
+    text-align:left;font-family:var(--font-bitacora);font-size:.68rem;text-transform:uppercase;
+    letter-spacing:.08em;color:var(--text-muted);padding:14px;border-bottom:1px solid rgba(255,255,255,.1);
+  }
+  tbody td{padding:14px;font-family:var(--font-cuerpo);font-size:13.5px;border-bottom:1px solid rgba(255,255,255,.07);vertical-align:top;color:var(--text-primary);}
   tbody tr:last-child td{border-bottom:none;}
-  tbody tr:hover{background:#1c1c1c;}
+  tbody tr:hover{background:rgba(255,255,255,.025);}
   .nombre{font-weight:600;}
-  .muted{color:var(--muted);}
-  .detalle-toggle{cursor:pointer;color:var(--accent-light);font-size:12px;text-decoration:underline;background:none;border:none;padding:0;}
-  .detalle{display:none;background:#121212;}
+  .muted{color:var(--text-muted);}
+  .detalle-toggle{cursor:pointer;color:var(--accent-signal);font-family:var(--font-bitacora);font-size:11px;text-decoration:underline;background:none;border:none;padding:0;}
+  .detalle{display:none;background:var(--gradient-deep);}
   .detalle.open{display:table-row;}
-  .detalle td{padding:14px 18px;}
-  .detalle dl{margin:0;display:grid;grid-template-columns:220px 1fr;gap:6px 16px;font-size:13px;}
-  .detalle dt{color:var(--muted);}
+  .detalle td{padding:16px 18px;}
+  .detalle dl{margin:0;display:grid;grid-template-columns:220px 1fr;gap:8px 16px;font-family:var(--font-cuerpo);font-size:13px;}
+  .detalle dt{color:var(--text-muted);font-family:var(--font-bitacora);font-size:11px;align-self:start;padding-top:2px;}
   .detalle dd{margin:0;}
-  select.etapa{background:#0d0d0d;border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:12px;width:100%;}
-  .etapa-Agendado{color:var(--warn);}
-  .etapa-Cafecito-hecho{color:var(--accent-light);}
+  select.etapa{
+    background:var(--gradient-deep);border:1px solid rgba(255,255,255,.14);color:var(--text-primary);
+    padding:7px 8px;border-radius:var(--radius-sm);font-family:var(--font-cuerpo);font-size:12px;width:100%;
+  }
+  .etapa-Agendado{color:var(--text-muted);}
+  .etapa-Cafecito-hecho{color:var(--accent-guide);}
   .etapa-Enviado-Pixieset{color:#7fb3d9;}
-  .etapa-Convertido{color:var(--ok);}
-  .etapa-No-por-ahora{color:var(--danger);}
-  .estado-guardado{font-size:11px;color:var(--muted);margin-left:6px;}
-  .vacio{text-align:center;color:var(--muted);padding:40px;}
-  .top-actions{display:flex;justify-content:flex-end;margin-bottom:12px;}
-  .top-actions button{background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:8px 14px;font-size:12px;cursor:pointer;}
+  .etapa-Convertido{color:#6fb98f;}
+  .etapa-No-por-ahora{color:#e2777a;}
+  .estado-guardado{font-family:var(--font-bitacora);font-size:11px;color:var(--text-muted);margin-left:6px;}
+  .vacio{text-align:center;color:var(--text-muted);font-family:var(--font-bitacora);font-size:13px;padding:48px;}
 </style>
 </head>
-<body>
-<div class="wrap">
+<body class="mx-stage">
+<div class="admin-wrap">
 
   <div id="login">
-    <h1>Panel de leads</h1>
-    <p>Monty Experience — acceso solo para Monty.</p>
+    <img class="admin-logo" src="../assets/img/logo-monty.webp" alt="Monty Experience" width="150" height="115">
+    <h1 class="admin-title">Panel de leads</h1>
+    <p class="admin-sub">Monty Experience — acceso solo para Monty.</p>
     <input type="password" id="passwordInput" placeholder="Contraseña" autocomplete="current-password">
-    <button class="btn" id="loginBtn" style="width:100%;">Entrar</button>
+    <button class="cta-btn" id="loginBtn">Entrar</button>
     <div id="loginError">Contraseña incorrecta.</div>
   </div>
 
   <div id="app">
-    <h1>Leads — Cafecitos</h1>
-    <p class="sub">Cada cafecito agendado por Cal.com cae aquí automáticamente. Actualiza la etapa a mano conforme avanza cada lead.</p>
-
-    <div class="top-actions">
-      <button id="refreshBtn">↻ Actualizar</button>
+    <div class="admin-header">
+      <img class="admin-logo" src="../assets/img/logo-monty.webp" alt="Monty Experience" width="62" height="48">
+      <div class="admin-headings">
+        <h1 class="admin-title">Leads — Cafecitos</h1>
+        <p class="admin-sub">Cada cafecito agendado por Cal.com cae aquí automáticamente. Actualiza la etapa a mano conforme avanza cada lead.</p>
+      </div>
+      <button class="cta-btn ghost admin-refresh" id="refreshBtn">↻ Actualizar</button>
     </div>
 
     <div class="summary" id="summary"></div>
@@ -91,19 +126,21 @@
       </select>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Contacto</th>
-          <th>Fecha del cafecito</th>
-          <th>Cómo llegó</th>
-          <th>Etapa</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Contacto</th>
+            <th>Fecha del cafecito</th>
+            <th>Cómo llegó</th>
+            <th>Etapa</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
     <div class="vacio" id="vacio" style="display:none;">No hay leads que coincidan con ese filtro.</div>
   </div>
 
