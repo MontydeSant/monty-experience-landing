@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Panel de leads — Monty Experience</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{
+    --bg:#0d0d0d; --panel:#161616; --border:#2a2a2a; --text:#e8e8e8; --muted:#9a9a9a;
+    --accent:#7c5cbf; --accent-light:#c9a7ff; --ok:#6fb98f; --warn:#d9a441; --danger:#d97a7a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:Inter, system-ui, -apple-system, sans-serif;
+    min-height:100vh;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:40px 20px 80px;}
+  h1{font-size:22px;margin:0 0 4px;}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 32px;}
+
+  /* --- Login --- */
+  #login{max-width:360px;margin:80px auto;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:32px;}
+  #login p{color:var(--muted);font-size:13px;margin:0 0 20px;}
+  #login input{width:100%;padding:12px 14px;background:#0d0d0d;border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;margin-bottom:12px;}
+  #login button, .btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:12px 18px;font-size:14px;cursor:pointer;}
+  #login button:hover, .btn:hover{opacity:.9;}
+  #loginError{color:var(--danger);font-size:13px;margin-top:4px;display:none;}
+
+  /* --- App --- */
+  #app{display:none;}
+  .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:20px;}
+  .toolbar input[type=text]{flex:1;min-width:200px;padding:10px 12px;background:var(--panel);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;}
+  .toolbar select{padding:10px 12px;background:var(--panel);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;}
+  .summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+  .chip{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--muted);}
+  .chip b{color:var(--text);}
+
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:12px 14px;border-bottom:1px solid var(--border);}
+  tbody td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#1c1c1c;}
+  .nombre{font-weight:600;}
+  .muted{color:var(--muted);}
+  .detalle-toggle{cursor:pointer;color:var(--accent-light);font-size:12px;text-decoration:underline;background:none;border:none;padding:0;}
+  .detalle{display:none;background:#121212;}
+  .detalle.open{display:table-row;}
+  .detalle td{padding:14px 18px;}
+  .detalle dl{margin:0;display:grid;grid-template-columns:220px 1fr;gap:6px 16px;font-size:13px;}
+  .detalle dt{color:var(--muted);}
+  .detalle dd{margin:0;}
+  select.etapa{background:#0d0d0d;border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:12px;width:100%;}
+  .etapa-Agendado{color:var(--warn);}
+  .etapa-Cafecito-hecho{color:var(--accent-light);}
+  .etapa-Enviado-Pixieset{color:#7fb3d9;}
+  .etapa-Convertido{color:var(--ok);}
+  .etapa-No-por-ahora{color:var(--danger);}
+  .estado-guardado{font-size:11px;color:var(--muted);margin-left:6px;}
+  .vacio{text-align:center;color:var(--muted);padding:40px;}
+  .top-actions{display:flex;justify-content:flex-end;margin-bottom:12px;}
+  .top-actions button{background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:8px 14px;font-size:12px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div id="login">
+    <h1>Panel de leads</h1>
+    <p>Monty Experience — acceso solo para Monty.</p>
+    <input type="password" id="passwordInput" placeholder="Contraseña" autocomplete="current-password">
+    <button class="btn" id="loginBtn" style="width:100%;">Entrar</button>
+    <div id="loginError">Contraseña incorrecta.</div>
+  </div>
+
+  <div id="app">
+    <h1>Leads — Cafecitos</h1>
+    <p class="sub">Cada cafecito agendado por Cal.com cae aquí automáticamente. Actualiza la etapa a mano conforme avanza cada lead.</p>
+
+    <div class="top-actions">
+      <button id="refreshBtn">↻ Actualizar</button>
+    </div>
+
+    <div class="summary" id="summary"></div>
+
+    <div class="toolbar">
+      <input type="text" id="searchInput" placeholder="Buscar por nombre o correo…">
+      <select id="filterEtapa">
+        <option value="">Todas las etapas</option>
+      </select>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Contacto</th>
+          <th>Fecha del cafecito</th>
+          <th>Cómo llegó</th>
+          <th>Etapa</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="vacio" id="vacio" style="display:none;">No hay leads que coincidan con ese filtro.</div>
+  </div>
+
+</div>
+
+<script>
+const FN_URL = '/.netlify/functions/leads-admin';
+let LEADS = [];
+let ETAPAS = [];
+
+const $ = (sel) => document.querySelector(sel);
+
+function getPassword() {
+  return sessionStorage.getItem('mx_admin_pw') || '';
+}
+
+async function llamar(action, extra) {
+  const res = await fetch(FN_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(Object.assign({ password: getPassword(), action }, extra || {})),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw { status: res.status, ...data };
+  return data;
+}
+
+async function intentarLogin() {
+  const pw = $('#passwordInput').value;
+  sessionStorage.setItem('mx_admin_pw', pw);
+  $('#loginError').style.display = 'none';
+  try {
+    const data = await llamar('list');
+    LEADS = data.leads;
+    ETAPAS = data.etapas;
+    $('#login').style.display = 'none';
+    $('#app').style.display = 'block';
+    popularFiltroEtapas();
+    render();
+  } catch (err) {
+    sessionStorage.removeItem('mx_admin_pw');
+    $('#loginError').textContent = err.status === 401 ? 'Contraseña incorrecta.' : (err.error || 'Algo salió mal.');
+    $('#loginError').style.display = 'block';
+  }
+}
+
+async function recargar() {
+  try {
+    const data = await llamar('list');
+    LEADS = data.leads;
+    ETAPAS = data.etapas;
+    render();
+  } catch (err) {
+    alert('No se pudo actualizar: ' + (err.error || 'error desconocido'));
+  }
+}
+
+function popularFiltroEtapas() {
+  const sel = $('#filterEtapa');
+  ETAPAS.forEach((e) => {
+    const opt = document.createElement('option');
+    opt.value = e;
+    opt.textContent = e;
+    sel.appendChild(opt);
+  });
+}
+
+function claseEtapa(etapa) {
+  return 'etapa-' + String(etapa).replace(/\s+/g, '-');
+}
+
+function render() {
+  const q = $('#searchInput').value.trim().toLowerCase();
+  const etapaFiltro = $('#filterEtapa').value;
+
+  const filtrados = LEADS.filter((l) => {
+    const coincideTexto = !q || l.nombre.toLowerCase().includes(q) || l.correo.toLowerCase().includes(q);
+    const coincideEtapa = !etapaFiltro || l.etapa === etapaFiltro;
+    return coincideTexto && coincideEtapa;
+  });
+
+  // Resumen siempre sobre el total, no sobre lo filtrado
+  const conteos = {};
+  ETAPAS.forEach((e) => (conteos[e] = 0));
+  LEADS.forEach((l) => { conteos[l.etapa] = (conteos[l.etapa] || 0) + 1; });
+  $('#summary').innerHTML = `<span class="chip"><b>${LEADS.length}</b> leads en total</span>` +
+    ETAPAS.map((e) => `<span class="chip">${e}: <b>${conteos[e] || 0}</b></span>`).join('');
+
+  const tbody = $('#tbody');
+  tbody.innerHTML = '';
+  $('#vacio').style.display = filtrados.length ? 'none' : 'block';
+
+  filtrados.forEach((lead) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><div class="nombre">${escapeHtml(lead.nombre || '(sin nombre)')}</div>
+          <button class="detalle-toggle" data-row="${lead.rowIndex}">ver respuestas</button></td>
+      <td>${escapeHtml(lead.correo)}<br><span class="muted">${escapeHtml(lead.celular)}</span></td>
+      <td>${escapeHtml(lead.fecha)}</td>
+      <td>${escapeHtml(lead.comoLlego)}</td>
+      <td>
+        <select class="etapa ${claseEtapa(lead.etapa)}" data-row="${lead.rowIndex}">
+          ${ETAPAS.map((e) => `<option value="${e}" ${e === lead.etapa ? 'selected' : ''}>${e}</option>`).join('')}
+        </select>
+        <span class="estado-guardado" data-estado="${lead.rowIndex}"></span>
+      </td>
+      <td></td>
+    `;
+    tbody.appendChild(tr);
+
+    const detalle = document.createElement('tr');
+    detalle.className = 'detalle';
+    detalle.dataset.detalleDe = lead.rowIndex;
+    detalle.innerHTML = `
+      <td colspan="6">
+        <dl>
+          <dt>¿Qué le ronda la cabeza?</dt><dd>${escapeHtml(lead.notas) || '—'}</dd>
+          <dt>¿Hace cuánto no actualiza su book?</dt><dd>${escapeHtml(lead.book) || '—'}</dd>
+          <dt>¿Casting en puerta?</dt><dd>${escapeHtml(lead.casting) || '—'}</dd>
+          <dt>Experiencia que le llamó la atención</dt><dd>${escapeHtml(lead.experiencia) || '—'}</dd>
+        </dl>
+      </td>
+    `;
+    tbody.appendChild(detalle);
+  });
+}
+
+function escapeHtml(str) {
+  return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+document.addEventListener('click', (e) => {
+  if (e.target.matches('.detalle-toggle')) {
+    const row = e.target.dataset.row;
+    const detalle = document.querySelector(`.detalle[data-detalle-de="${row}"]`);
+    if (detalle) detalle.classList.toggle('open');
+  }
+});
+
+document.addEventListener('change', async (e) => {
+  if (e.target.matches('select.etapa')) {
+    const rowIndex = Number(e.target.dataset.row);
+    const etapa = e.target.value;
+    const estadoEl = document.querySelector(`[data-estado="${rowIndex}"]`);
+    e.target.className = 'etapa ' + claseEtapa(etapa);
+    if (estadoEl) estadoEl.textContent = 'guardando…';
+    try {
+      await llamar('update-etapa', { rowIndex, etapa });
+      const lead = LEADS.find((l) => l.rowIndex === rowIndex);
+      if (lead) lead.etapa = etapa;
+      if (estadoEl) { estadoEl.textContent = '✓ guardado'; setTimeout(() => (estadoEl.textContent = ''), 2000); }
+      render();
+    } catch (err) {
+      if (estadoEl) estadoEl.textContent = '✗ no se guardó';
+      alert('No se pudo guardar el cambio de etapa: ' + (err.error || 'error desconocido'));
+    }
+  }
+});
+
+$('#loginBtn').addEventListener('click', intentarLogin);
+$('#passwordInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') intentarLogin(); });
+$('#refreshBtn').addEventListener('click', recargar);
+$('#searchInput').addEventListener('input', render);
+$('#filterEtapa').addEventListener('change', render);
+
+// Si ya había una sesión en este navegador, entra directo sin pedir contraseña otra vez.
+if (getPassword()) {
+  llamar('list').then((data) => {
+    LEADS = data.leads; ETAPAS = data.etapas;
+    $('#login').style.display = 'none';
+    $('#app').style.display = 'block';
+    popularFiltroEtapas();
+    render();
+  }).catch(() => sessionStorage.removeItem('mx_admin_pw'));
+}
+</script>
+</body>
+</html>

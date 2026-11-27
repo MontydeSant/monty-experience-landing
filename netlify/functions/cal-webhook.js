@@ -6,6 +6,8 @@
 // Regla de oro: ningun secreto vive en este archivo. Todo sale de
 // process.env, configurado en Netlify (Site settings -> Environment variables).
 
+const crypto = require('crypto');
+
 const {
   sha256,
   normalizePhone,
@@ -33,6 +35,11 @@ const TRACKED_TRIGGERS = ['BOOKING_CREATED', 'BOOKING_REQUESTED'];
 
 const AUDIENCE_NAME = 'Agendaron llamada - Monty Experience';
 
+// Slug del evento "Cafécito y Decisiones" (cal.com/montydesant/30min) -- el
+// único que alimenta el Sheet de "Leads - Cafecitos". Los demás slugs de
+// TRACKED_SLUGS siguen alimentando solo a Meta, como ya hacían.
+const LEADS_SLUG = '30min';
+
 // El campo responses.location de Cal.com puede venir como string u objeto
 // segun el tipo de ubicacion (video, telefono, en persona, etc.). Meta exige
 // que event_source_url sea siempre un string.
@@ -55,6 +62,162 @@ function leerMetadata(booking) {
     fbp: limpia(m.fbp),
     fbc: limpia(m.fbc),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Google Sheets: fila nueva en "Leads - Cafecitos" (CRM de leads pre-venta)
+// ---------------------------------------------------------------------------
+// Reutiliza la MISMA cuenta de servicio que ya escribe en el Sheet de actores
+// (GOOGLE_SERVICE_ACCOUNT_KEY), pero apunta a un archivo de Sheet aparte
+// (GOOGLE_SHEET_ID_LEADS) para no mezclarlo con la plataforma pública de
+// perfiles de actor, que vive en el Sheet de GOOGLE_SHEET_ID.
+
+// Cal.com manda cada respuesta del formulario como { label, value } en
+// versiones recientes, o como el valor plano en formularios más simples.
+// Esto cubre ambos casos sin romperse.
+function leerRespuesta(responses, key) {
+  const r = responses && responses[key];
+  if (r && typeof r === 'object' && 'value' in r) return r.value || '';
+  return r || '';
+}
+
+function formatearFechaCafecito(startTime) {
+  if (!startTime) return '';
+  const fecha = new Date(startTime);
+  if (isNaN(fecha.getTime())) return '';
+  return fecha.toLocaleString('es-MX', {
+    timeZone: 'America/Mexico_City',
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  });
+}
+
+// El evento "Cafécito y Decisiones" tiene "Requiere confirmación: Siempre"
+// activado en Cal.com -- eso significa que CADA cita dispara el webhook DOS
+// veces (BOOKING_REQUESTED al agendarse, BOOKING_CREATED al confirmarse).
+// Para no duplicar la fila, cada reserva guarda su UID de Cal en la columna L
+// (oculta a la vista normal) y aquí se revisa esa columna antes de escribir.
+async function yaExisteEnSheet(sheetId, accessToken, bookingUid) {
+  if (!bookingUid) return false;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(
+    'Leads!L:L'
+  )}`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
+  if (!res.ok) {
+    throw new Error(`Sheets API (Leads, lectura UID) respondió ${res.status}: ${await res.text()}`);
+  }
+  const json = await res.json();
+  const columna = json.values || [];
+  return columna.some((fila) => (fila[0] || '').toString().trim() === bookingUid);
+}
+
+async function appendLeadToSheet(booking, attendee, bookingUid) {
+  const credsRaw = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+  const sheetId = process.env.GOOGLE_SHEET_ID_LEADS;
+
+  if (!credsRaw || !sheetId) {
+    throw new Error('Faltan las variables GOOGLE_SERVICE_ACCOUNT_KEY o GOOGLE_SHEET_ID_LEADS en Netlify.');
+  }
+
+  const creds = JSON.parse(credsRaw);
+  const accessToken = await getGoogleAccessToken(creds);
+
+  if (await yaExisteEnSheet(sheetId, accessToken, bookingUid)) {
+    return { ok: true, skipped: 'ya existía (duplicado de confirmación)' };
+  }
+
+  const responses = booking.responses || {};
+
+  // Orden exacto de columnas del Sheet "Leads - Cafecitos", pestaña "Leads"
+  // (A -> K visibles + L interna). "Origen" y "Etapa" son las dos columnas de
+  // seguimiento manual: Origen queda fijo en "Cal automático" (esta fila
+  // nunca se escribe a mano) y Etapa arranca siempre en "Agendado" -- Monty la
+  // va avanzando a mano desde el panel (Cafecito hecho -> Enviado Pixieset ->
+  // Convertido/No por ahora).
+  const row = [
+    attendee.name || '', // A  Nombre
+    attendee.email || '', // B  Correo
+    attendee.phoneNumber || attendee.phone || '', // C  Celular
+    formatearFechaCafecito(booking.startTime), // D  Fecha del cafecito
+    leerRespuesta(responses, 'notes'), // E  Qué le ronda la cabeza
+    leerRespuesta(responses, 'book'), // F  Hace cuánto no actualiza su book
+    leerRespuesta(responses, 'casting'), // G  Casting en puerta
+    leerRespuesta(responses, 'experiencia'), // H  Experiencia que le llamó la atención
+    leerRespuesta(responses, 'origen'), // I  Cómo llegó a Monty Experience
+    'Cal automático', // J  Origen (de esta herramienta)
+    'Agendado', // K  Etapa inicial
+    bookingUid || '', // L  UID interno de Cal, solo para evitar duplicados
+  ];
+
+  const range = 'Leads!A:L';
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(
+    range
+  )}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ values: [row] }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Sheets API (Leads) respondió ${res.status}: ${await res.text()}`);
+  }
+
+  return { ok: true };
+}
+
+// Firma un JWT con la cuenta de servicio y lo cambia por un access token
+// OAuth2. Idéntico al que ya usa submission-created.js -- se duplica aquí
+// para que cada función de Netlify siga siendo independiente y no dependa
+// de las demás.
+async function getGoogleAccessToken(creds) {
+  const header = { alg: 'RS256', typ: 'JWT' };
+  const now = Math.floor(Date.now() / 1000);
+  const claims = {
+    iss: creds.client_email,
+    scope: 'https://www.googleapis.com/auth/spreadsheets',
+    aud: 'https://oauth2.googleapis.com/token',
+    exp: now + 3600,
+    iat: now,
+  };
+
+  const base64url = (obj) =>
+    Buffer.from(JSON.stringify(obj))
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+
+  const unsigned = `${base64url(header)}.${base64url(claims)}`;
+  const signature = crypto
+    .createSign('RSA-SHA256')
+    .update(unsigned)
+    .sign(creds.private_key, 'base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+
+  const jwt = `${unsigned}.${signature}`;
+
+  const res = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: jwt,
+    }).toString(),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Token de Google (Leads) respondió ${res.status}: ${await res.text()}`);
+  }
+
+  const json = await res.json();
+  return json.access_token;
 }
 
 exports.handler = async (event) => {
@@ -102,6 +265,18 @@ exports.handler = async (event) => {
 
   const hashedEmail = sha256(email);
   const hashedPhone = sha256(phone);
+
+  // Paso 1: guardar el lead en "Leads - Cafecitos" -- solo para el cafecito
+  // real, y SIN esperar a que Meta esté bien configurado (si faltan sus
+  // variables más abajo, el lead ya quedó guardado de todos modos).
+  if (slug === LEADS_SLUG) {
+    try {
+      const sheetResult = await appendLeadToSheet(booking, attendee, bookingUid);
+      console.log(`[DIAG] Resultado Sheets (Leads): ${JSON.stringify(sheetResult)}`);
+    } catch (err) {
+      console.error('[cal-webhook] Error guardando en Google Sheets (Leads - Cafecitos):', err);
+    }
+  }
 
   const pixelId = process.env.META_PIXEL_ID;
   const adAccountId = process.env.META_AD_ACCOUNT_ID;

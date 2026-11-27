@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /gracias-agenda
+Disallow: /admin
 
 Sitemap: https://montyexperience.com/sitemap.xml
