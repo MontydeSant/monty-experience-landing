@@ -239,23 +239,60 @@
   .kanban-card.row-selected{border-color:rgba(246,131,24,.5);background:rgba(246,131,24,.07);}
   .kanban-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
   .segmento-badge{
-    width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:var(--gradient-deep);
+    width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(255,255,255,.22);background:var(--gradient-deep);
     display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;flex-shrink:0;
-    transition:border-color .2s ease,transform .2s ease;
+    transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease;
   }
   .segmento-badge:hover{transform:scale(1.1);}
-  .segmento-badge img{width:16px;height:16px;object-fit:contain;}
-  .segmento-badge.segmento-Bellota{border-color:rgba(166,124,82,.55);}
-  .segmento-badge.segmento-Fenix{border-color:rgba(246,131,24,.55);}
-  .kanban-card-name{font-family:var(--font-bitacora);font-weight:700;color:var(--text-primary);font-size:1rem;margin-bottom:4px;}
-  .kanban-card-contact{font-family:var(--font-bitacora);font-size:.82rem;color:#9a8f93;line-height:1.5;margin-bottom:6px;}
+  .segmento-badge img{width:22px;height:22px;object-fit:contain;}
+  .segmento-badge.segmento-Bellota{border-color:rgba(166,124,82,.7);box-shadow:0 0 12px rgba(166,124,82,.25);}
+  .segmento-badge.segmento-Fenix{border-color:rgba(246,131,24,.7);box-shadow:0 0 12px rgba(246,131,24,.3);}
+  .kanban-card-name{font-family:var(--font-guion);font-weight:400;color:var(--text-primary);font-size:1.15rem;margin-bottom:6px;}
+  .kanban-card-contact{font-family:var(--font-bitacora);font-size:.82rem;color:#9a8f93;line-height:1.5;margin-bottom:6px;overflow-wrap:anywhere;word-break:break-word;}
   .kanban-card-fecha{font-family:var(--font-bitacora);font-size:.78rem;color:var(--accent-guide);margin-bottom:10px;}
   .kanban-card-move{margin-bottom:8px;}
-  .kanban-card-detalle{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed rgba(255,255,255,.12);}
-  .kanban-card-detalle.open{display:block;}
-  .kanban-card-detalle dl{margin:0;display:grid;grid-template-columns:1fr;gap:2px;font-family:var(--font-bitacora);font-size:13.5px;line-height:1.5;}
-  .kanban-card-detalle dt{color:#9a8f93;font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin-top:8px;}
-  .kanban-card-detalle dd{margin:0 0 2px;color:#e4dadd;}
+
+  /* el lead "aterriza" con un pulso breve al llegar a su nueva columna (drag o select) */
+  @keyframes cardLanded{
+    0%{box-shadow:0 0 0 2px rgba(253,192,5,.55),var(--shadow-tile);}
+    100%{box-shadow:var(--shadow-tile);}
+  }
+  .kanban-card.card-landed{animation:cardLanded .9s ease-out;}
+  @media (prefers-reduced-motion: reduce){ .kanban-card.card-landed{ animation:none; } }
+
+  /* --- Modal de detalle del lead (mismo lenguaje visual que el modal de
+     paquetes/testimonios de la landing: fondo con blur + tarjeta centrada
+     que crece con un fade, en vez de desplegarse dentro de la tarjeta) --- */
+  .lead-modal{
+    position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;
+    padding:24px;background:rgba(10,5,18,.78);backdrop-filter:blur(6px);
+    opacity:0;pointer-events:none;transition:opacity .25s ease;
+  }
+  .lead-modal.is-open{opacity:1;pointer-events:auto;}
+  .lead-modal-card{
+    position:relative;width:min(480px,92vw);max-height:84vh;overflow-y:auto;
+    background:var(--surface-card);border:1px solid rgba(253,192,5,.25);border-radius:var(--radius-card);
+    box-shadow:0 40px 90px rgba(0,0,0,.55),var(--shadow-tile);padding:30px 28px 26px;
+    transform:scale(.93);transition:transform .25s ease;
+  }
+  .lead-modal.is-open .lead-modal-card{transform:scale(1);}
+  .lead-modal-close{
+    position:absolute;top:14px;right:14px;z-index:1;width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;
+    background:var(--accent-signal);color:var(--bg-stage);font-size:1.2rem;line-height:1;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.4);
+  }
+  .lead-modal-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-right:34px;}
+  .lead-modal-segmento{
+    width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    background:var(--gradient-deep);border:1.5px solid rgba(255,255,255,.22);
+  }
+  .lead-modal-segmento img{width:22px;height:22px;object-fit:contain;}
+  .lead-modal-titles{flex:1;min-width:0;}
+  .lead-modal-name{font-family:var(--font-guion);font-weight:400;font-size:1.4rem;color:var(--text-primary);margin:0 0 4px;}
+  .lead-modal-etapa{font-family:var(--font-bitacora);font-size:.78rem;padding:3px 10px;border-radius:var(--radius-pill);border:1px solid currentColor;}
+  .lead-modal-dl{margin:0;display:grid;grid-template-columns:1fr;gap:2px;font-family:var(--font-bitacora);font-size:14.5px;line-height:1.55;}
+  .lead-modal-dl dt{color:#9a8f93;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;margin-top:14px;}
+  .lead-modal-dl dd{margin:0 0 2px;color:#e4dadd;}
 
   select.etapa{
     background:var(--gradient-deep);border:1px solid rgba(255,255,255,.14);color:var(--text-primary);
@@ -490,6 +527,20 @@
     </div>
   </div>
 
+  <div class="lead-modal" id="leadModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="lead-modal-card">
+      <button type="button" class="lead-modal-close" id="leadModalClose" aria-label="Cerrar">×</button>
+      <div class="lead-modal-head">
+        <span class="lead-modal-segmento" id="leadModalSegmento"></span>
+        <div class="lead-modal-titles">
+          <h3 class="lead-modal-name" id="leadModalName"></h3>
+          <span class="lead-modal-etapa" id="leadModalEtapa"></span>
+        </div>
+      </div>
+      <dl class="lead-modal-dl" id="leadModalDl"></dl>
+    </div>
+  </div>
+
 <script>
 const FN_URL = '/.netlify/functions/leads-admin';
 let LEADS = [];
@@ -681,10 +732,10 @@ function crearTarjeta(lead) {
 
   card.innerHTML = `
     <div class="kanban-card-top">
-      <input type="checkbox" class="row-check" data-row="${lead.rowIndex}" ${selected.has(lead.rowIndex) ? 'checked' : ''}>
       <button class="segmento-badge ${claseSegmento(seg)}" data-row="${lead.rowIndex}" type="button" title="${seg ? escapeHtml(seg) : 'Sin clasificar'} — clic para cambiar">
         ${segIcono ? `<img src="${segIcono}" alt="${escapeHtml(seg)}">` : '<span style="font-family:var(--font-bitacora);font-size:11px;color:#776d79;">—</span>'}
       </button>
+      <input type="checkbox" class="row-check" data-row="${lead.rowIndex}" ${selected.has(lead.rowIndex) ? 'checked' : ''}>
     </div>
     <div class="kanban-card-name">${escapeHtml(lead.nombre || '(sin nombre)')}</div>
     <div class="kanban-card-contact">${escapeHtml(lead.correo)}<br>${escapeHtml(lead.celular)}</div>
@@ -695,15 +746,6 @@ function crearTarjeta(lead) {
       </select>
     </div>
     <button class="detalle-toggle" data-row="${lead.rowIndex}">ver respuestas</button>
-    <div class="kanban-card-detalle" data-detalle-de="${lead.rowIndex}">
-      <dl>
-        <dt>¿Qué le ronda la cabeza?</dt><dd>${escapeHtml(lead.notas) || '—'}</dd>
-        <dt>¿Hace cuánto no actualiza su book?</dt><dd>${escapeHtml(lead.book) || '—'}</dd>
-        <dt>¿Casting en puerta?</dt><dd>${escapeHtml(lead.casting) || '—'}</dd>
-        <dt>Experiencia que le llamó la atención</dt><dd>${escapeHtml(lead.experiencia) || '—'}</dd>
-        <dt>Origen</dt><dd>${escapeHtml(lead.origen) || '—'}</dd>
-      </dl>
-    </div>
   `;
 
   card.addEventListener('dragstart', (e) => {
@@ -779,15 +821,74 @@ function renderLeadsView() {
 }
 
 async function aplicarCambioEtapa(rowIndex, etapa) {
+  // Antes de perder la tarjeta actual (el render completo la reconstruye),
+  // guardamos dónde estaba en pantalla para poder "aterrizarla" con una
+  // transición suave en su nueva columna, en vez de un salto directo.
+  const cardAntes = document.querySelector(`.kanban-card[data-row="${rowIndex}"]`);
+  const rectAntes = cardAntes ? cardAntes.getBoundingClientRect() : null;
+
   try {
     await llamar('update-etapa', { rowIndex, etapa });
     const lead = LEADS.find((l) => l.rowIndex === rowIndex);
     if (lead) lead.etapa = etapa;
     renderAll();
+    if (rectAntes) animarAterrizaje(rowIndex, rectAntes);
   } catch (err) {
     alert('No se pudo guardar el cambio de etapa: ' + (err.error || 'error desconocido'));
     renderLeadsView();
   }
+}
+
+function animarAterrizaje(rowIndex, rectAntes) {
+  const cardDespues = document.querySelector(`.kanban-card[data-row="${rowIndex}"]`);
+  if (!cardDespues) return;
+  const rectDespues = cardDespues.getBoundingClientRect();
+  const dx = rectAntes.left - rectDespues.left;
+  const dy = rectAntes.top - rectDespues.top;
+  if (!dx && !dy) { cardDespues.classList.add('card-landed'); setTimeout(() => cardDespues.classList.remove('card-landed'), 900); return; }
+  cardDespues.style.transition = 'none';
+  cardDespues.style.transform = `translate(${dx}px, ${dy}px)`;
+  // fuerza un reflow para que el navegador registre la posición de arranque antes de animar
+  void cardDespues.offsetWidth;
+  cardDespues.style.transition = 'transform .38s cubic-bezier(.2,.8,.2,1)';
+  cardDespues.style.transform = 'translate(0, 0)';
+  cardDespues.classList.add('card-landed');
+  setTimeout(() => {
+    cardDespues.style.transition = '';
+    cardDespues.style.transform = '';
+    cardDespues.classList.remove('card-landed');
+  }, 420);
+}
+
+function abrirDetalleLead(rowIndex) {
+  const lead = LEADS.find((l) => l.rowIndex === rowIndex);
+  if (!lead) return;
+  const seg = lead.segmento || '';
+  const segIcono = iconoSegmento(seg);
+  $('#leadModalSegmento').className = 'lead-modal-segmento ' + claseSegmento(seg);
+  $('#leadModalSegmento').innerHTML = segIcono
+    ? `<img src="${segIcono}" alt="${escapeHtml(seg)}">`
+    : '<span style="font-family:var(--font-bitacora);font-size:11px;color:#776d79;">—</span>';
+  $('#leadModalName').textContent = lead.nombre || '(sin nombre)';
+  $('#leadModalEtapa').textContent = lead.etapa;
+  $('#leadModalEtapa').className = 'lead-modal-etapa ' + claseEtapa(lead.etapa);
+  $('#leadModalDl').innerHTML = `
+    <dt>Contacto</dt><dd>${escapeHtml(lead.correo)} · ${escapeHtml(lead.celular)}</dd>
+    <dt>Fecha del cafecito</dt><dd>${escapeHtml(lead.fecha) || '—'}</dd>
+    <dt>¿Qué le ronda la cabeza?</dt><dd>${escapeHtml(lead.notas) || '—'}</dd>
+    <dt>¿Hace cuánto no actualiza su book?</dt><dd>${escapeHtml(lead.book) || '—'}</dd>
+    <dt>¿Casting en puerta?</dt><dd>${escapeHtml(lead.casting) || '—'}</dd>
+    <dt>Experiencia que le llamó la atención</dt><dd>${escapeHtml(lead.experiencia) || '—'}</dd>
+    <dt>Cómo llegó</dt><dd>${escapeHtml(lead.comoLlego) || '—'}</dd>
+    <dt>Origen</dt><dd>${escapeHtml(lead.origen) || '—'}</dd>
+  `;
+  $('#leadModal').classList.add('is-open');
+  $('#leadModal').setAttribute('aria-hidden', 'false');
+}
+
+function cerrarDetalleLead() {
+  $('#leadModal').classList.remove('is-open');
+  $('#leadModal').setAttribute('aria-hidden', 'true');
 }
 
 function syncSelectAll() {
@@ -938,11 +1039,13 @@ document.addEventListener('click', async (e) => {
     return;
   }
   if (e.target.matches('.detalle-toggle')) {
-    const row = e.target.dataset.row;
-    const detalle = document.querySelector(`.kanban-card-detalle[data-detalle-de="${row}"]`);
-    if (detalle) detalle.classList.toggle('open');
+    abrirDetalleLead(Number(e.target.dataset.row));
   }
 });
+
+$('#leadModalClose').addEventListener('click', cerrarDetalleLead);
+$('#leadModal').addEventListener('click', (e) => { if (e.target.id === 'leadModal') cerrarDetalleLead(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarDetalleLead(); });
 
 document.addEventListener('change', (e) => {
   if (e.target.matches('select.etapa')) {
