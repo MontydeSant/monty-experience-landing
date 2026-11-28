@@ -81,6 +81,17 @@ function leerRespuesta(responses, key) {
   return r || '';
 }
 
+// Clasificación automática Bellota / Fénix a partir de la respuesta libre de
+// "¿Qué experiencia le llamó la atención?" en Cal.com. Es una inferencia de
+// arranque -- Monty la puede corregir a mano desde el panel en cualquier
+// momento (una vez corregida a mano, el panel deja de recalcularla sola).
+function inferirSegmento(experienciaTexto) {
+  const t = (experienciaTexto || '').toLowerCase();
+  if (/f[eé]nix|elite/.test(t)) return 'Fénix';
+  if (/classic/.test(t)) return 'Bellota';
+  return '';
+}
+
 function formatearFechaCafecito(startTime) {
   if (!startTime) return '';
   const fecha = new Date(startTime);
@@ -129,11 +140,15 @@ async function appendLeadToSheet(booking, attendee, bookingUid) {
   const responses = booking.responses || {};
 
   // Orden exacto de columnas del Sheet "Leads - Cafecitos", pestaña "Leads"
-  // (A -> K visibles + L interna). "Origen" y "Etapa" son las dos columnas de
-  // seguimiento manual: Origen queda fijo en "Cal automático" (esta fila
-  // nunca se escribe a mano) y Etapa arranca siempre en "Agendado" -- Monty la
-  // va avanzando a mano desde el panel (Cafecito hecho -> Enviado Pixieset ->
-  // Convertido/No por ahora).
+  // (A -> K visibles + L interna + M segmento). "Origen" y "Etapa" son las dos
+  // columnas de seguimiento manual: Origen queda fijo en "Cal automático"
+  // (esta fila nunca se escribe a mano) y Etapa arranca siempre en "Agendado"
+  // -- Monty la va avanzando a mano desde el panel (Cafecito hecho -> Enviado
+  // Pixieset -> Convertido/No por ahora). "Segmento" (M) arranca inferido de
+  // la columna H (ver inferirSegmento) pero Monty lo puede corregir a mano
+  // desde el panel en cualquier momento.
+  const experienciaTexto = leerRespuesta(responses, 'experiencia');
+
   const row = [
     attendee.name || '', // A  Nombre
     attendee.email || '', // B  Correo
@@ -142,14 +157,15 @@ async function appendLeadToSheet(booking, attendee, bookingUid) {
     leerRespuesta(responses, 'notes'), // E  Qué le ronda la cabeza
     leerRespuesta(responses, 'book'), // F  Hace cuánto no actualiza su book
     leerRespuesta(responses, 'casting'), // G  Casting en puerta
-    leerRespuesta(responses, 'experiencia'), // H  Experiencia que le llamó la atención
+    experienciaTexto, // H  Experiencia que le llamó la atención
     leerRespuesta(responses, 'origen'), // I  Cómo llegó a Monty Experience
     'Cal automático', // J  Origen (de esta herramienta)
     'Agendado', // K  Etapa inicial
     bookingUid || '', // L  UID interno de Cal, solo para evitar duplicados
+    inferirSegmento(experienciaTexto), // M  Segmento Bellota/Fénix (inferido; Monty puede corregirlo a mano)
   ];
 
-  const range = 'Leads!A:L';
+  const range = 'Leads!A:M';
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(
     range
   )}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;

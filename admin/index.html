@@ -13,9 +13,9 @@
 <style>
   /* --- Solo lo específico de este panel: el resto (color, tipografía,
      botones, grano) sale de global.css, la misma fuente que usa la landing.
-     Tercera ronda: rediseño completo con estructura de dashboard
-     (sidebar + vista de resumen + tabla con selección múltiple), sobre la
-     paleta/tipografía ya aprobadas en la ronda anterior (variante "C"). --- */
+     Cuarta ronda: la vista de Leads pasa de tabla a tablero tipo Kanban
+     (columnas por etapa, tarjetas arrastrables), con filtros consolidados
+     en un solo botón y encabezados con más aire y un brillo de marca. --- */
   *{box-sizing:border-box;}
   body{min-height:100vh;}
 
@@ -26,7 +26,10 @@
   }
 
   .admin-logo{display:block;}
-  .admin-title{font-family:var(--font-guion);font-weight:400;font-size:1.8rem;margin:0 0 10px;color:var(--text-primary);}
+  .admin-title{
+    font-family:var(--font-guion);font-weight:400;font-size:1.8rem;margin:0 0 10px;color:var(--text-primary);
+    text-shadow:0 0 20px rgba(253,192,5,.32),0 0 44px rgba(253,192,5,.12);letter-spacing:.01em;
+  }
   .admin-sub{font-family:var(--font-bitacora);color:#cdbfc4;font-size:1rem;line-height:1.6;margin:0 0 30px;}
 
   /* --- Login --- */
@@ -91,13 +94,24 @@
   .view{display:none;}
   .view.active{display:block;}
 
-  .admin-header{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:26px;}
+  .admin-header{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:34px;}
   .admin-header .admin-headings{flex:1;min-width:220px;}
-  .admin-header .admin-title{margin-bottom:2px;}
-  .admin-header .admin-sub{margin:0;}
-  .admin-header .cta-btn.admin-refresh{padding:10px 18px 10px 48px;font-size:.78rem;}
-  .admin-header .cta-btn.admin-refresh::before{width:34px;}
+  .admin-header .admin-title{margin-bottom:8px;line-height:1.3;}
+  .admin-header .admin-sub{margin:0;line-height:1.75;}
   .header-actions{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto;}
+
+  /* --- Botones de utilidad del header (Exportar / Actualizar) ---
+     Antes heredaban el "▸" de los CTA principales (pensado para llamadas a
+     agendar), que se veía fuera de lugar en un botón utilitario. Ahora son
+     su propia clase, quietos, con un ícono propio en vez del triángulo. --- */
+  .icon-btn{
+    display:inline-flex;align-items:center;gap:9px;padding:11px 20px;
+    background:var(--surface-card);border:1px solid rgba(255,255,255,.14);border-radius:var(--radius-pill);
+    color:var(--text-primary);font-family:var(--font-bitacora);font-weight:700;font-size:.82rem;
+    cursor:pointer;transition:border-color .2s ease,transform .2s ease,background .2s ease;
+  }
+  .icon-btn:hover{border-color:rgba(253,192,5,.4);background:rgba(253,192,5,.06);transform:translateY(-2px);}
+  .icon-btn svg{width:16px;height:16px;flex-shrink:0;stroke:var(--accent-signal);}
 
   /* --- Tarjetas de resumen (Dashboard) ---
      Prestado del lenguaje visual de la landing (.mx-panel): borde + glow en
@@ -138,7 +152,7 @@
   .mini-list{display:flex;flex-direction:column;}
   .mini-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07);}
   .mini-row:last-child{border-bottom:none;}
-  .mini-row .nombre{flex:1;min-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mini-row .nombre{flex:1;min-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-primary);font-size:1.05rem;font-weight:700;}
   .mini-meta{display:flex;align-items:center;gap:14px;margin-left:auto;flex-shrink:0;}
   .mini-row .fecha{font-family:var(--font-bitacora);font-size:.82rem;color:#9a8f93;flex-shrink:0;white-space:nowrap;}
   .mini-etapa{
@@ -146,37 +160,103 @@
     border:1px solid currentColor;flex-shrink:0;
   }
   .panel-footer{margin-top:16px;text-align:right;}
+  .muted{color:#9a8f93;}
 
-  /* --- Toolbar (vista Leads) --- */
-  .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:22px;}
-  .toolbar input[type=text],.toolbar select{
-    padding:14px 16px;background:var(--surface-card);border:1px solid rgba(255,255,255,.12);
+  /* --- Toolbar (vista Leads): buscador + botón único de Filtros + seleccionar todos --- */
+  .leads-toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:20px;}
+  .leads-toolbar input[type=text]{
+    flex:1;min-width:200px;padding:14px 16px;background:var(--surface-card);border:1px solid rgba(255,255,255,.12);
     border-radius:var(--radius-sm);color:var(--text-primary);font-family:var(--font-bitacora);font-size:16px;
   }
-  .toolbar input[type=text]{flex:1;min-width:200px;}
-  .toolbar input::placeholder{color:#cdbfc4;}
-  .toolbar .spacer{margin-left:auto;}
+  .leads-toolbar input::placeholder{color:#cdbfc4;}
 
-  .table-scroll{overflow-x:auto;border-radius:var(--radius-card);box-shadow:var(--shadow-tile);}
-  table{width:100%;border-collapse:collapse;background:var(--surface-card);border:1px solid rgba(255,255,255,.08);min-width:760px;}
-  thead th{
-    text-align:left;font-family:var(--font-bitacora);font-weight:700;font-size:.85rem;text-transform:uppercase;
-    letter-spacing:.1em;color:var(--accent-guide);padding:18px 16px;border-bottom:1px solid rgba(255,255,255,.12);
+  .filtros-wrap{position:relative;}
+  .filtros-btn{
+    display:inline-flex;align-items:center;gap:9px;padding:13px 20px;
+    background:var(--surface-card);border:1px solid rgba(255,255,255,.14);border-radius:var(--radius-pill);
+    color:var(--text-primary);font-family:var(--font-bitacora);font-weight:700;font-size:.85rem;cursor:pointer;
+    transition:border-color .2s ease;
   }
-  th.th-check,td.td-check{width:40px;padding-right:0 !important;}
-  tbody td{padding:18px 16px;font-family:var(--font-bitacora);font-size:16px;line-height:1.5;border-bottom:1px solid rgba(255,255,255,.07);vertical-align:top;color:#e4dadd;}
-  tbody tr:last-child td{border-bottom:none;}
-  tbody tr:hover{background:rgba(255,255,255,.025);}
-  tbody tr.row-selected{background:rgba(246,131,24,.06);}
-  .nombre{color:var(--text-primary);font-size:1.05rem;font-weight:700;}
-  .muted{color:#9a8f93;}
-  .detalle-toggle{cursor:pointer;color:var(--accent-signal);font-family:var(--font-bitacora);font-size:13px;text-decoration:underline;background:none;border:none;padding:0;}
-  .detalle{display:none;background:var(--gradient-deep);}
-  .detalle.open{display:table-row;}
-  .detalle td{padding:16px 18px;}
-  .detalle dl{margin:0;display:grid;grid-template-columns:220px 1fr;gap:8px 16px;font-family:var(--font-bitacora);font-size:15px;line-height:1.5;}
-  .detalle dt{color:#9a8f93;font-family:var(--font-bitacora);font-size:12.5px;align-self:start;padding-top:2px;}
-  .detalle dd{margin:0;}
+  .filtros-btn svg{width:15px;height:15px;stroke:var(--accent-guide);}
+  .filtros-btn:hover,.filtros-btn.active{border-color:rgba(253,192,5,.4);}
+  .filtros-dot{width:7px;height:7px;border-radius:50%;background:var(--accent-signal);box-shadow:0 0 6px rgba(253,192,5,.8);display:none;}
+  .filtros-dot.show{display:inline-block;}
+
+  .filtros-panel{
+    display:none;position:absolute;top:calc(100% + 8px);left:0;z-index:20;min-width:230px;
+    background:var(--surface-card);border:1px solid rgba(255,255,255,.14);border-radius:var(--radius-card);
+    box-shadow:var(--shadow-tile);padding:16px;flex-direction:column;gap:14px;
+  }
+  .filtros-panel.open{display:flex;}
+  .filtros-label{display:flex;flex-direction:column;gap:6px;font-family:var(--font-bitacora);font-size:.78rem;color:#9a8f93;text-transform:uppercase;letter-spacing:.06em;}
+  .filtros-label select{
+    background:var(--gradient-deep);border:1px solid rgba(255,255,255,.14);color:var(--text-primary);
+    padding:10px 10px;border-radius:var(--radius-sm);font-family:var(--font-bitacora);font-size:14.5px;
+    text-transform:none;letter-spacing:normal;
+  }
+
+  .select-all-wrap{
+    display:flex;align-items:center;gap:8px;font-family:var(--font-bitacora);font-size:.85rem;color:#cdbfc4;
+    white-space:nowrap;cursor:pointer;
+  }
+
+  /* --- Pestañas de etapa (solo mobile, para "deslizar" entre columnas) --- */
+  .kanban-tabs{display:none;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;}
+  .kanban-tab{
+    flex-shrink:0;padding:8px 14px;border-radius:var(--radius-pill);border:1px solid rgba(255,255,255,.14);
+    background:var(--surface-card);color:#cdbfc4;font-family:var(--font-bitacora);font-size:.78rem;cursor:pointer;
+    white-space:nowrap;transition:border-color .2s ease,color .2s ease,background .2s ease;
+  }
+  .kanban-tab.active{border-color:var(--accent-guide);color:var(--text-primary);background:rgba(246,131,24,.12);}
+
+  /* --- Tablero Kanban --- */
+  .kanban-board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(270px,1fr);gap:16px;align-items:start;overflow-x:auto;padding-bottom:12px;}
+  .kanban-col{
+    background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-card);
+    display:flex;flex-direction:column;min-height:140px;
+  }
+  .kanban-col-head{
+    display:flex;align-items:center;gap:9px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .kanban-col-dot{width:9px;height:9px;border-radius:50%;background:currentColor;flex-shrink:0;}
+  .kanban-col-title{font-family:var(--font-bitacora);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;flex:1;color:var(--text-primary);}
+  .kanban-col-count{
+    font-family:var(--font-bitacora);font-size:.75rem;color:#9a8f93;background:rgba(255,255,255,.06);
+    padding:2px 9px;border-radius:var(--radius-pill);flex-shrink:0;
+  }
+  .kanban-col-body{display:flex;flex-direction:column;gap:12px;padding:14px;flex:1;min-height:60px;transition:background .15s ease,box-shadow .15s ease;border-radius:0 0 var(--radius-card) var(--radius-card);}
+  .kanban-col-body.drag-over{background:rgba(253,192,5,.06);box-shadow:inset 0 0 0 2px rgba(253,192,5,.3);}
+  .kanban-col-empty{font-family:var(--font-bitacora);font-size:.8rem;color:#776d79;text-align:center;padding:16px 4px;}
+
+  .kanban-card{
+    background:var(--surface-card);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-sm);
+    padding:14px 14px 12px;box-shadow:var(--shadow-tile);cursor:grab;
+    transition:border-color .2s ease,box-shadow .2s ease,opacity .2s ease;
+  }
+  .kanban-card:active{cursor:grabbing;}
+  .kanban-card:hover{border-color:rgba(253,192,5,.3);}
+  .kanban-card.dragging{opacity:.4;}
+  .kanban-card.row-selected{border-color:rgba(246,131,24,.5);background:rgba(246,131,24,.07);}
+  .kanban-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .segmento-badge{
+    width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:var(--gradient-deep);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;flex-shrink:0;
+    transition:border-color .2s ease,transform .2s ease;
+  }
+  .segmento-badge:hover{transform:scale(1.1);}
+  .segmento-badge img{width:16px;height:16px;object-fit:contain;}
+  .segmento-badge.segmento-Bellota{border-color:rgba(166,124,82,.55);}
+  .segmento-badge.segmento-Fenix{border-color:rgba(246,131,24,.55);}
+  .kanban-card-name{font-family:var(--font-bitacora);font-weight:700;color:var(--text-primary);font-size:1rem;margin-bottom:4px;}
+  .kanban-card-contact{font-family:var(--font-bitacora);font-size:.82rem;color:#9a8f93;line-height:1.5;margin-bottom:6px;}
+  .kanban-card-fecha{font-family:var(--font-bitacora);font-size:.78rem;color:var(--accent-guide);margin-bottom:10px;}
+  .kanban-card-move{margin-bottom:8px;}
+  .kanban-card-detalle{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed rgba(255,255,255,.12);}
+  .kanban-card-detalle.open{display:block;}
+  .kanban-card-detalle dl{margin:0;display:grid;grid-template-columns:1fr;gap:2px;font-family:var(--font-bitacora);font-size:13.5px;line-height:1.5;}
+  .kanban-card-detalle dt{color:#9a8f93;font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin-top:8px;}
+  .kanban-card-detalle dd{margin:0 0 2px;color:#e4dadd;}
+
   select.etapa{
     background:var(--gradient-deep);border:1px solid rgba(255,255,255,.14);color:var(--text-primary);
     padding:9px 10px;border-radius:var(--radius-sm);font-family:var(--font-bitacora);font-size:14.5px;width:100%;
@@ -187,21 +267,8 @@
   .etapa-Enviado-Pixieset{color:#8fc0e0;}
   .etapa-Convertido{color:#79c49a;}
   .etapa-No-por-ahora{color:#e2777a;}
-  .estado-guardado{font-family:var(--font-bitacora);font-size:12.5px;color:#9a8f93;margin-left:6px;}
+  .detalle-toggle{cursor:pointer;color:var(--accent-signal);font-family:var(--font-bitacora);font-size:13px;text-decoration:underline;background:none;border:none;padding:0;}
   .vacio{text-align:center;color:#9a8f93;font-family:var(--font-bitacora);font-size:15.5px;padding:48px;}
-
-  /* --- Paginación --- */
-  .pagination{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px;font-family:var(--font-bitacora);font-size:.85rem;color:#9a8f93;}
-  .pagination .spacer{margin-left:auto;}
-  .pagination button{
-    background:var(--surface-card);border:1px solid rgba(255,255,255,.14);color:var(--text-primary);
-    padding:8px 14px;border-radius:var(--radius-sm);font-family:var(--font-bitacora);font-size:.85rem;cursor:pointer;
-  }
-  .pagination button:disabled{opacity:.4;cursor:default;}
-  .pagination select{
-    background:var(--surface-card);border:1px solid rgba(255,255,255,.14);color:var(--text-primary);
-    padding:8px 10px;border-radius:var(--radius-sm);font-family:var(--font-bitacora);font-size:.85rem;
-  }
 
   /* --- Barra flotante de selección múltiple --- */
   .bulk-bar{
@@ -225,11 +292,11 @@
   .bulk-cancel{margin-left:auto;background:none;border:none;color:#9a8f93;cursor:pointer;font-size:1.1rem;line-height:1;}
   @media (prefers-reduced-motion: reduce){ .bulk-btn{ animation:none; } }
 
-  /* micro-movimiento en botones ghost: quietos en reposo, un leve gesto al hover */
-  #verTodosBtn, .admin-refresh, #exportBtn{transition:transform .2s ease;}
+  /* micro-movimiento en botones: quietos en reposo, un leve gesto al hover */
+  #verTodosBtn{transition:transform .2s ease;}
   #verTodosBtn:hover{transform:translateX(3px);}
-  .icon-spin{display:inline-block;transition:transform .4s ease;}
-  .admin-refresh:hover .icon-spin{transform:rotate(100deg);}
+  .icon-spin{display:inline-flex;transition:transform .4s ease;}
+  #refreshBtn:hover .icon-spin, #refreshBtnDash:hover .icon-spin{transform:rotate(180deg);}
   #exportBtn:hover .icon-spin{transform:translateY(2px);}
 
   @media (max-width:880px){
@@ -254,47 +321,18 @@
     .mini-row .nombre{width:100%;}
     .mini-meta{width:100%;margin-left:0;justify-content:space-between;}
 
-    /* --- Tabla de leads → tarjetas apiladas (antes se cortaba a la mitad
-       con scroll horizontal sin ningún indicio; ahora cada lead es su
-       propia tarjeta, legible de arriba a abajo). --- */
-    .table-scroll{overflow-x:visible;border-radius:0;box-shadow:none;background:none;}
-    table{min-width:0;border:none;background:none;border-collapse:separate;border-spacing:0;}
-    thead{display:none;}
-    tbody{display:block;}
-    tbody tr{
-      position:relative;display:block;background:var(--surface-card);
-      border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-card);
-      padding:16px 16px 14px;margin-bottom:14px;box-shadow:var(--shadow-tile);
+    .filtros-panel{left:auto;right:0;}
+
+    /* --- Tablero Kanban en mobile: una columna por "pantalla", deslizable
+       tipo story, con una fila de pestañas pegajosa para saltar directo
+       a una etapa (en vez de arrastrar con el dedo, que el navegador no
+       soporta de forma confiable: cada tarjeta trae su propio selector
+       de etapa para moverla con un toque). --- */
+    .kanban-tabs{display:flex;}
+    .kanban-board{
+      grid-auto-columns:88%;scroll-snap-type:x mandatory;gap:12px;
     }
-    tbody tr:hover{background:var(--surface-card);}
-    tbody tr.row-selected{border-color:rgba(246,131,24,.4);background:rgba(246,131,24,.07);}
-    tbody tr:has(+ tr.detalle.open){border-radius:var(--radius-card) var(--radius-card) 0 0;margin-bottom:0;border-bottom:none;}
-    tbody td{
-      display:block;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);text-align:left;
-    }
-    tbody td:last-child{border-bottom:none;}
-    tbody td::before{
-      content:attr(data-label);display:block;margin-bottom:4px;
-      font-family:var(--font-bitacora);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;
-      color:var(--accent-guide);
-    }
-    tbody td:nth-child(2){padding-right:36px;}
-    tbody td:nth-child(2) .nombre{display:inline;}
-    tbody td:nth-child(2) .detalle-toggle{display:inline-block;margin-left:10px;}
-    tbody td.td-check{
-      position:absolute;top:14px;right:14px;display:block;border:none;padding:0;width:auto;
-    }
-    tbody td.td-check::before{display:none;}
-    tbody td select.etapa{width:auto;max-width:220px;}
-    .detalle{display:none;background:var(--gradient-deep);}
-    .detalle.open{
-      display:block;margin:0 0 14px;padding:12px 16px 16px;
-      border:1px solid rgba(255,255,255,.08);border-top:1px dashed rgba(255,255,255,.12);
-      border-radius:0 0 var(--radius-card) var(--radius-card);
-    }
-    .detalle td{display:block;padding:0;border:none;text-align:left;}
-    .detalle td::before{display:none;}
-    .detalle dl{grid-template-columns:1fr;}
+    .kanban-col{scroll-snap-align:start;}
   }
 </style>
 </head>
@@ -363,7 +401,10 @@
               <p class="admin-sub">Resumen rápido de tus leads de cafecitos.</p>
             </div>
             <div class="header-actions">
-              <button class="cta-btn ghost admin-refresh" id="refreshBtnDash"><span class="icon-spin">↻</span> Actualizar</button>
+              <button class="icon-btn" id="refreshBtnDash" type="button">
+                <span class="icon-spin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg></span>
+                Actualizar
+              </button>
             </div>
           </div>
 
@@ -383,61 +424,58 @@
           </div>
         </section>
 
-        <!-- ===== Vista: Leads (tabla) ===== -->
+        <!-- ===== Vista: Leads (tablero Kanban) ===== -->
         <section class="view" id="view-leads">
-          <div class="admin-header">
+          <div class="admin-header leads-header">
             <div class="admin-headings">
               <h1 class="admin-title">Leads — Cafecitos</h1>
-              <p class="admin-sub">Cada cafecito agendado por Cal.com cae aquí automáticamente. Actualiza la etapa a mano conforme avanza cada lead.</p>
+              <p class="admin-sub">Cada cafecito agendado por Cal.com cae aquí automáticamente. Arrastra cada tarjeta a su nueva etapa, o cámbiala desde el selector de la misma tarjeta.</p>
             </div>
             <div class="header-actions">
-              <button class="cta-btn ghost" id="exportBtn" style="width:auto;"><span class="icon-spin">⭳</span> Exportar CSV</button>
-              <button class="cta-btn ghost admin-refresh" id="refreshBtn"><span class="icon-spin">↻</span> Actualizar</button>
+              <button class="icon-btn" id="exportBtn" type="button">
+                <span class="icon-spin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg></span>
+                Exportar CSV
+              </button>
+              <button class="icon-btn" id="refreshBtn" type="button">
+                <span class="icon-spin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg></span>
+                Actualizar
+              </button>
             </div>
           </div>
 
-          <div class="toolbar">
+          <div class="leads-toolbar">
             <input type="text" id="searchInput" placeholder="Buscar por nombre o correo…">
-            <select id="filterEtapa">
-              <option value="">Todas las etapas</option>
-            </select>
-            <select id="sortSelect">
-              <option value="recientes">Más recientes primero</option>
-              <option value="nombre">Nombre A–Z</option>
-              <option value="etapa">Agrupar por etapa</option>
-            </select>
-          </div>
-
-          <div class="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th class="th-check"><input type="checkbox" id="selectAll"></th>
-                  <th>Nombre</th>
-                  <th>Contacto</th>
-                  <th>Fecha del cafecito</th>
-                  <th>Cómo llegó</th>
-                  <th>Etapa</th>
-                </tr>
-              </thead>
-              <tbody id="tbody"></tbody>
-            </table>
-          </div>
-          <div class="vacio" id="vacio" style="display:none;">No hay leads que coincidan con ese filtro.</div>
-
-          <div class="pagination" id="pagination">
-            <span id="paginaInfo"></span>
-            <button id="pagPrev" type="button">‹ Anterior</button>
-            <button id="pagNext" type="button">Siguiente ›</button>
-            <span class="spacer"></span>
-            <label>Por página:
-              <select id="pageSize">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-              </select>
+            <div class="filtros-wrap">
+              <button class="filtros-btn" id="filtrosBtn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+                Filtros
+                <span class="filtros-dot" id="filtrosDot"></span>
+              </button>
+              <div class="filtros-panel" id="filtrosPanel">
+                <label class="filtros-label">Ordenar
+                  <select id="sortSelect">
+                    <option value="recientes">Más recientes primero</option>
+                    <option value="nombre">Nombre A–Z</option>
+                  </select>
+                </label>
+                <label class="filtros-label">Segmento
+                  <select id="filterSegmento">
+                    <option value="">Todos</option>
+                    <option value="Bellota">🌰 Bellota</option>
+                    <option value="Fénix">🪶 Fénix</option>
+                    <option value="none">Sin clasificar</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <label class="select-all-wrap">
+              <input type="checkbox" id="selectAll"> Seleccionar todos
             </label>
           </div>
+
+          <div class="kanban-tabs" id="kanbanTabs"></div>
+          <div class="kanban-board" id="kanbanBoard"></div>
+          <div class="vacio" id="vacio" style="display:none;">No hay leads que coincidan con ese filtro.</div>
 
           <div class="bulk-bar" id="bulkBar">
             <span class="bulk-count"><span id="bulkCount">0</span> seleccionados</span>
@@ -457,8 +495,6 @@ const FN_URL = '/.netlify/functions/leads-admin';
 let LEADS = [];
 let ETAPAS = [];
 let selected = new Set();
-let page = 1;
-let pageSize = 10;
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -517,20 +553,28 @@ async function recargar() {
 }
 
 function popularSelectsEtapa() {
-  const sel = $('#filterEtapa');
   const bulkSel = $('#bulkEtapaSelect');
+  bulkSel.innerHTML = '';
   ETAPAS.forEach((e) => {
-    const opt1 = document.createElement('option');
-    opt1.value = e; opt1.textContent = e;
-    sel.appendChild(opt1);
-    const opt2 = document.createElement('option');
-    opt2.value = e; opt2.textContent = e;
-    bulkSel.appendChild(opt2);
+    const opt = document.createElement('option');
+    opt.value = e; opt.textContent = e;
+    bulkSel.appendChild(opt);
   });
 }
 
 function claseEtapa(etapa) {
   return 'etapa-' + String(etapa).replace(/\s+/g, '-');
+}
+
+function claseSegmento(segmento) {
+  if (!segmento) return 'segmento-ninguno';
+  return 'segmento-' + segmento.normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
+function iconoSegmento(segmento) {
+  if (segmento === 'Bellota') return '../assets/img/icon-bellota.png';
+  if (segmento === 'Fénix') return '../assets/img/icon-fenix.png';
+  return null;
 }
 
 function escapeHtml(str) {
@@ -611,84 +655,144 @@ function renderDashboard() {
 
 function filtrarLeads() {
   const q = $('#searchInput').value.trim().toLowerCase();
-  const etapaFiltro = $('#filterEtapa').value;
+  const segmentoFiltro = $('#filterSegmento').value;
   const orden = $('#sortSelect').value;
 
   let filtrados = LEADS.filter((l) => {
     const coincideTexto = !q || l.nombre.toLowerCase().includes(q) || l.correo.toLowerCase().includes(q);
-    const coincideEtapa = !etapaFiltro || l.etapa === etapaFiltro;
-    return coincideTexto && coincideEtapa;
+    const coincideSegmento = !segmentoFiltro || (segmentoFiltro === 'none' ? !l.segmento : l.segmento === segmentoFiltro);
+    return coincideTexto && coincideSegmento;
   });
 
   if (orden === 'nombre') {
     filtrados = filtrados.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
-  } else if (orden === 'etapa') {
-    filtrados = filtrados.slice().sort((a, b) => ETAPAS.indexOf(a.etapa) - ETAPAS.indexOf(b.etapa));
   }
   return filtrados;
 }
 
+function crearTarjeta(lead) {
+  const card = document.createElement('article');
+  card.className = 'kanban-card' + (selected.has(lead.rowIndex) ? ' row-selected' : '');
+  card.draggable = true;
+  card.dataset.row = lead.rowIndex;
+
+  const seg = lead.segmento || '';
+  const segIcono = iconoSegmento(seg);
+
+  card.innerHTML = `
+    <div class="kanban-card-top">
+      <input type="checkbox" class="row-check" data-row="${lead.rowIndex}" ${selected.has(lead.rowIndex) ? 'checked' : ''}>
+      <button class="segmento-badge ${claseSegmento(seg)}" data-row="${lead.rowIndex}" type="button" title="${seg ? escapeHtml(seg) : 'Sin clasificar'} — clic para cambiar">
+        ${segIcono ? `<img src="${segIcono}" alt="${escapeHtml(seg)}">` : '<span style="font-family:var(--font-bitacora);font-size:11px;color:#776d79;">—</span>'}
+      </button>
+    </div>
+    <div class="kanban-card-name">${escapeHtml(lead.nombre || '(sin nombre)')}</div>
+    <div class="kanban-card-contact">${escapeHtml(lead.correo)}<br>${escapeHtml(lead.celular)}</div>
+    <div class="kanban-card-fecha">${escapeHtml(lead.fecha)}</div>
+    <div class="kanban-card-move">
+      <select class="etapa ${claseEtapa(lead.etapa)}" data-row="${lead.rowIndex}">
+        ${ETAPAS.map((e) => `<option value="${e}" ${e === lead.etapa ? 'selected' : ''}>${e}</option>`).join('')}
+      </select>
+    </div>
+    <button class="detalle-toggle" data-row="${lead.rowIndex}">ver respuestas</button>
+    <div class="kanban-card-detalle" data-detalle-de="${lead.rowIndex}">
+      <dl>
+        <dt>¿Qué le ronda la cabeza?</dt><dd>${escapeHtml(lead.notas) || '—'}</dd>
+        <dt>¿Hace cuánto no actualiza su book?</dt><dd>${escapeHtml(lead.book) || '—'}</dd>
+        <dt>¿Casting en puerta?</dt><dd>${escapeHtml(lead.casting) || '—'}</dd>
+        <dt>Experiencia que le llamó la atención</dt><dd>${escapeHtml(lead.experiencia) || '—'}</dd>
+        <dt>Origen</dt><dd>${escapeHtml(lead.origen) || '—'}</dd>
+      </dl>
+    </div>
+  `;
+
+  card.addEventListener('dragstart', (e) => {
+    e.dataTransfer.setData('text/plain', String(lead.rowIndex));
+    e.dataTransfer.effectAllowed = 'move';
+    card.classList.add('dragging');
+  });
+  card.addEventListener('dragend', () => card.classList.remove('dragging'));
+
+  return card;
+}
+
+function actualizarFiltrosBadge() {
+  const activo = $('#filterSegmento').value !== '' || $('#sortSelect').value !== 'recientes';
+  $('#filtrosDot').classList.toggle('show', activo);
+}
+
 function renderLeadsView() {
   const filtrados = filtrarLeads();
-
-  const totalPaginas = Math.max(1, Math.ceil(filtrados.length / pageSize));
-  if (page > totalPaginas) page = totalPaginas;
-  const inicio = (page - 1) * pageSize;
-  const pagina = filtrados.slice(inicio, inicio + pageSize);
-
-  const tbody = $('#tbody');
-  tbody.innerHTML = '';
+  const board = $('#kanbanBoard');
+  const tabs = $('#kanbanTabs');
+  board.innerHTML = '';
+  tabs.innerHTML = '';
   $('#vacio').style.display = filtrados.length ? 'none' : 'block';
 
-  pagina.forEach((lead) => {
-    const tr = document.createElement('tr');
-    if (selected.has(lead.rowIndex)) tr.classList.add('row-selected');
-    tr.innerHTML = `
-      <td class="td-check" data-label=""><input type="checkbox" class="row-check" data-row="${lead.rowIndex}" ${selected.has(lead.rowIndex) ? 'checked' : ''}></td>
-      <td data-label="Nombre"><div class="nombre">${escapeHtml(lead.nombre || '(sin nombre)')}</div>
-          <button class="detalle-toggle" data-row="${lead.rowIndex}">ver respuestas</button></td>
-      <td data-label="Contacto">${escapeHtml(lead.correo)}<br><span class="muted">${escapeHtml(lead.celular)}</span></td>
-      <td data-label="Fecha del cafecito">${escapeHtml(lead.fecha)}</td>
-      <td data-label="Cómo llegó">${escapeHtml(lead.comoLlego)}</td>
-      <td data-label="Etapa">
-        <select class="etapa ${claseEtapa(lead.etapa)}" data-row="${lead.rowIndex}">
-          ${ETAPAS.map((e) => `<option value="${e}" ${e === lead.etapa ? 'selected' : ''}>${e}</option>`).join('')}
-        </select>
-        <span class="estado-guardado" data-estado="${lead.rowIndex}"></span>
-      </td>
-    `;
-    tbody.appendChild(tr);
+  ETAPAS.forEach((etapa, i) => {
+    const leadsDeEtapa = filtrados.filter((l) => l.etapa === etapa);
 
-    const detalle = document.createElement('tr');
-    detalle.className = 'detalle';
-    detalle.dataset.detalleDe = lead.rowIndex;
-    detalle.innerHTML = `
-      <td colspan="6">
-        <dl>
-          <dt>¿Qué le ronda la cabeza?</dt><dd>${escapeHtml(lead.notas) || '—'}</dd>
-          <dt>¿Hace cuánto no actualiza su book?</dt><dd>${escapeHtml(lead.book) || '—'}</dd>
-          <dt>¿Casting en puerta?</dt><dd>${escapeHtml(lead.casting) || '—'}</dd>
-          <dt>Experiencia que le llamó la atención</dt><dd>${escapeHtml(lead.experiencia) || '—'}</dd>
-          <dt>Origen</dt><dd>${escapeHtml(lead.origen) || '—'}</dd>
-        </dl>
-      </td>
+    const tab = document.createElement('button');
+    tab.type = 'button';
+    tab.className = 'kanban-tab' + (i === 0 ? ' active' : '');
+    tab.dataset.etapa = etapa;
+    tab.textContent = `${etapa} (${leadsDeEtapa.length})`;
+    tabs.appendChild(tab);
+
+    const col = document.createElement('div');
+    col.className = 'kanban-col';
+    col.dataset.etapa = etapa;
+    col.innerHTML = `
+      <div class="kanban-col-head ${claseEtapa(etapa)}">
+        <span class="kanban-col-dot"></span>
+        <span class="kanban-col-title">${escapeHtml(etapa)}</span>
+        <span class="kanban-col-count">${leadsDeEtapa.length}</span>
+      </div>
+      <div class="kanban-col-body" data-etapa="${escapeHtml(etapa)}"></div>
     `;
-    tbody.appendChild(detalle);
+    const body = col.querySelector('.kanban-col-body');
+
+    if (!leadsDeEtapa.length) {
+      body.innerHTML = '<div class="kanban-col-empty">Sin leads aquí</div>';
+    } else {
+      leadsDeEtapa.forEach((lead) => body.appendChild(crearTarjeta(lead)));
+    }
+
+    body.addEventListener('dragover', (e) => { e.preventDefault(); body.classList.add('drag-over'); });
+    body.addEventListener('dragleave', () => body.classList.remove('drag-over'));
+    body.addEventListener('drop', (e) => {
+      e.preventDefault();
+      body.classList.remove('drag-over');
+      const rowIndex = Number(e.dataTransfer.getData('text/plain'));
+      const nuevaEtapa = body.dataset.etapa;
+      const lead = LEADS.find((l) => l.rowIndex === rowIndex);
+      if (!rowIndex || !nuevaEtapa || !lead || lead.etapa === nuevaEtapa) return;
+      aplicarCambioEtapa(rowIndex, nuevaEtapa);
+    });
+
+    board.appendChild(col);
   });
 
-  // paginación
-  $('#paginaInfo').textContent = filtrados.length
-    ? `Mostrando ${inicio + 1}–${Math.min(inicio + pageSize, filtrados.length)} de ${filtrados.length}`
-    : 'Sin resultados';
-  $('#pagPrev').disabled = page <= 1;
-  $('#pagNext').disabled = page >= totalPaginas;
-
-  // checkbox "seleccionar todo" refleja lo filtrado
-  const selectAllEl = $('#selectAll');
-  const idsFiltrados = filtrados.map((l) => l.rowIndex);
-  selectAllEl.checked = idsFiltrados.length > 0 && idsFiltrados.every((id) => selected.has(id));
-
+  syncSelectAll();
   actualizarBulkBar();
+  actualizarFiltrosBadge();
+}
+
+async function aplicarCambioEtapa(rowIndex, etapa) {
+  try {
+    await llamar('update-etapa', { rowIndex, etapa });
+    const lead = LEADS.find((l) => l.rowIndex === rowIndex);
+    if (lead) lead.etapa = etapa;
+    renderAll();
+  } catch (err) {
+    alert('No se pudo guardar el cambio de etapa: ' + (err.error || 'error desconocido'));
+    renderLeadsView();
+  }
+}
+
+function syncSelectAll() {
+  const idsFiltrados = filtrarLeads().map((l) => l.rowIndex);
+  $('#selectAll').checked = idsFiltrados.length > 0 && idsFiltrados.every((id) => selected.has(id));
 }
 
 function actualizarBulkBar() {
@@ -711,8 +815,8 @@ function cambiarVista(view) {
 
 // --- Exportar CSV ---
 function exportarCSV(leads, nombreArchivo) {
-  const encabezados = ['Nombre','Correo','Celular','Fecha del cafecito','Qué le ronda la cabeza','Hace cuánto no actualiza su book','Casting en puerta','Experiencia','Cómo llegó','Origen','Etapa'];
-  const filas = leads.map((l) => [l.nombre, l.correo, l.celular, l.fecha, l.notas, l.book, l.casting, l.experiencia, l.comoLlego, l.origen, l.etapa]);
+  const encabezados = ['Nombre','Correo','Celular','Fecha del cafecito','Qué le ronda la cabeza','Hace cuánto no actualiza su book','Casting en puerta','Experiencia','Cómo llegó','Origen','Etapa','Segmento'];
+  const filas = leads.map((l) => [l.nombre, l.correo, l.celular, l.fecha, l.notas, l.book, l.casting, l.experiencia, l.comoLlego, l.origen, l.etapa, l.segmento]);
   const csv = [encabezados, ...filas]
     .map((fila) => fila.map((v) => `"${String(v || '').replace(/"/g, '""')}"`).join(','))
     .join('\r\n');
@@ -731,18 +835,14 @@ $('#passwordInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') 
 $('#logoutBtn').addEventListener('click', cerrarSesion);
 $('#refreshBtn').addEventListener('click', recargar);
 $('#refreshBtnDash').addEventListener('click', recargar);
-$('#searchInput').addEventListener('input', () => { page = 1; renderLeadsView(); });
-$('#filterEtapa').addEventListener('change', () => { page = 1; renderLeadsView(); });
-$('#sortSelect').addEventListener('change', () => { page = 1; renderLeadsView(); });
+$('#searchInput').addEventListener('input', () => renderLeadsView());
+$('#filterSegmento').addEventListener('change', () => renderLeadsView());
+$('#sortSelect').addEventListener('change', () => renderLeadsView());
 $('#verTodosBtn').addEventListener('click', () => cambiarVista('leads'));
 
 $$('.nav-item[data-view]').forEach((btn) => {
   btn.addEventListener('click', () => cambiarVista(btn.dataset.view));
 });
-
-$('#pagPrev').addEventListener('click', () => { if (page > 1) { page--; renderLeadsView(); } });
-$('#pagNext').addEventListener('click', () => { page++; renderLeadsView(); });
-$('#pageSize').addEventListener('change', (e) => { pageSize = Number(e.target.value); page = 1; renderLeadsView(); });
 
 $('#exportBtn').addEventListener('click', () => exportarCSV(filtrarLeads(), 'leads-monty-experience.csv'));
 $('#bulkExportBtn').addEventListener('click', () => {
@@ -781,38 +881,81 @@ $('#bulkApplyBtn').addEventListener('click', async () => {
   }
 });
 
+// Botón único de Filtros: abre/cierra el panel flotante (ordenar + segmento)
+$('#filtrosBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  $('#filtrosPanel').classList.toggle('open');
+  $('#filtrosBtn').classList.toggle('active');
+});
 document.addEventListener('click', (e) => {
+  if (!e.target.closest('.filtros-wrap')) {
+    $('#filtrosPanel').classList.remove('open');
+    $('#filtrosBtn').classList.remove('active');
+  }
+});
+
+// Pestañas de etapa en mobile: saltan directo a la columna correspondiente
+$('#kanbanTabs').addEventListener('click', (e) => {
+  const tab = e.target.closest('.kanban-tab');
+  if (!tab) return;
+  $$('.kanban-tab').forEach((t) => t.classList.toggle('active', t === tab));
+  const col = $$('.kanban-col').find((c) => c.dataset.etapa === tab.dataset.etapa);
+  if (col) $('#kanbanBoard').scrollTo({ left: col.offsetLeft - 12, behavior: 'smooth' });
+});
+
+let scrollTimeout;
+$('#kanbanBoard').addEventListener('scroll', () => {
+  clearTimeout(scrollTimeout);
+  scrollTimeout = setTimeout(() => {
+    const board = $('#kanbanBoard');
+    const cols = $$('.kanban-col');
+    let masCercana = cols[0];
+    let menorDist = Infinity;
+    cols.forEach((col) => {
+      const dist = Math.abs(col.offsetLeft - board.scrollLeft);
+      if (dist < menorDist) { menorDist = dist; masCercana = col; }
+    });
+    if (masCercana) {
+      $$('.kanban-tab').forEach((t) => t.classList.toggle('active', t.dataset.etapa === masCercana.dataset.etapa));
+    }
+  }, 120);
+});
+
+document.addEventListener('click', async (e) => {
+  const badge = e.target.closest('.segmento-badge');
+  if (badge) {
+    const rowIndex = Number(badge.dataset.row);
+    const lead = LEADS.find((l) => l.rowIndex === rowIndex);
+    if (!lead) return;
+    const siguiente = { '': 'Bellota', 'Bellota': 'Fénix', 'Fénix': '' }[lead.segmento || ''] ?? '';
+    try {
+      await llamar('update-segmento', { rowIndex, segmento: siguiente });
+      lead.segmento = siguiente;
+      renderLeadsView();
+    } catch (err) {
+      alert('No se pudo cambiar el segmento: ' + (err.error || 'error desconocido'));
+    }
+    return;
+  }
   if (e.target.matches('.detalle-toggle')) {
     const row = e.target.dataset.row;
-    const detalle = document.querySelector(`.detalle[data-detalle-de="${row}"]`);
+    const detalle = document.querySelector(`.kanban-card-detalle[data-detalle-de="${row}"]`);
     if (detalle) detalle.classList.toggle('open');
   }
 });
 
-document.addEventListener('change', async (e) => {
+document.addEventListener('change', (e) => {
   if (e.target.matches('select.etapa')) {
     const rowIndex = Number(e.target.dataset.row);
     const etapa = e.target.value;
-    const estadoEl = document.querySelector(`[data-estado="${rowIndex}"]`);
-    e.target.className = 'etapa ' + claseEtapa(etapa);
-    if (estadoEl) estadoEl.textContent = 'guardando…';
-    try {
-      await llamar('update-etapa', { rowIndex, etapa });
-      const lead = LEADS.find((l) => l.rowIndex === rowIndex);
-      if (lead) lead.etapa = etapa;
-      if (estadoEl) { estadoEl.textContent = '✓ guardado'; setTimeout(() => (estadoEl.textContent = ''), 2000); }
-    } catch (err) {
-      if (estadoEl) estadoEl.textContent = '✗ no se guardó';
-      alert('No se pudo guardar el cambio de etapa: ' + (err.error || 'error desconocido'));
-    }
+    aplicarCambioEtapa(rowIndex, etapa);
   }
   if (e.target.matches('.row-check')) {
     const rowIndex = Number(e.target.dataset.row);
     if (e.target.checked) selected.add(rowIndex); else selected.delete(rowIndex);
-    e.target.closest('tr').classList.toggle('row-selected', e.target.checked);
+    e.target.closest('.kanban-card').classList.toggle('row-selected', e.target.checked);
     actualizarBulkBar();
-    const idsFiltrados = filtrarLeads().map((l) => l.rowIndex);
-    $('#selectAll').checked = idsFiltrados.length > 0 && idsFiltrados.every((id) => selected.has(id));
+    syncSelectAll();
   }
 });
 

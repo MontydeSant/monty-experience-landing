@@ -19,6 +19,17 @@ const crypto = require('crypto');
 
 const SHEET_TAB = 'Leads';
 const ETAPAS_VALIDAS = ['Agendado', 'Cafecito hecho', 'Enviado Pixieset', 'Convertido', 'No por ahora'];
+const SEGMENTOS_VALIDOS = ['Bellota', 'Fénix', '']; // '' = sin clasificar / se resetea a inferencia automática
+
+// Misma inferencia que cal-webhook.js (ver comentario ahí) -- se usa aquí
+// como respaldo para leads que ya existían en el Sheet antes de que se
+// agregara la columna M, o para cualquiera que se quede sin segmento guardado.
+function inferirSegmento(experienciaTexto) {
+  const t = (experienciaTexto || '').toLowerCase();
+  if (/f[eé]nix|elite/.test(t)) return 'Fénix';
+  if (/classic/.test(t)) return 'Bellota';
+  return '';
+}
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -45,6 +56,9 @@ exports.handler = async (event) => {
   try {
     if (body.action === 'update-etapa') {
       return await actualizarEtapa(body);
+    }
+    if (body.action === 'update-segmento') {
+      return await actualizarSegmento(body);
     }
     return await listarLeads();
   } catch (err) {
@@ -86,7 +100,7 @@ async function getSheetAccess() {
 
 async function listarLeads() {
   const { sheetId, accessToken } = await getSheetAccess();
-  const range = `${SHEET_TAB}!A2:K`;
+  const range = `${SHEET_TAB}!A2:M`;
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(range)}`;
 
   const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
@@ -111,6 +125,8 @@ async function listarLeads() {
       comoLlego: fila[8] || '',
       origen: fila[9] || '',
       etapa: fila[10] || 'Agendado',
+      // fila[11] es el UID interno (columna L), no se expone al panel
+      segmento: fila[12] || inferirSegmento(fila[7] || ''),
     }))
     .filter((lead) => lead.nombre || lead.correo)
     .reverse(); // los más recientes primero
@@ -143,6 +159,43 @@ async function actualizarEtapa(body) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ values: [[etapa]] }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Sheets API respondió ${res.status}: ${await res.text()}`);
+  }
+
+  return json(200, { ok: true });
+}
+
+// ---------------------------------------------------------------------------
+// Cambiar el segmento (Bellota/Fénix) de un lead a mano -- corrige o
+// reemplaza la inferencia automática. Guardar '' reinicia a "sin clasificar"
+// (vuelve a inferirse solo la próxima vez que se liste, en vez de quedar
+// forzado a un valor manual).
+// ---------------------------------------------------------------------------
+
+async function actualizarSegmento(body) {
+  const rowIndex = Number(body.rowIndex);
+  const segmento = body.segmento;
+
+  if (!Number.isInteger(rowIndex) || rowIndex < 2 || !SEGMENTOS_VALIDOS.includes(segmento)) {
+    return json(400, { error: 'Datos inválidos para actualizar el segmento.' });
+  }
+
+  const { sheetId, accessToken } = await getSheetAccess();
+  const range = `${SHEET_TAB}!M${rowIndex}`;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(
+    range
+  )}?valueInputOption=USER_ENTERED`;
+
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ values: [[segmento]] }),
   });
 
   if (!res.ok) {
