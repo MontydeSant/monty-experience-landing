@@ -13,11 +13,11 @@
 <style>
   /* --- Solo lo específico de este panel: el resto (color, tipografía,
      botones, grano) sale de global.css, la misma fuente que usa la landing.
-     Segunda ronda de diseño (variante "C" elegida por Monty): menos morado,
-     menos blanco, letras más grandes, y más Courier Prime (bitácora). --- */
+     Tercera ronda: rediseño completo con estructura de dashboard
+     (sidebar + vista de resumen + tabla con selección múltiple), sobre la
+     paleta/tipografía ya aprobadas en la ronda anterior (variante "C"). --- */
   *{box-sizing:border-box;}
   body{min-height:100vh;}
-  .admin-wrap{max-width:1100px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:1;}
 
   .admin-stage{
     background-color:var(--surface-topbar);
@@ -34,6 +34,7 @@
     max-width:360px;margin:9vh auto 0;text-align:center;
     background:var(--surface-card);border:1px solid rgba(253,192,5,.16);
     border-radius:var(--radius-card);padding:36px 32px 32px;box-shadow:var(--shadow-tile);
+    position:relative;z-index:1;
   }
   #login .admin-logo{width:150px;height:auto;margin:0 auto 18px;}
   #login .admin-sub{margin-bottom:24px;}
@@ -46,24 +47,91 @@
   #login input:focus{outline:2px solid var(--accent-signal);outline-offset:1px;}
   #loginError{color:#e2777a;font-family:var(--font-bitacora);font-size:13.5px;margin-top:10px;display:none;}
 
-  /* --- App --- */
+  /* --- Shell: sidebar + contenido --- */
   #app{display:none;}
-  .admin-header{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:28px;}
-  .admin-header .admin-logo{width:62px;height:auto;flex-shrink:0;}
+  .admin-shell{display:flex;min-height:100vh;align-items:stretch;}
+
+  .admin-sidebar{
+    width:240px;flex-shrink:0;background:var(--surface-card);
+    border-right:1px solid rgba(255,255,255,.08);padding:26px 18px;
+    display:flex;flex-direction:column;gap:28px;position:sticky;top:0;height:100vh;
+  }
+  .sidebar-brand{display:flex;align-items:center;gap:10px;padding:0 4px;}
+  .sidebar-brand img{width:36px;height:auto;flex-shrink:0;}
+  .sidebar-brand span{font-family:var(--font-guion);font-size:.95rem;color:var(--text-primary);line-height:1.2;}
+  .nav-section{display:flex;flex-direction:column;gap:4px;}
+  .nav-section-label{
+    font-family:var(--font-bitacora);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:#776d79;padding:0 10px 6px;
+  }
+  .nav-item{
+    display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);
+    font-family:var(--font-bitacora);font-size:14.5px;color:#cdbfc4;cursor:pointer;
+    border:1px solid transparent;background:none;width:100%;text-align:left;
+  }
+  .nav-item svg{width:17px;height:17px;flex-shrink:0;opacity:.85;}
+  .nav-item:hover{background:rgba(255,255,255,.04);color:var(--text-primary);}
+  .nav-item.active{background:rgba(246,131,24,.12);border-color:rgba(246,131,24,.3);color:var(--text-primary);}
+  .nav-item.active svg{opacity:1;color:var(--accent-guide);}
+  .nav-item.disabled{opacity:.4;cursor:not-allowed;}
+  .nav-item.disabled:hover{background:none;color:#cdbfc4;}
+  .nav-badge{
+    margin-left:auto;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+    background:rgba(255,255,255,.08);color:#9a8f93;padding:2px 7px;border-radius:var(--radius-pill);
+  }
+  .sidebar-foot{margin-top:auto;}
+
+  .admin-main{flex:1;min-width:0;padding:34px 36px 80px;position:relative;z-index:1;}
+  .view{display:none;}
+  .view.active{display:block;}
+
+  .admin-header{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:26px;}
   .admin-header .admin-headings{flex:1;min-width:220px;}
   .admin-header .admin-title{margin-bottom:2px;}
   .admin-header .admin-sub{margin:0;}
-  .admin-header .cta-btn.admin-refresh{margin-left:auto;padding:10px 18px 10px 48px;font-size:.78rem;}
+  .admin-header .cta-btn.admin-refresh{padding:10px 18px 10px 48px;font-size:.78rem;}
   .admin-header .cta-btn.admin-refresh::before{width:34px;}
+  .header-actions{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto;}
 
-  .summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
-  .chip{
-    background:rgba(255,255,255,.04);border:1px solid rgba(253,192,5,.22);
-    border-radius:var(--radius-sm);padding:9px 16px;font-family:var(--font-bitacora);
-    font-size:.9rem;color:#cdbfc4;
+  /* --- Tarjetas de resumen (Dashboard) --- */
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px;}
+  .stat-card{
+    background:var(--surface-card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-card);
+    padding:22px 22px 20px;box-shadow:var(--shadow-tile);
   }
-  .chip b{color:var(--accent-signal);font-weight:700;}
+  .stat-label{font-family:var(--font-bitacora);font-size:.82rem;color:#9a8f93;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+  .stat-value{font-family:var(--font-guion);font-size:2.1rem;color:var(--text-primary);line-height:1;margin-bottom:6px;}
+  .stat-value.accent{color:var(--accent-signal);}
+  .stat-foot{font-family:var(--font-bitacora);font-size:.8rem;color:#776d79;}
 
+  .panel{
+    background:var(--surface-card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-card);
+    padding:24px 26px;box-shadow:var(--shadow-tile);margin-bottom:24px;
+  }
+  .panel-title{font-family:var(--font-guion);font-size:1.15rem;color:var(--text-primary);margin:0 0 18px;}
+
+  /* desglose por etapa: barras horizontales */
+  .etapa-bar-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+  .etapa-bar-row:last-child{margin-bottom:0;}
+  .etapa-bar-label{width:150px;flex-shrink:0;font-family:var(--font-bitacora);font-size:.86rem;color:#cdbfc4;}
+  .etapa-bar-track{flex:1;height:10px;background:rgba(255,255,255,.06);border-radius:var(--radius-pill);overflow:hidden;}
+  .etapa-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent-guide),var(--accent-signal));border-radius:var(--radius-pill);}
+  .etapa-bar-count{width:28px;text-align:right;flex-shrink:0;font-family:var(--font-bitacora);font-weight:700;color:var(--text-primary);}
+
+  /* mini-tabla de últimos leads */
+  .mini-list{display:flex;flex-direction:column;}
+  .mini-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+  .mini-row:last-child{border-bottom:none;}
+  .mini-row .nombre{flex:1;min-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mini-meta{display:flex;align-items:center;gap:14px;margin-left:auto;flex-shrink:0;}
+  .mini-row .fecha{font-family:var(--font-bitacora);font-size:.82rem;color:#9a8f93;flex-shrink:0;white-space:nowrap;}
+  .mini-etapa{
+    font-family:var(--font-bitacora);font-size:.75rem;padding:4px 10px;border-radius:var(--radius-pill);
+    border:1px solid currentColor;flex-shrink:0;
+  }
+  .panel-footer{margin-top:16px;text-align:right;}
+
+  /* --- Toolbar (vista Leads) --- */
   .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:22px;}
   .toolbar input[type=text],.toolbar select{
     padding:14px 16px;background:var(--surface-card);border:1px solid rgba(255,255,255,.12);
@@ -71,16 +139,19 @@
   }
   .toolbar input[type=text]{flex:1;min-width:200px;}
   .toolbar input::placeholder{color:#cdbfc4;}
+  .toolbar .spacer{margin-left:auto;}
 
   .table-scroll{overflow-x:auto;border-radius:var(--radius-card);box-shadow:var(--shadow-tile);}
-  table{width:100%;border-collapse:collapse;background:var(--surface-card);border:1px solid rgba(255,255,255,.08);min-width:720px;}
+  table{width:100%;border-collapse:collapse;background:var(--surface-card);border:1px solid rgba(255,255,255,.08);min-width:760px;}
   thead th{
     text-align:left;font-family:var(--font-bitacora);font-weight:700;font-size:.85rem;text-transform:uppercase;
     letter-spacing:.1em;color:var(--accent-guide);padding:18px 16px;border-bottom:1px solid rgba(255,255,255,.12);
   }
+  th.th-check,td.td-check{width:40px;padding-right:0 !important;}
   tbody td{padding:18px 16px;font-family:var(--font-bitacora);font-size:16px;line-height:1.5;border-bottom:1px solid rgba(255,255,255,.07);vertical-align:top;color:#e4dadd;}
   tbody tr:last-child td{border-bottom:none;}
   tbody tr:hover{background:rgba(255,255,255,.025);}
+  tbody tr.row-selected{background:rgba(246,131,24,.06);}
   .nombre{color:var(--text-primary);font-size:1.05rem;font-weight:700;}
   .muted{color:#9a8f93;}
   .detalle-toggle{cursor:pointer;color:var(--accent-signal);font-family:var(--font-bitacora);font-size:13px;text-decoration:underline;background:none;border:none;padding:0;}
@@ -94,6 +165,7 @@
     background:var(--gradient-deep);border:1px solid rgba(255,255,255,.14);color:var(--text-primary);
     padding:9px 10px;border-radius:var(--radius-sm);font-family:var(--font-bitacora);font-size:14.5px;width:100%;
   }
+  input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent-guide);cursor:pointer;}
   .etapa-Agendado{color:#9a8f93;}
   .etapa-Cafecito-hecho{color:var(--accent-guide);}
   .etapa-Enviado-Pixieset{color:#8fc0e0;}
@@ -101,10 +173,58 @@
   .etapa-No-por-ahora{color:#e2777a;}
   .estado-guardado{font-family:var(--font-bitacora);font-size:12.5px;color:#9a8f93;margin-left:6px;}
   .vacio{text-align:center;color:#9a8f93;font-family:var(--font-bitacora);font-size:15.5px;padding:48px;}
+
+  /* --- Paginación --- */
+  .pagination{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px;font-family:var(--font-bitacora);font-size:.85rem;color:#9a8f93;}
+  .pagination .spacer{margin-left:auto;}
+  .pagination button{
+    background:var(--surface-card);border:1px solid rgba(255,255,255,.14);color:var(--text-primary);
+    padding:8px 14px;border-radius:var(--radius-sm);font-family:var(--font-bitacora);font-size:.85rem;cursor:pointer;
+  }
+  .pagination button:disabled{opacity:.4;cursor:default;}
+  .pagination select{
+    background:var(--surface-card);border:1px solid rgba(255,255,255,.14);color:var(--text-primary);
+    padding:8px 10px;border-radius:var(--radius-sm);font-family:var(--font-bitacora);font-size:.85rem;
+  }
+
+  /* --- Barra flotante de selección múltiple --- */
+  .bulk-bar{
+    display:none;position:sticky;bottom:18px;margin:18px auto 0;max-width:720px;
+    background:var(--surface-card);border:1px solid rgba(253,192,5,.3);border-radius:var(--radius-pill);
+    box-shadow:var(--shadow-tile);padding:12px 20px;align-items:center;gap:14px;flex-wrap:wrap;z-index:5;
+  }
+  .bulk-bar.show{display:flex;}
+  .bulk-count{font-family:var(--font-bitacora);font-weight:700;color:var(--accent-signal);white-space:nowrap;}
+  .bulk-bar select{
+    background:var(--gradient-deep);border:1px solid rgba(255,255,255,.14);color:var(--text-primary);
+    padding:8px 10px;border-radius:var(--radius-sm);font-family:var(--font-bitacora);font-size:14px;
+  }
+  .bulk-btn{
+    background:var(--accent-guide);color:#1a0e12;border:none;padding:8px 16px;border-radius:var(--radius-pill);
+    font-family:var(--font-bitacora);font-weight:700;font-size:.82rem;cursor:pointer;
+  }
+  .bulk-btn.ghost{background:none;border:1px solid rgba(255,255,255,.2);color:var(--text-primary);}
+  .bulk-cancel{margin-left:auto;background:none;border:none;color:#9a8f93;cursor:pointer;font-size:1.1rem;line-height:1;}
+
+  @media (max-width:880px){
+    .admin-shell{flex-direction:column;}
+    .admin-sidebar{
+      width:100%;height:auto;position:static;flex-direction:row;align-items:center;
+      gap:14px;padding:14px 16px;overflow-x:auto;
+    }
+    .sidebar-brand span{display:none;}
+    .nav-section{flex-direction:row;gap:6px;}
+    .nav-section-label{display:none;}
+    .nav-item{flex-direction:row;white-space:nowrap;padding:9px 12px;}
+    .sidebar-foot{margin-top:0;margin-left:auto;}
+    .admin-main{padding:24px 16px 60px;}
+    .detalle dl{grid-template-columns:1fr;}
+    .mini-row .nombre{width:100%;}
+    .mini-meta{width:100%;margin-left:0;justify-content:space-between;}
+  }
 </style>
 </head>
 <body class="admin-stage">
-<div class="admin-wrap">
 
   <div id="login">
     <img class="admin-logo" src="../assets/img/logo-monty.webp" alt="Monty Experience" width="150" height="115">
@@ -116,50 +236,159 @@
   </div>
 
   <div id="app">
-    <div class="admin-header">
-      <img class="admin-logo" src="../assets/img/logo-monty.webp" alt="Monty Experience" width="62" height="48">
-      <div class="admin-headings">
-        <h1 class="admin-title">Leads — Cafecitos</h1>
-        <p class="admin-sub">Cada cafecito agendado por Cal.com cae aquí automáticamente. Actualiza la etapa a mano conforme avanza cada lead.</p>
-      </div>
-      <button class="cta-btn ghost admin-refresh" id="refreshBtn">↻ Actualizar</button>
-    </div>
+    <div class="admin-shell">
 
-    <div class="summary" id="summary"></div>
+      <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+          <img src="../assets/img/logo-monty.webp" alt="Monty Experience" width="36" height="28">
+          <span>Monty<br>Experience</span>
+        </div>
 
-    <div class="toolbar">
-      <input type="text" id="searchInput" placeholder="Buscar por nombre o correo…">
-      <select id="filterEtapa">
-        <option value="">Todas las etapas</option>
-      </select>
-    </div>
+        <nav class="nav-section">
+          <div class="nav-section-label">Principal</div>
+          <button class="nav-item active" data-view="dashboard" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="11" width="8" height="10" rx="1.5"/><rect x="3" y="14" width="8" height="7" rx="1.5"/></svg>
+            Dashboard
+          </button>
+          <button class="nav-item" data-view="leads" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+            Leads
+          </button>
+        </nav>
 
-    <div class="table-scroll">
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Contacto</th>
-            <th>Fecha del cafecito</th>
-            <th>Cómo llegó</th>
-            <th>Etapa</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-      </table>
+        <nav class="nav-section">
+          <div class="nav-section-label">Próximamente</div>
+          <button class="nav-item disabled" type="button" title="Próximamente" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+            Automatización <span class="nav-badge">pronto</span>
+          </button>
+          <button class="nav-item disabled" type="button" title="Próximamente" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Mensajes <span class="nav-badge">pronto</span>
+          </button>
+          <button class="nav-item disabled" type="button" title="Próximamente" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 15l4-5 3 3 5-7"/></svg>
+            Analítica <span class="nav-badge">pronto</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-foot">
+          <button class="nav-item" id="logoutBtn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            Cerrar sesión
+          </button>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+
+        <!-- ===== Vista: Dashboard ===== -->
+        <section class="view active" id="view-dashboard">
+          <div class="admin-header">
+            <div class="admin-headings">
+              <h1 class="admin-title">Dashboard</h1>
+              <p class="admin-sub">Resumen rápido de tus leads de cafecitos.</p>
+            </div>
+            <div class="header-actions">
+              <button class="cta-btn ghost admin-refresh" id="refreshBtnDash">↻ Actualizar</button>
+            </div>
+          </div>
+
+          <div class="stat-grid" id="statGrid"></div>
+
+          <div class="panel">
+            <h2 class="panel-title">Leads por etapa</h2>
+            <div id="etapaBreakdown"></div>
+          </div>
+
+          <div class="panel">
+            <h2 class="panel-title">Últimos leads</h2>
+            <div class="mini-list" id="miniList"></div>
+            <div class="panel-footer">
+              <button class="cta-btn ghost" id="verTodosBtn" style="width:auto;padding:10px 20px;">Ver todos →</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== Vista: Leads (tabla) ===== -->
+        <section class="view" id="view-leads">
+          <div class="admin-header">
+            <div class="admin-headings">
+              <h1 class="admin-title">Leads — Cafecitos</h1>
+              <p class="admin-sub">Cada cafecito agendado por Cal.com cae aquí automáticamente. Actualiza la etapa a mano conforme avanza cada lead.</p>
+            </div>
+            <div class="header-actions">
+              <button class="cta-btn ghost" id="exportBtn" style="width:auto;">⭳ Exportar CSV</button>
+              <button class="cta-btn ghost admin-refresh" id="refreshBtn">↻ Actualizar</button>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <input type="text" id="searchInput" placeholder="Buscar por nombre o correo…">
+            <select id="filterEtapa">
+              <option value="">Todas las etapas</option>
+            </select>
+            <select id="sortSelect">
+              <option value="recientes">Más recientes primero</option>
+              <option value="nombre">Nombre A–Z</option>
+              <option value="etapa">Agrupar por etapa</option>
+            </select>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th class="th-check"><input type="checkbox" id="selectAll"></th>
+                  <th>Nombre</th>
+                  <th>Contacto</th>
+                  <th>Fecha del cafecito</th>
+                  <th>Cómo llegó</th>
+                  <th>Etapa</th>
+                </tr>
+              </thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+          <div class="vacio" id="vacio" style="display:none;">No hay leads que coincidan con ese filtro.</div>
+
+          <div class="pagination" id="pagination">
+            <span id="paginaInfo"></span>
+            <button id="pagPrev" type="button">‹ Anterior</button>
+            <button id="pagNext" type="button">Siguiente ›</button>
+            <span class="spacer"></span>
+            <label>Por página:
+              <select id="pageSize">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="bulk-bar" id="bulkBar">
+            <span class="bulk-count"><span id="bulkCount">0</span> seleccionados</span>
+            <select id="bulkEtapaSelect"></select>
+            <button class="bulk-btn" id="bulkApplyBtn" type="button">Aplicar etapa</button>
+            <button class="bulk-btn ghost" id="bulkExportBtn" type="button">Exportar selección</button>
+            <button class="bulk-cancel" id="bulkCancelBtn" type="button" title="Cancelar selección">✕</button>
+          </div>
+        </section>
+
+      </main>
     </div>
-    <div class="vacio" id="vacio" style="display:none;">No hay leads que coincidan con ese filtro.</div>
   </div>
-
-</div>
 
 <script>
 const FN_URL = '/.netlify/functions/leads-admin';
 let LEADS = [];
 let ETAPAS = [];
+let selected = new Set();
+let page = 1;
+let pageSize = 10;
 
 const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
 function getPassword() {
   return sessionStorage.getItem('mx_admin_pw') || '';
@@ -186,8 +415,8 @@ async function intentarLogin() {
     ETAPAS = data.etapas;
     $('#login').style.display = 'none';
     $('#app').style.display = 'block';
-    popularFiltroEtapas();
-    render();
+    popularSelectsEtapa();
+    renderAll();
   } catch (err) {
     sessionStorage.removeItem('mx_admin_pw');
     $('#loginError').textContent = err.status === 401 ? 'Contraseña incorrecta.' : (err.error || 'Algo salió mal.');
@@ -195,24 +424,35 @@ async function intentarLogin() {
   }
 }
 
+function cerrarSesion() {
+  sessionStorage.removeItem('mx_admin_pw');
+  LEADS = []; ETAPAS = []; selected = new Set();
+  $('#app').style.display = 'none';
+  $('#login').style.display = 'block';
+  $('#passwordInput').value = '';
+}
+
 async function recargar() {
   try {
     const data = await llamar('list');
     LEADS = data.leads;
     ETAPAS = data.etapas;
-    render();
+    renderAll();
   } catch (err) {
     alert('No se pudo actualizar: ' + (err.error || 'error desconocido'));
   }
 }
 
-function popularFiltroEtapas() {
+function popularSelectsEtapa() {
   const sel = $('#filterEtapa');
+  const bulkSel = $('#bulkEtapaSelect');
   ETAPAS.forEach((e) => {
-    const opt = document.createElement('option');
-    opt.value = e;
-    opt.textContent = e;
-    sel.appendChild(opt);
+    const opt1 = document.createElement('option');
+    opt1.value = e; opt1.textContent = e;
+    sel.appendChild(opt1);
+    const opt2 = document.createElement('option');
+    opt2.value = e; opt2.textContent = e;
+    bulkSel.appendChild(opt2);
   });
 }
 
@@ -220,30 +460,114 @@ function claseEtapa(etapa) {
   return 'etapa-' + String(etapa).replace(/\s+/g, '-');
 }
 
-function render() {
+function escapeHtml(str) {
+  return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// --- Parseo de "27 nov 2026, 3:00 pm" (formato de Cal.com / manual) ---
+const MESES = { ene:0,feb:1,mar:2,abr:3,may:4,jun:5,jul:6,ago:7,sep:8,oct:9,nov:10,dic:11 };
+function parseFechaCafecito(str) {
+  if (!str) return null;
+  const m = String(str).toLowerCase().match(/(\d{1,2})\s+([a-záéíóúñ]{3,})\.?\s+(\d{4})(?:,?\s*(\d{1,2}):(\d{2})\s*(am|pm))?/i);
+  if (!m) return null;
+  const dia = parseInt(m[1], 10);
+  const mesAbrev = m[2].slice(0, 3).normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const mes = MESES[mesAbrev];
+  if (mes === undefined) return null;
+  const anio = parseInt(m[3], 10);
+  let hora = m[4] ? parseInt(m[4], 10) : 12;
+  const min = m[5] ? parseInt(m[5], 10) : 0;
+  if (m[6] === 'pm' && hora < 12) hora += 12;
+  if (m[6] === 'am' && hora === 12) hora = 0;
+  const d = new Date(anio, mes, dia, hora, min);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function calcularStats() {
+  const ahora = new Date();
+  const mesActual = ahora.getMonth(), anioActual = ahora.getFullYear();
+  let esteMes = 0, proximos = 0;
+  LEADS.forEach((l) => {
+    const f = parseFechaCafecito(l.fecha);
+    if (f) {
+      if (f.getMonth() === mesActual && f.getFullYear() === anioActual) esteMes++;
+      if (f.getTime() >= ahora.getTime()) proximos++;
+    }
+  });
+  return { total: LEADS.length, esteMes, proximos };
+}
+
+const NOMBRES_MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+function renderDashboard() {
+  const stats = calcularStats();
+  const conteos = {};
+  ETAPAS.forEach((e) => (conteos[e] = 0));
+  LEADS.forEach((l) => { conteos[l.etapa] = (conteos[l.etapa] || 0) + 1; });
+  const maxConteo = Math.max(1, ...Object.values(conteos));
+
+  $('#statGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Total de leads</div><div class="stat-value">${stats.total}</div><div class="stat-foot">capturados en el Sheet</div></div>
+    <div class="stat-card"><div class="stat-label">Leads este mes</div><div class="stat-value accent">${stats.esteMes}</div><div class="stat-foot">con cafecito en ${NOMBRES_MESES[new Date().getMonth()]}</div></div>
+    <div class="stat-card"><div class="stat-label">Cafecitos próximos</div><div class="stat-value accent">${stats.proximos}</div><div class="stat-foot">agendados a futuro</div></div>
+  `;
+
+  $('#etapaBreakdown').innerHTML = ETAPAS.map((e) => `
+    <div class="etapa-bar-row">
+      <div class="etapa-bar-label">${escapeHtml(e)}</div>
+      <div class="etapa-bar-track"><div class="etapa-bar-fill" style="width:${((conteos[e] || 0) / maxConteo) * 100}%"></div></div>
+      <div class="etapa-bar-count">${conteos[e] || 0}</div>
+    </div>
+  `).join('') || '<p class="muted">Todavía no hay leads.</p>';
+
+  const ultimos = LEADS.slice(0, 5);
+  $('#miniList').innerHTML = ultimos.length ? ultimos.map((l) => `
+    <div class="mini-row">
+      <div class="nombre">${escapeHtml(l.nombre || '(sin nombre)')}</div>
+      <div class="mini-meta">
+        <span class="mini-etapa ${claseEtapa(l.etapa)}">${escapeHtml(l.etapa)}</span>
+        <div class="fecha">${escapeHtml(l.fecha)}</div>
+      </div>
+    </div>
+  `).join('') : '<p class="muted">Todavía no hay leads.</p>';
+}
+
+function filtrarLeads() {
   const q = $('#searchInput').value.trim().toLowerCase();
   const etapaFiltro = $('#filterEtapa').value;
+  const orden = $('#sortSelect').value;
 
-  const filtrados = LEADS.filter((l) => {
+  let filtrados = LEADS.filter((l) => {
     const coincideTexto = !q || l.nombre.toLowerCase().includes(q) || l.correo.toLowerCase().includes(q);
     const coincideEtapa = !etapaFiltro || l.etapa === etapaFiltro;
     return coincideTexto && coincideEtapa;
   });
 
-  // Resumen siempre sobre el total, no sobre lo filtrado
-  const conteos = {};
-  ETAPAS.forEach((e) => (conteos[e] = 0));
-  LEADS.forEach((l) => { conteos[l.etapa] = (conteos[l.etapa] || 0) + 1; });
-  $('#summary').innerHTML = `<span class="chip"><b>${LEADS.length}</b> leads en total</span>` +
-    ETAPAS.map((e) => `<span class="chip">${e}: <b>${conteos[e] || 0}</b></span>`).join('');
+  if (orden === 'nombre') {
+    filtrados = filtrados.slice().sort((a, b) => a.nombre.localeCompare(b.nombre));
+  } else if (orden === 'etapa') {
+    filtrados = filtrados.slice().sort((a, b) => ETAPAS.indexOf(a.etapa) - ETAPAS.indexOf(b.etapa));
+  }
+  return filtrados;
+}
+
+function renderLeadsView() {
+  const filtrados = filtrarLeads();
+
+  const totalPaginas = Math.max(1, Math.ceil(filtrados.length / pageSize));
+  if (page > totalPaginas) page = totalPaginas;
+  const inicio = (page - 1) * pageSize;
+  const pagina = filtrados.slice(inicio, inicio + pageSize);
 
   const tbody = $('#tbody');
   tbody.innerHTML = '';
   $('#vacio').style.display = filtrados.length ? 'none' : 'block';
 
-  filtrados.forEach((lead) => {
+  pagina.forEach((lead) => {
     const tr = document.createElement('tr');
+    if (selected.has(lead.rowIndex)) tr.classList.add('row-selected');
     tr.innerHTML = `
+      <td class="td-check"><input type="checkbox" class="row-check" data-row="${lead.rowIndex}" ${selected.has(lead.rowIndex) ? 'checked' : ''}></td>
       <td><div class="nombre">${escapeHtml(lead.nombre || '(sin nombre)')}</div>
           <button class="detalle-toggle" data-row="${lead.rowIndex}">ver respuestas</button></td>
       <td>${escapeHtml(lead.correo)}<br><span class="muted">${escapeHtml(lead.celular)}</span></td>
@@ -255,7 +579,6 @@ function render() {
         </select>
         <span class="estado-guardado" data-estado="${lead.rowIndex}"></span>
       </td>
-      <td></td>
     `;
     tbody.appendChild(tr);
 
@@ -269,16 +592,117 @@ function render() {
           <dt>¿Hace cuánto no actualiza su book?</dt><dd>${escapeHtml(lead.book) || '—'}</dd>
           <dt>¿Casting en puerta?</dt><dd>${escapeHtml(lead.casting) || '—'}</dd>
           <dt>Experiencia que le llamó la atención</dt><dd>${escapeHtml(lead.experiencia) || '—'}</dd>
+          <dt>Origen</dt><dd>${escapeHtml(lead.origen) || '—'}</dd>
         </dl>
       </td>
     `;
     tbody.appendChild(detalle);
   });
+
+  // paginación
+  $('#paginaInfo').textContent = filtrados.length
+    ? `Mostrando ${inicio + 1}–${Math.min(inicio + pageSize, filtrados.length)} de ${filtrados.length}`
+    : 'Sin resultados';
+  $('#pagPrev').disabled = page <= 1;
+  $('#pagNext').disabled = page >= totalPaginas;
+
+  // checkbox "seleccionar todo" refleja lo filtrado
+  const selectAllEl = $('#selectAll');
+  const idsFiltrados = filtrados.map((l) => l.rowIndex);
+  selectAllEl.checked = idsFiltrados.length > 0 && idsFiltrados.every((id) => selected.has(id));
+
+  actualizarBulkBar();
 }
 
-function escapeHtml(str) {
-  return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+function actualizarBulkBar() {
+  const bar = $('#bulkBar');
+  $('#bulkCount').textContent = selected.size;
+  bar.classList.toggle('show', selected.size > 0);
 }
+
+function renderAll() {
+  renderDashboard();
+  renderLeadsView();
+}
+
+function cambiarVista(view) {
+  $$('.nav-item[data-view]').forEach((b) => b.classList.toggle('active', b.dataset.view === view));
+  $('#view-dashboard').classList.toggle('active', view === 'dashboard');
+  $('#view-leads').classList.toggle('active', view === 'leads');
+  if (view === 'dashboard') renderDashboard(); else renderLeadsView();
+}
+
+// --- Exportar CSV ---
+function exportarCSV(leads, nombreArchivo) {
+  const encabezados = ['Nombre','Correo','Celular','Fecha del cafecito','Qué le ronda la cabeza','Hace cuánto no actualiza su book','Casting en puerta','Experiencia','Cómo llegó','Origen','Etapa'];
+  const filas = leads.map((l) => [l.nombre, l.correo, l.celular, l.fecha, l.notas, l.book, l.casting, l.experiencia, l.comoLlego, l.origen, l.etapa]);
+  const csv = [encabezados, ...filas]
+    .map((fila) => fila.map((v) => `"${String(v || '').replace(/"/g, '""')}"`).join(','))
+    .join('\r\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = nombreArchivo;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// ===== Eventos =====
+
+$('#loginBtn').addEventListener('click', intentarLogin);
+$('#passwordInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') intentarLogin(); });
+$('#logoutBtn').addEventListener('click', cerrarSesion);
+$('#refreshBtn').addEventListener('click', recargar);
+$('#refreshBtnDash').addEventListener('click', recargar);
+$('#searchInput').addEventListener('input', () => { page = 1; renderLeadsView(); });
+$('#filterEtapa').addEventListener('change', () => { page = 1; renderLeadsView(); });
+$('#sortSelect').addEventListener('change', () => { page = 1; renderLeadsView(); });
+$('#verTodosBtn').addEventListener('click', () => cambiarVista('leads'));
+
+$$('.nav-item[data-view]').forEach((btn) => {
+  btn.addEventListener('click', () => cambiarVista(btn.dataset.view));
+});
+
+$('#pagPrev').addEventListener('click', () => { if (page > 1) { page--; renderLeadsView(); } });
+$('#pagNext').addEventListener('click', () => { page++; renderLeadsView(); });
+$('#pageSize').addEventListener('change', (e) => { pageSize = Number(e.target.value); page = 1; renderLeadsView(); });
+
+$('#exportBtn').addEventListener('click', () => exportarCSV(filtrarLeads(), 'leads-monty-experience.csv'));
+$('#bulkExportBtn').addEventListener('click', () => {
+  const seleccionados = LEADS.filter((l) => selected.has(l.rowIndex));
+  exportarCSV(seleccionados, 'leads-seleccion-monty-experience.csv');
+});
+
+$('#selectAll').addEventListener('change', (e) => {
+  const idsFiltrados = filtrarLeads().map((l) => l.rowIndex);
+  if (e.target.checked) idsFiltrados.forEach((id) => selected.add(id));
+  else idsFiltrados.forEach((id) => selected.delete(id));
+  renderLeadsView();
+});
+
+$('#bulkCancelBtn').addEventListener('click', () => { selected.clear(); renderLeadsView(); });
+
+$('#bulkApplyBtn').addEventListener('click', async () => {
+  const nuevaEtapa = $('#bulkEtapaSelect').value;
+  if (!nuevaEtapa || !selected.size) return;
+  const btn = $('#bulkApplyBtn');
+  const original = btn.textContent;
+  btn.textContent = 'Aplicando…'; btn.disabled = true;
+  const ids = Array.from(selected);
+  try {
+    for (const rowIndex of ids) {
+      await llamar('update-etapa', { rowIndex, etapa: nuevaEtapa });
+      const lead = LEADS.find((l) => l.rowIndex === rowIndex);
+      if (lead) lead.etapa = nuevaEtapa;
+    }
+    selected.clear();
+    renderAll();
+  } catch (err) {
+    alert('No se pudo aplicar el cambio a todos: ' + (err.error || 'error desconocido'));
+  } finally {
+    btn.textContent = original; btn.disabled = false;
+  }
+});
 
 document.addEventListener('click', (e) => {
   if (e.target.matches('.detalle-toggle')) {
@@ -300,19 +724,20 @@ document.addEventListener('change', async (e) => {
       const lead = LEADS.find((l) => l.rowIndex === rowIndex);
       if (lead) lead.etapa = etapa;
       if (estadoEl) { estadoEl.textContent = '✓ guardado'; setTimeout(() => (estadoEl.textContent = ''), 2000); }
-      render();
     } catch (err) {
       if (estadoEl) estadoEl.textContent = '✗ no se guardó';
       alert('No se pudo guardar el cambio de etapa: ' + (err.error || 'error desconocido'));
     }
   }
+  if (e.target.matches('.row-check')) {
+    const rowIndex = Number(e.target.dataset.row);
+    if (e.target.checked) selected.add(rowIndex); else selected.delete(rowIndex);
+    e.target.closest('tr').classList.toggle('row-selected', e.target.checked);
+    actualizarBulkBar();
+    const idsFiltrados = filtrarLeads().map((l) => l.rowIndex);
+    $('#selectAll').checked = idsFiltrados.length > 0 && idsFiltrados.every((id) => selected.has(id));
+  }
 });
-
-$('#loginBtn').addEventListener('click', intentarLogin);
-$('#passwordInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') intentarLogin(); });
-$('#refreshBtn').addEventListener('click', recargar);
-$('#searchInput').addEventListener('input', render);
-$('#filterEtapa').addEventListener('change', render);
 
 // Si ya había una sesión en este navegador, entra directo sin pedir contraseña otra vez.
 if (getPassword()) {
@@ -320,8 +745,8 @@ if (getPassword()) {
     LEADS = data.leads; ETAPAS = data.etapas;
     $('#login').style.display = 'none';
     $('#app').style.display = 'block';
-    popularFiltroEtapas();
-    render();
+    popularSelectsEtapa();
+    renderAll();
   }).catch(() => sessionStorage.removeItem('mx_admin_pw'));
 }
 </script>
