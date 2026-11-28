@@ -60,6 +60,9 @@ exports.handler = async (event) => {
     if (body.action === 'update-segmento') {
       return await actualizarSegmento(body);
     }
+    if (body.action === 'update-notas') {
+      return await actualizarNotaInterna(body);
+    }
     return await listarLeads();
   } catch (err) {
     console.error('[leads-admin] Error:', err);
@@ -100,7 +103,7 @@ async function getSheetAccess() {
 
 async function listarLeads() {
   const { sheetId, accessToken } = await getSheetAccess();
-  const range = `${SHEET_TAB}!A2:M`;
+  const range = `${SHEET_TAB}!A2:N`;
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(range)}`;
 
   const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
@@ -127,6 +130,7 @@ async function listarLeads() {
       etapa: fila[10] || 'Agendado',
       // fila[11] es el UID interno (columna L), no se expone al panel
       segmento: fila[12] || inferirSegmento(fila[7] || ''),
+      notasInternas: fila[13] || '',
     }))
     .filter((lead) => lead.nombre || lead.correo)
     .reverse(); // los más recientes primero
@@ -196,6 +200,42 @@ async function actualizarSegmento(body) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ values: [[segmento]] }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Sheets API respondió ${res.status}: ${await res.text()}`);
+  }
+
+  return json(200, { ok: true });
+}
+
+// ---------------------------------------------------------------------------
+// Guardar la nota de seguimiento interna de Monty (columna N) -- distinta de
+// la columna E ("¿Qué le ronda la cabeza?"), que es la respuesta del propio
+// actor en el cuestionario de Cal.com y nunca se edita desde aquí.
+// ---------------------------------------------------------------------------
+
+async function actualizarNotaInterna(body) {
+  const rowIndex = Number(body.rowIndex);
+  const notas = typeof body.notas === 'string' ? body.notas.trim().slice(0, 2000) : '';
+
+  if (!Number.isInteger(rowIndex) || rowIndex < 2) {
+    return json(400, { error: 'Datos inválidos para guardar la nota.' });
+  }
+
+  const { sheetId, accessToken } = await getSheetAccess();
+  const range = `${SHEET_TAB}!N${rowIndex}`;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(
+    range
+  )}?valueInputOption=USER_ENTERED`;
+
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ values: [[notas]] }),
   });
 
   if (!res.ok) {

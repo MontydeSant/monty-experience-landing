@@ -148,6 +148,19 @@
   .etapa-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent-guide),var(--accent-signal));border-radius:var(--radius-pill);}
   .etapa-bar-count{width:28px;text-align:right;flex-shrink:0;font-family:var(--font-bitacora);font-weight:700;color:var(--text-primary);}
 
+  /* embudo de conversión: misma franja que el desglose por etapa, pero con
+     el relleno partido por segmento (Bellota/Fénix) para ver si uno
+     convierte mejor que el otro etapa por etapa */
+  .funnel-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+  .funnel-row:last-child{margin-bottom:0;}
+  .funnel-label{width:150px;flex-shrink:0;font-family:var(--font-bitacora);font-size:.86rem;color:#cdbfc4;}
+  .funnel-track{flex:1;height:10px;background:rgba(255,255,255,.06);border-radius:var(--radius-pill);overflow:hidden;display:flex;}
+  .funnel-fill-bellota{height:100%;background:#a67c52;}
+  .funnel-fill-fenix{height:100%;background:var(--accent-guide);}
+  .funnel-pct{width:42px;text-align:right;flex-shrink:0;font-family:var(--font-bitacora);font-weight:700;color:var(--text-primary);}
+  .funnel-legend{display:flex;gap:18px;margin-top:16px;font-family:var(--font-bitacora);font-size:.78rem;color:#9a8f93;}
+  .funnel-legend-dot{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:6px;vertical-align:-1px;}
+
   /* mini-tabla de últimos leads */
   .mini-list{display:flex;flex-direction:column;}
   .mini-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07);}
@@ -293,6 +306,23 @@
   .lead-modal-dl{margin:0;display:grid;grid-template-columns:1fr;gap:2px;font-family:var(--font-bitacora);font-size:14.5px;line-height:1.55;}
   .lead-modal-dl dt{color:#9a8f93;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;margin-top:14px;}
   .lead-modal-dl dd{margin:0 0 2px;color:#e4dadd;}
+
+  /* nota de seguimiento interna (de Monty, no del cuestionario del actor) */
+  .lead-modal-notas{margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);}
+  .lead-modal-notas label{display:block;color:#9a8f93;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;font-family:var(--font-bitacora);}
+  .lead-modal-notas textarea{
+    width:100%;min-height:74px;resize:vertical;padding:10px 12px;border-radius:10px;
+    background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);color:var(--text-primary);
+    font-family:var(--font-bitacora);font-size:14px;line-height:1.5;
+  }
+  .lead-modal-notas textarea:focus{outline:none;border-color:rgba(253,192,5,.4);}
+  .lead-modal-notas-foot{display:flex;align-items:center;gap:12px;margin-top:10px;}
+  .lead-modal-notas-saved{font-family:var(--font-bitacora);font-size:.78rem;color:var(--accent-signal);opacity:0;transition:opacity .2s ease;}
+  .lead-modal-notas-saved.show{opacity:1;}
+
+  /* indicador de nota en la tarjeta del kanban */
+  .kanban-card-notaflag{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-bitacora);font-size:.74rem;color:var(--accent-signal);margin-bottom:8px;}
+  .kanban-card-notaflag svg{width:12px;height:12px;flex-shrink:0;stroke:var(--accent-signal);}
 
   select.etapa{
     background:var(--gradient-deep);border:1px solid rgba(255,255,255,.14);color:var(--text-primary);
@@ -453,6 +483,16 @@
           </div>
 
           <div class="panel">
+            <h2 class="panel-title">Embudo de conversión</h2>
+            <p class="admin-sub" style="margin:-10px 0 18px;">Qué tanto de cada 100 leads llega a cada etapa — y si Bellota o Fénix convierte mejor.</p>
+            <div id="funnelBreakdown"></div>
+            <div class="funnel-legend">
+              <span><span class="funnel-legend-dot" style="background:#a67c52"></span>Bellota</span>
+              <span><span class="funnel-legend-dot" style="background:var(--accent-guide)"></span>Fénix</span>
+            </div>
+          </div>
+
+          <div class="panel">
             <h2 class="panel-title">Últimos leads</h2>
             <div class="mini-list" id="miniList"></div>
             <div class="panel-footer">
@@ -538,6 +578,14 @@
         </div>
       </div>
       <dl class="lead-modal-dl" id="leadModalDl"></dl>
+      <div class="lead-modal-notas">
+        <label for="leadModalNotas">Nota de seguimiento (solo tú la ves)</label>
+        <textarea id="leadModalNotas" placeholder="Ej. le interesa el Fénix, falta cerrar fecha de sesión…"></textarea>
+        <div class="lead-modal-notas-foot">
+          <button type="button" class="icon-btn" id="leadModalNotasGuardar" style="padding:9px 16px;">Guardar nota</button>
+          <span class="lead-modal-notas-saved" id="leadModalNotasSaved">Guardada ✓</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -692,6 +740,8 @@ function renderDashboard() {
     </div>
   `).join('') || '<p class="muted">Todavía no hay leads.</p>';
 
+  renderFunnel();
+
   const ultimos = LEADS.slice(0, 5);
   $('#miniList').innerHTML = ultimos.length ? ultimos.map((l) => `
     <div class="mini-row">
@@ -702,6 +752,53 @@ function renderDashboard() {
       </div>
     </div>
   `).join('') : '<p class="muted">Todavía no hay leads.</p>';
+}
+
+// Embudo de conversión: para cada etapa (excepto "No por ahora", que es una
+// salida, no un paso del embudo) cuenta cuántos leads llegaron AL MENOS hasta
+// ahí -- asumiendo que el pipeline es secuencial, un lead en "Convertido"
+// pasó antes por todas las etapas previas. Un lead marcado "No por ahora"
+// solo cuenta para la primera etapa (se perdió en el camino). El ancho de
+// cada barra es relativo al total de leads (etapa 1 = base = 100%), y el
+// relleno se reparte por segmento para comparar Bellota vs Fénix etapa por
+// etapa, tal como lo pide la clase de CRM (dónde está el cuello de botella).
+function renderFunnel() {
+  const el = $('#funnelBreakdown');
+  if (!el) return;
+
+  const FUNNEL_STAGES = ETAPAS.filter((e) => e !== 'No por ahora');
+  const base = LEADS.length;
+
+  if (!base || !FUNNEL_STAGES.length) {
+    el.innerHTML = '<p class="muted">Todavía no hay leads.</p>';
+    return;
+  }
+
+  const nivel = (etapa) => {
+    const i = FUNNEL_STAGES.indexOf(etapa);
+    return i === -1 ? 0 : i;
+  };
+
+  el.innerHTML = FUNNEL_STAGES.map((etapa, i) => {
+    const enEstaOMas = LEADS.filter((l) => nivel(l.etapa) >= i);
+    const total = enEstaOMas.length;
+    const bellota = enEstaOMas.filter((l) => l.segmento === 'Bellota').length;
+    const fenix = enEstaOMas.filter((l) => l.segmento === 'Fénix').length;
+    const pct = Math.round((total / base) * 100);
+    const anchoTotal = (total / base) * 100;
+    const anchoBellota = total ? (bellota / total) * anchoTotal : 0;
+    const anchoFenix = total ? (fenix / total) * anchoTotal : 0;
+    return `
+      <div class="funnel-row">
+        <div class="funnel-label">${escapeHtml(etapa)}</div>
+        <div class="funnel-track">
+          <div class="funnel-fill-bellota" style="width:${anchoBellota}%"></div>
+          <div class="funnel-fill-fenix" style="width:${anchoFenix}%"></div>
+        </div>
+        <div class="funnel-pct">${pct}%</div>
+      </div>
+    `;
+  }).join('');
 }
 
 function filtrarLeads() {
@@ -738,6 +835,7 @@ function crearTarjeta(lead) {
       <input type="checkbox" class="row-check" data-row="${lead.rowIndex}" ${selected.has(lead.rowIndex) ? 'checked' : ''}>
     </div>
     <div class="kanban-card-name">${escapeHtml(lead.nombre || '(sin nombre)')}</div>
+    ${lead.notasInternas ? '<div class="kanban-card-notaflag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v10H8l-4 4V5Z"/><path d="M8 9h8M8 12h5"/></svg>Nota guardada</div>' : ''}
     <div class="kanban-card-contact">${escapeHtml(lead.correo)}<br>${escapeHtml(lead.celular)}</div>
     <div class="kanban-card-fecha">${escapeHtml(lead.fecha)}</div>
     <div class="kanban-card-move">
@@ -882,6 +980,9 @@ function abrirDetalleLead(rowIndex) {
     <dt>Cómo llegó</dt><dd>${escapeHtml(lead.comoLlego) || '—'}</dd>
     <dt>Origen</dt><dd>${escapeHtml(lead.origen) || '—'}</dd>
   `;
+  $('#leadModalNotas').value = lead.notasInternas || '';
+  $('#leadModalNotasGuardar').dataset.row = rowIndex;
+  $('#leadModalNotasSaved').classList.remove('show');
   $('#leadModal').classList.add('is-open');
   $('#leadModal').setAttribute('aria-hidden', 'false');
 }
@@ -889,6 +990,27 @@ function abrirDetalleLead(rowIndex) {
 function cerrarDetalleLead() {
   $('#leadModal').classList.remove('is-open');
   $('#leadModal').setAttribute('aria-hidden', 'true');
+}
+
+async function guardarNotaInterna() {
+  const btn = $('#leadModalNotasGuardar');
+  const rowIndex = Number(btn.dataset.row);
+  const notas = $('#leadModalNotas').value;
+  const original = btn.textContent;
+  btn.textContent = 'Guardando…'; btn.disabled = true;
+  try {
+    await llamar('update-notas', { rowIndex, notas });
+    const lead = LEADS.find((l) => l.rowIndex === rowIndex);
+    if (lead) lead.notasInternas = notas.trim().slice(0, 2000);
+    renderLeadsView();
+    const saved = $('#leadModalNotasSaved');
+    saved.classList.add('show');
+    setTimeout(() => saved.classList.remove('show'), 2200);
+  } catch (err) {
+    alert('No se pudo guardar la nota: ' + (err.error || 'error desconocido'));
+  } finally {
+    btn.textContent = original; btn.disabled = false;
+  }
 }
 
 function syncSelectAll() {
@@ -916,8 +1038,8 @@ function cambiarVista(view) {
 
 // --- Exportar CSV ---
 function exportarCSV(leads, nombreArchivo) {
-  const encabezados = ['Nombre','Correo','Celular','Fecha del cafecito','Qué le ronda la cabeza','Hace cuánto no actualiza su book','Casting en puerta','Experiencia','Cómo llegó','Origen','Etapa','Segmento'];
-  const filas = leads.map((l) => [l.nombre, l.correo, l.celular, l.fecha, l.notas, l.book, l.casting, l.experiencia, l.comoLlego, l.origen, l.etapa, l.segmento]);
+  const encabezados = ['Nombre','Correo','Celular','Fecha del cafecito','Qué le ronda la cabeza','Hace cuánto no actualiza su book','Casting en puerta','Experiencia','Cómo llegó','Origen','Etapa','Segmento','Notas internas'];
+  const filas = leads.map((l) => [l.nombre, l.correo, l.celular, l.fecha, l.notas, l.book, l.casting, l.experiencia, l.comoLlego, l.origen, l.etapa, l.segmento, l.notasInternas]);
   const csv = [encabezados, ...filas]
     .map((fila) => fila.map((v) => `"${String(v || '').replace(/"/g, '""')}"`).join(','))
     .join('\r\n');
@@ -1044,6 +1166,7 @@ document.addEventListener('click', async (e) => {
 });
 
 $('#leadModalClose').addEventListener('click', cerrarDetalleLead);
+$('#leadModalNotasGuardar').addEventListener('click', guardarNotaInterna);
 $('#leadModal').addEventListener('click', (e) => { if (e.target.id === 'leadModal') cerrarDetalleLead(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarDetalleLead(); });
 
