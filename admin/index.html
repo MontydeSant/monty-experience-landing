@@ -56,9 +56,8 @@
     border-right:1px solid rgba(255,255,255,.08);padding:26px 18px;
     display:flex;flex-direction:column;gap:28px;position:sticky;top:0;height:100vh;
   }
-  .sidebar-brand{display:flex;align-items:center;gap:10px;padding:0 4px;}
-  .sidebar-brand img{width:36px;height:auto;flex-shrink:0;}
-  .sidebar-brand span{font-family:var(--font-guion);font-size:.95rem;color:var(--text-primary);line-height:1.2;}
+  .sidebar-brand{display:flex;align-items:center;justify-content:center;padding:4px 6px 10px;}
+  .sidebar-brand img{width:100%;max-width:150px;height:auto;filter:drop-shadow(0 10px 22px rgba(0,0,0,.45));}
   .nav-section{display:flex;flex-direction:column;gap:4px;}
   .nav-section-label{
     font-family:var(--font-bitacora);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
@@ -67,14 +66,21 @@
   .nav-item{
     display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);
     font-family:var(--font-bitacora);font-size:14.5px;color:#cdbfc4;cursor:pointer;
-    border:1px solid transparent;background:none;width:100%;text-align:left;
+    border:1px solid transparent;background:none;width:100%;text-align:left;position:relative;
+    transition:background .2s ease,color .2s ease,transform .2s ease,border-color .2s ease;
   }
-  .nav-item svg{width:17px;height:17px;flex-shrink:0;opacity:.85;}
-  .nav-item:hover{background:rgba(255,255,255,.04);color:var(--text-primary);}
+  .nav-item svg{width:17px;height:17px;flex-shrink:0;opacity:.85;transition:opacity .2s ease,color .2s ease;}
+  .nav-item:not(.disabled):hover{background:rgba(255,255,255,.04);color:var(--text-primary);transform:translateX(3px);}
   .nav-item.active{background:rgba(246,131,24,.12);border-color:rgba(246,131,24,.3);color:var(--text-primary);}
+  .nav-item.active::before{
+    content:'';position:absolute;left:-18px;top:50%;transform:translateY(-50%);
+    width:3px;height:22px;border-radius:var(--radius-pill);
+    background:var(--accent-guide);box-shadow:0 0 10px rgba(246,131,24,.7);
+  }
   .nav-item.active svg{opacity:1;color:var(--accent-guide);}
   .nav-item.disabled{opacity:.4;cursor:not-allowed;}
   .nav-item.disabled:hover{background:none;color:#cdbfc4;}
+  @media (prefers-reduced-motion: reduce){ .nav-item{ transition:none; } }
   .nav-badge{
     margin-left:auto;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
     background:rgba(255,255,255,.08);color:#9a8f93;padding:2px 7px;border-radius:var(--radius-pill);
@@ -93,16 +99,26 @@
   .admin-header .cta-btn.admin-refresh::before{width:34px;}
   .header-actions{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto;}
 
-  /* --- Tarjetas de resumen (Dashboard) --- */
+  /* --- Tarjetas de resumen (Dashboard) ---
+     Prestado del lenguaje visual de la landing (.mx-panel): borde + glow en
+     naranja en vez de un borde plano, para que no se sienta monocromático. --- */
   .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px;}
   .stat-card{
-    background:var(--surface-card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-card);
-    padding:22px 22px 20px;box-shadow:var(--shadow-tile);
+    background:var(--surface-card);border:1px solid rgba(246,131,24,.26);border-radius:var(--radius-card);
+    padding:22px 22px 20px;box-shadow:0 0 30px rgba(246,131,24,.1),var(--shadow-tile);
+    position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;
   }
+  .stat-card:hover{transform:translateY(-4px);border-color:rgba(246,131,24,.45);box-shadow:0 0 38px rgba(246,131,24,.18),var(--shadow-tile);}
+  .stat-icon{
+    width:34px;height:34px;border-radius:var(--radius-pill);display:flex;align-items:center;justify-content:center;
+    background:rgba(253,192,5,.08);border:1px solid rgba(253,192,5,.3);margin-bottom:14px;
+  }
+  .stat-icon svg{width:17px;height:17px;stroke:var(--accent-signal);}
   .stat-label{font-family:var(--font-bitacora);font-size:.82rem;color:#9a8f93;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
   .stat-value{font-family:var(--font-guion);font-size:2.1rem;color:var(--text-primary);line-height:1;margin-bottom:6px;}
-  .stat-value.accent{color:var(--accent-signal);}
+  .stat-value.accent{color:var(--accent-signal);text-shadow:0 0 22px rgba(253,192,5,.35);}
   .stat-foot{font-family:var(--font-bitacora);font-size:.8rem;color:#776d79;}
+  @media (prefers-reduced-motion: reduce){ .stat-card{ transition:none; } }
 
   .panel{
     background:var(--surface-card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-card);
@@ -202,25 +218,83 @@
   .bulk-btn{
     background:var(--accent-guide);color:#1a0e12;border:none;padding:8px 16px;border-radius:var(--radius-pill);
     font-family:var(--font-bitacora);font-weight:700;font-size:.82rem;cursor:pointer;
+    animation:btnGlow 2.6s ease-in-out infinite;transition:transform .15s ease;
   }
-  .bulk-btn.ghost{background:none;border:1px solid rgba(255,255,255,.2);color:var(--text-primary);}
+  .bulk-btn:hover{transform:scale(1.04);}
+  .bulk-btn.ghost{background:none;border:1px solid rgba(255,255,255,.2);color:var(--text-primary);animation:none;}
   .bulk-cancel{margin-left:auto;background:none;border:none;color:#9a8f93;cursor:pointer;font-size:1.1rem;line-height:1;}
+  @media (prefers-reduced-motion: reduce){ .bulk-btn{ animation:none; } }
+
+  /* micro-movimiento en botones ghost: quietos en reposo, un leve gesto al hover */
+  #verTodosBtn, .admin-refresh, #exportBtn{transition:transform .2s ease;}
+  #verTodosBtn:hover{transform:translateX(3px);}
+  .icon-spin{display:inline-block;transition:transform .4s ease;}
+  .admin-refresh:hover .icon-spin{transform:rotate(100deg);}
+  #exportBtn:hover .icon-spin{transform:translateY(2px);}
 
   @media (max-width:880px){
     .admin-shell{flex-direction:column;}
     .admin-sidebar{
       width:100%;height:auto;position:static;flex-direction:row;align-items:center;
-      gap:14px;padding:14px 16px;overflow-x:auto;
+      gap:12px;padding:12px 14px;overflow-x:auto;
     }
-    .sidebar-brand span{display:none;}
+    .sidebar-brand{padding:0;flex-shrink:0;}
+    .sidebar-brand img{width:40px;max-width:40px;}
     .nav-section{flex-direction:row;gap:6px;}
     .nav-section-label{display:none;}
     .nav-item{flex-direction:row;white-space:nowrap;padding:9px 12px;}
-    .sidebar-foot{margin-top:0;margin-left:auto;}
-    .admin-main{padding:24px 16px 60px;}
-    .detalle dl{grid-template-columns:1fr;}
+    .nav-item.active::before{display:none;}
+    .nav-item:not(.disabled):hover{transform:none;}
+    /* los 3 botones "próximamente" solo estorban en la franja angosta de móvil */
+    .nav-section.nav-section--soon{display:none;}
+    .sidebar-foot{margin-top:0;margin-left:auto;flex-shrink:0;}
+    .logout-label{display:none;}
+    #logoutBtn{padding:9px;}
+    .admin-main{padding:22px 14px 60px;}
     .mini-row .nombre{width:100%;}
     .mini-meta{width:100%;margin-left:0;justify-content:space-between;}
+
+    /* --- Tabla de leads → tarjetas apiladas (antes se cortaba a la mitad
+       con scroll horizontal sin ningún indicio; ahora cada lead es su
+       propia tarjeta, legible de arriba a abajo). --- */
+    .table-scroll{overflow-x:visible;border-radius:0;box-shadow:none;background:none;}
+    table{min-width:0;border:none;background:none;border-collapse:separate;border-spacing:0;}
+    thead{display:none;}
+    tbody{display:block;}
+    tbody tr{
+      position:relative;display:block;background:var(--surface-card);
+      border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-card);
+      padding:16px 16px 14px;margin-bottom:14px;box-shadow:var(--shadow-tile);
+    }
+    tbody tr:hover{background:var(--surface-card);}
+    tbody tr.row-selected{border-color:rgba(246,131,24,.4);background:rgba(246,131,24,.07);}
+    tbody tr:has(+ tr.detalle.open){border-radius:var(--radius-card) var(--radius-card) 0 0;margin-bottom:0;border-bottom:none;}
+    tbody td{
+      display:block;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);text-align:left;
+    }
+    tbody td:last-child{border-bottom:none;}
+    tbody td::before{
+      content:attr(data-label);display:block;margin-bottom:4px;
+      font-family:var(--font-bitacora);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;
+      color:var(--accent-guide);
+    }
+    tbody td:nth-child(2){padding-right:36px;}
+    tbody td:nth-child(2) .nombre{display:inline;}
+    tbody td:nth-child(2) .detalle-toggle{display:inline-block;margin-left:10px;}
+    tbody td.td-check{
+      position:absolute;top:14px;right:14px;display:block;border:none;padding:0;width:auto;
+    }
+    tbody td.td-check::before{display:none;}
+    tbody td select.etapa{width:auto;max-width:220px;}
+    .detalle{display:none;background:var(--gradient-deep);}
+    .detalle.open{
+      display:block;margin:0 0 14px;padding:12px 16px 16px;
+      border:1px solid rgba(255,255,255,.08);border-top:1px dashed rgba(255,255,255,.12);
+      border-radius:0 0 var(--radius-card) var(--radius-card);
+    }
+    .detalle td{display:block;padding:0;border:none;text-align:left;}
+    .detalle td::before{display:none;}
+    .detalle dl{grid-template-columns:1fr;}
   }
 </style>
 </head>
@@ -240,8 +314,7 @@
 
       <aside class="admin-sidebar">
         <div class="sidebar-brand">
-          <img src="../assets/img/logo-monty.webp" alt="Monty Experience" width="36" height="28">
-          <span>Monty<br>Experience</span>
+          <img class="mx-float" src="../assets/img/logo-monty.webp" alt="Monty Experience" width="150" height="115">
         </div>
 
         <nav class="nav-section">
@@ -256,7 +329,7 @@
           </button>
         </nav>
 
-        <nav class="nav-section">
+        <nav class="nav-section nav-section--soon">
           <div class="nav-section-label">Próximamente</div>
           <button class="nav-item disabled" type="button" title="Próximamente" disabled>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
@@ -273,9 +346,9 @@
         </nav>
 
         <div class="sidebar-foot">
-          <button class="nav-item" id="logoutBtn" type="button">
+          <button class="nav-item" id="logoutBtn" type="button" title="Cerrar sesión">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-            Cerrar sesión
+            <span class="logout-label">Cerrar sesión</span>
           </button>
         </div>
       </aside>
@@ -290,7 +363,7 @@
               <p class="admin-sub">Resumen rápido de tus leads de cafecitos.</p>
             </div>
             <div class="header-actions">
-              <button class="cta-btn ghost admin-refresh" id="refreshBtnDash">↻ Actualizar</button>
+              <button class="cta-btn ghost admin-refresh" id="refreshBtnDash"><span class="icon-spin">↻</span> Actualizar</button>
             </div>
           </div>
 
@@ -318,8 +391,8 @@
               <p class="admin-sub">Cada cafecito agendado por Cal.com cae aquí automáticamente. Actualiza la etapa a mano conforme avanza cada lead.</p>
             </div>
             <div class="header-actions">
-              <button class="cta-btn ghost" id="exportBtn" style="width:auto;">⭳ Exportar CSV</button>
-              <button class="cta-btn ghost admin-refresh" id="refreshBtn">↻ Actualizar</button>
+              <button class="cta-btn ghost" id="exportBtn" style="width:auto;"><span class="icon-spin">⭳</span> Exportar CSV</button>
+              <button class="cta-btn ghost admin-refresh" id="refreshBtn"><span class="icon-spin">↻</span> Actualizar</button>
             </div>
           </div>
 
@@ -506,10 +579,14 @@ function renderDashboard() {
   LEADS.forEach((l) => { conteos[l.etapa] = (conteos[l.etapa] || 0) + 1; });
   const maxConteo = Math.max(1, ...Object.values(conteos));
 
+  const iconTotal = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+  const iconMes = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>';
+  const iconCafe = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>';
+
   $('#statGrid').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Total de leads</div><div class="stat-value">${stats.total}</div><div class="stat-foot">capturados en el Sheet</div></div>
-    <div class="stat-card"><div class="stat-label">Leads este mes</div><div class="stat-value accent">${stats.esteMes}</div><div class="stat-foot">con cafecito en ${NOMBRES_MESES[new Date().getMonth()]}</div></div>
-    <div class="stat-card"><div class="stat-label">Cafecitos próximos</div><div class="stat-value accent">${stats.proximos}</div><div class="stat-foot">agendados a futuro</div></div>
+    <div class="stat-card"><div class="stat-icon">${iconTotal}</div><div class="stat-label">Total de leads</div><div class="stat-value">${stats.total}</div><div class="stat-foot">capturados en el Sheet</div></div>
+    <div class="stat-card"><div class="stat-icon">${iconMes}</div><div class="stat-label">Leads este mes</div><div class="stat-value accent">${stats.esteMes}</div><div class="stat-foot">con cafecito en ${NOMBRES_MESES[new Date().getMonth()]}</div></div>
+    <div class="stat-card"><div class="stat-icon">${iconCafe}</div><div class="stat-label">Cafecitos próximos</div><div class="stat-value accent">${stats.proximos}</div><div class="stat-foot">agendados a futuro</div></div>
   `;
 
   $('#etapaBreakdown').innerHTML = ETAPAS.map((e) => `
@@ -567,13 +644,13 @@ function renderLeadsView() {
     const tr = document.createElement('tr');
     if (selected.has(lead.rowIndex)) tr.classList.add('row-selected');
     tr.innerHTML = `
-      <td class="td-check"><input type="checkbox" class="row-check" data-row="${lead.rowIndex}" ${selected.has(lead.rowIndex) ? 'checked' : ''}></td>
-      <td><div class="nombre">${escapeHtml(lead.nombre || '(sin nombre)')}</div>
+      <td class="td-check" data-label=""><input type="checkbox" class="row-check" data-row="${lead.rowIndex}" ${selected.has(lead.rowIndex) ? 'checked' : ''}></td>
+      <td data-label="Nombre"><div class="nombre">${escapeHtml(lead.nombre || '(sin nombre)')}</div>
           <button class="detalle-toggle" data-row="${lead.rowIndex}">ver respuestas</button></td>
-      <td>${escapeHtml(lead.correo)}<br><span class="muted">${escapeHtml(lead.celular)}</span></td>
-      <td>${escapeHtml(lead.fecha)}</td>
-      <td>${escapeHtml(lead.comoLlego)}</td>
-      <td>
+      <td data-label="Contacto">${escapeHtml(lead.correo)}<br><span class="muted">${escapeHtml(lead.celular)}</span></td>
+      <td data-label="Fecha del cafecito">${escapeHtml(lead.fecha)}</td>
+      <td data-label="Cómo llegó">${escapeHtml(lead.comoLlego)}</td>
+      <td data-label="Etapa">
         <select class="etapa ${claseEtapa(lead.etapa)}" data-row="${lead.rowIndex}">
           ${ETAPAS.map((e) => `<option value="${e}" ${e === lead.etapa ? 'selected' : ''}>${e}</option>`).join('')}
         </select>
